@@ -1,8 +1,9 @@
 import type { PropsWithChildren } from 'react';
+import { cn } from '../../lib/utils/cn';
 
 export function Card({ className = '', children }: PropsWithChildren<{ className?: string }>) {
   return (
-    <div className={`rounded-[28px] border border-slate-200 bg-white p-6 shadow-soft backdrop-blur transition-colors duration-200 dark:border-slate-800 dark:bg-slate-900/95 ${className}`}>
+    <div className={cn('rounded-lg border border-border bg-surface p-6 shadow-soft transition-colors duration-200', className)}>
       {children}
     </div>
   );

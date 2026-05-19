@@ -7,4 +7,5 @@ dist
 coverage
 /build
 /functions/node_modules
+/functions/lib
 /firebase-debug.log

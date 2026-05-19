@@ -9,7 +9,13 @@ function App() {
     <AppProviders>
       <BrowserRouter>
         <PageShell>
-          <Suspense fallback={<div className="min-h-[80vh] flex items-center justify-center">Loading…</div>}>
+          <Suspense
+            fallback={
+              <div className="flex min-h-[80vh] items-center justify-center px-4 text-sm font-medium text-muted">
+                Loading
+              </div>
+            }
+          >
             <AppRouter />
           </Suspense>
         </PageShell>

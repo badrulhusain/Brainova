@@ -1,33 +1,96 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return signedIn() && request.auth.token.admin == true;
+    }
+
+    function ownsUserDoc(userId) {
+      return signedIn() && request.auth.uid == userId;
+    }
+
+    function safeUserWrite() {
+      return !request.resource.data.keys().hasAny(['role', 'admin', 'claims']);
+    }
+
+    function ownsExistingDocument() {
+      return signedIn() && resource.data.ownerUid == request.auth.uid;
+    }
+
+    function ownsSession(sessionId) {
+      return signedIn()
+        && get(/databases/$(database)/documents/test_sessions/$(sessionId)).data.ownerUid == request.auth.uid;
+    }
+
     match /answer_keys/{document=**} {
       allow read: if false;
-      allow write: if false;
+      allow create, update, delete: if isAdmin();
     }
 
     match /questions/{questionId} {
-      allow read: if request.auth != null;
-      allow write: if request.auth != null && request.auth.token.admin == true;
+      allow read: if signedIn();
+      allow create, update, delete: if isAdmin();
     }
 
     match /users/{userId} {
-      allow read, write: if request.auth != null && (request.auth.uid == userId || request.auth.token.admin == true);
+      allow read: if ownsUserDoc(userId) || isAdmin();
+      allow create: if (ownsUserDoc(userId) || isAdmin()) && safeUserWrite();
+      allow update: if (ownsUserDoc(userId) || isAdmin()) && safeUserWrite();
+      allow delete: if isAdmin();
+
+      match /test_attempts/{attemptId} {
+        allow read: if ownsUserDoc(userId) || isAdmin();
+        allow create, update, delete: if false;
+      }
+    }
+
+    match /domains/{domainId} {
+      allow read: if signedIn();
+      allow create, update, delete: if isAdmin();
+
+      match /topics/{topicId} {
+        allow read: if signedIn();
+        allow create, update, delete: if isAdmin();
+
+        match /subtopics/{subtopicId} {
+          allow read: if signedIn();
+          allow create, update, delete: if isAdmin();
+        }
+      }
+    }
+
+    match /test_configs/{configId} {
+      allow read: if signedIn();
+      allow create, update, delete: if isAdmin();
     }
 
     match /test_sessions/{sessionId} {
-      allow read, write: if request.auth != null && (resource.data.ownerUid == request.auth.uid || request.auth.token.admin == true);
-      allow update: if resource.data.status != 'submitted';
+      allow read: if ownsExistingDocument() || isAdmin();
+      allow create, update, delete: if false;
+
+      match /events/{eventId} {
+        allow read: if ownsSession(sessionId) || isAdmin();
+        allow create, update, delete: if false;
+      }
     }
 
     match /results/{resultId} {
-      allow read: if request.auth != null && (resource.data.ownerUid == request.auth.uid || request.auth.token.admin == true);
-      allow write: if false;
+      allow read: if ownsExistingDocument() || isAdmin();
+      allow create, update, delete: if false;
     }
 
     match /aggregates/{document=**} {
-      allow read: if request.auth != null;
-      allow write: if false;
+      allow read: if signedIn();
+      allow create, update, delete: if false;
+    }
+
+    match /announcements/{announcementId} {
+      allow read: if signedIn();
+      allow create, update, delete: if isAdmin();
     }
 
     match /{document=**} {

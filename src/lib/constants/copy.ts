@@ -1,0 +1,60 @@
+export const appCopy = {
+  productName: 'Brainova',
+  productTagline: 'Aptitude testing with defensible analytics.',
+  nav: {
+    dashboard: 'Dashboard',
+    tests: 'Tests',
+    results: 'Results',
+    admin: 'Admin',
+    login: 'Login',
+    signup: 'Sign up',
+  },
+  home: {
+    title: 'Student test workspace',
+    subtitle:
+      'Choose a domain, recover in-progress sessions, and review score analytics from one focused shell.',
+    primaryAction: 'Start setup',
+    secondaryAction: 'View routes',
+    readinessTitle: 'Platform readiness',
+    readinessSubtitle: 'Milestone 1 establishes the app frame, routing, Firebase clients, theme system, and deployment files.',
+  },
+  auth: {
+    loginTitle: 'Welcome back',
+    loginSubtitle: 'Log in to resume tests, review analytics, and track your learning progress.',
+    signupTitle: 'Create your account',
+    signupSubtitle: 'Create an account to save your tests, results, and progress history.',
+    emailAction: 'Continue',
+    googleAction: 'Continue with Google',
+    guestAction: 'Continue as guest',
+    resetTitle: 'Reset password',
+    resetDescription: 'Enter your email and we will send a reset link.',
+    resetAction: 'Send reset link',
+    verifyTitle: 'Verify your email',
+    verifyDescription: 'Check your inbox for the verification link before taking scored tests.',
+    resendVerification: 'Resend verification email',
+    signOut: 'Sign out',
+    loginPrompt: 'Already have an account?',
+    signupPrompt: "Don't have an account?",
+  },
+  notFound: {
+    eyebrow: '404',
+    title: 'Page not found',
+    body: 'This route is not part of the current milestone.',
+    action: 'Go home',
+  },
+  upcoming: {
+    tests: {
+      title: 'Tests',
+      body: 'Domain selection, pre-test instructions, and timed sessions begin in Milestone 4 after Auth and seed data.',
+    },
+    results: {
+      title: 'Results',
+      body: 'Detailed analytics, charts, review mode, PDF export, and share links arrive in Milestone 6.',
+    },
+    admin: {
+      title: 'Admin',
+      body: 'Question management, imports, flags, and announcements are built after scoring and result foundations are in place.',
+    },
+  },
+  footer: 'Built for secure, server-scored aptitude testing.',
+} as const;

@@ -1,28 +1,98 @@
+import type { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
+import { BarChart3, ClipboardList, LayoutDashboard, ShieldCheck } from 'lucide-react';
+import { toast } from 'sonner';
+import { useAuth } from '../../features/auth/AuthProvider';
+import { logout } from '../../features/auth/authService';
+import { appCopy } from '../../lib/constants/copy';
 import { ThemeToggle } from '../ui/theme-toggle';
 
-export function PageShell({ children }: { children: React.ReactNode }) {
+const navigation = [
+  { label: appCopy.nav.dashboard, to: '/', icon: LayoutDashboard },
+  { label: appCopy.nav.tests, to: '/tests', icon: ClipboardList },
+  { label: appCopy.nav.results, to: '/results', icon: BarChart3 },
+  { label: appCopy.nav.admin, to: '/admin', icon: ShieldCheck },
+] as const;
+
+export function PageShell({ children }: { children: ReactNode }) {
+  const { user, profile, isLoading, isAdmin } = useAuth();
+  const visibleNavigation = navigation.filter((item) => item.to !== '/admin' || isAdmin);
+
+  const onSignOut = async () => {
+    try {
+      await logout();
+      toast.success('Signed out.');
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : 'Unable to sign out.');
+    }
+  };
+
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100">
-      <header className="sticky top-0 z-20 border-b border-slate-200 bg-white/90 backdrop-blur dark:border-slate-800 dark:bg-slate-950/90">
-        <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-4 sm:px-6">
-          <Link to="/" className="text-lg font-semibold tracking-tight text-slate-950 dark:text-slate-100">
-            Aptitude Connect
+    <div className="flex min-h-screen flex-col bg-background text-foreground">
+      <header className="sticky top-0 z-20 border-b border-border bg-background/95 backdrop-blur">
+        <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-4 sm:px-6">
+          <Link
+            to="/"
+            className="rounded-lg text-lg font-semibold tracking-tight text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+          >
+            {appCopy.productName}
           </Link>
-          <div className="flex items-center gap-3">
-            <Link to="/login" className="text-sm font-medium text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white">
-              Login
-            </Link>
-            <Link to="/signup" className="rounded-full bg-brand-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-brand-700">
-              Sign up
-            </Link>
+          <nav aria-label="Main navigation" className="hidden items-center gap-1 lg:flex">
+            {visibleNavigation.map((item) => {
+              const Icon = item.icon;
+
+              return (
+                <Link
+                  key={item.to}
+                  to={item.to}
+                  className="inline-flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-muted transition hover:bg-surfaceSoft hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                >
+                  <Icon aria-hidden="true" className="h-4 w-4" />
+                  {item.label}
+                </Link>
+              );
+            })}
+          </nav>
+          <div className="flex items-center gap-2">
+            {!isLoading && user ? (
+              <>
+                <Link
+                  to="/dashboard"
+                  className="hidden rounded-lg px-3 py-2 text-sm font-medium text-muted transition hover:bg-surfaceSoft hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2 focus-visible:ring-offset-background md:inline-flex"
+                >
+                  {profile?.displayName ?? profile?.email ?? 'Guest'}
+                </Link>
+                <button
+                  className="rounded-lg px-3 py-2 text-sm font-semibold text-muted transition hover:bg-surfaceSoft hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                  onClick={onSignOut}
+                  type="button"
+                >
+                  {appCopy.auth.signOut}
+                </button>
+              </>
+            ) : (
+              <>
+                <Link
+                  to="/login"
+                  className="hidden rounded-lg px-3 py-2 text-sm font-medium text-muted transition hover:bg-surfaceSoft hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2 focus-visible:ring-offset-background sm:inline-flex"
+                >
+                  {appCopy.nav.login}
+                </Link>
+                <Link
+                  to="/signup"
+                  className="inline-flex min-h-11 items-center rounded-lg bg-brand-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-brand-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                >
+                  {appCopy.nav.signup}
+                </Link>
+              </>
+            )}
             <ThemeToggle />
           </div>
         </div>
       </header>
-      <div>{children}</div>
-      <footer className="border-t border-slate-200 bg-white/90 px-4 py-6 text-center text-sm text-slate-500 dark:border-slate-800 dark:bg-slate-950/90 dark:text-slate-400 sm:px-6">
-        Built for next-gen aptitude testing.
+      <div className="flex-1">{children}</div>
+      <footer className="border-t border-border bg-background px-4 py-6 text-center text-sm text-muted sm:px-6">
+        {appCopy.footer}
       </footer>
     </div>
   );
