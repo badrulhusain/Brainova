@@ -1,7 +1,8 @@
 import type { ReactNode } from 'react';
 import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import { onIdTokenChanged } from 'firebase/auth';
-import { auth } from '../../lib/firebase/client';
+import { doc, getDoc } from 'firebase/firestore';
+import { auth, db } from '../../lib/firebase/client';
 import type { AuthClaims, AuthProfile, AuthState } from './types';
 
 const defaultClaims: AuthClaims = {
@@ -10,14 +11,26 @@ const defaultClaims: AuthClaims = {
 
 const AuthContext = createContext<AuthState | null>(null);
 
-function createProfile(user: NonNullable<AuthState['user']>): AuthProfile {
+function createProfile(user: NonNullable<AuthState['user']>, role?: AuthProfile['role']): AuthProfile {
   return {
     uid: user.uid,
     email: user.email,
     displayName: user.displayName,
     photoURL: user.photoURL,
     isAnonymous: user.isAnonymous,
+    role,
   };
+}
+
+async function getProfileRole(uid: string): Promise<AuthProfile['role'] | undefined> {
+  const profile = await getDoc(doc(db, 'users', uid));
+  const role = profile.data()?.role;
+
+  if (role === 'student' || role === 'admin' || role === 'guest') {
+    return role;
+  }
+
+  return undefined;
 }
 
 export function AuthProvider({ children }: { children: ReactNode }) {
@@ -38,13 +51,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         return;
       }
 
-      nextUser
-        .getIdTokenResult()
-        .then((tokenResult) => {
+      Promise.all([nextUser.getIdTokenResult(true), getProfileRole(nextUser.uid)])
+        .then(([tokenResult, role]) => {
           setUser(nextUser);
-          setProfile(createProfile(nextUser));
+          setProfile(createProfile(nextUser, role));
           setClaims({
-            admin: tokenResult.claims.admin === true,
+            admin: tokenResult.claims.admin === true || role === 'admin',
           });
         })
         .catch(() => {

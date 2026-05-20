@@ -9,6 +9,8 @@ const NotFoundPage = lazy(() => import('../pages/NotFoundPage'));
 const UpcomingPage = lazy(() => import('../pages/UpcomingPage'));
 const DashboardPage = lazy(() => import('../pages/DashboardPage'));
 const VerifyEmailPage = lazy(() => import('../pages/VerifyEmailPage'));
+const AdminPage = lazy(() => import('../pages/AdminPage'));
+const AdminQuestionNewPage = lazy(() => import('../pages/AdminQuestionNewPage'));
 
 export function AppRouter() {
   return (
@@ -52,7 +54,15 @@ export function AppRouter() {
         path="/admin"
         element={
           <AdminRoute>
-            <UpcomingPage page="admin" />
+            <AdminPage />
+          </AdminRoute>
+        }
+      />
+      <Route
+        path="/admin/questions/new"
+        element={
+          <AdminRoute>
+            <AdminQuestionNewPage />
           </AdminRoute>
         }
       />

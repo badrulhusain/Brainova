@@ -10,6 +10,7 @@ export interface AuthProfile {
   displayName: string | null;
   photoURL: string | null;
   isAnonymous: boolean;
+  role?: 'student' | 'admin' | 'guest';
 }
 
 export interface AuthState {
