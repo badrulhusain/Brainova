@@ -7,7 +7,7 @@ import { PageShell } from './components/layout/Shell';
 function App() {
   return (
     <AppProviders>
-      <BrowserRouter>
+      <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
         <PageShell>
           <Suspense
             fallback={

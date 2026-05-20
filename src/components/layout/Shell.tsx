@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
-import { BarChart3, ClipboardList, LayoutDashboard, ShieldCheck } from 'lucide-react';
+import { BarChart3, ClipboardList, LayoutDashboard, LineChart, ShieldCheck } from 'lucide-react';
 import { toast } from 'sonner';
 import { useAuth } from '../../features/auth/AuthProvider';
 import { logout } from '../../features/auth/authService';
@@ -8,15 +8,16 @@ import { appCopy } from '../../lib/constants/copy';
 import { ThemeToggle } from '../ui/theme-toggle';
 
 const navigation = [
-  { label: appCopy.nav.dashboard, to: '/', icon: LayoutDashboard },
-  { label: appCopy.nav.tests, to: '/tests', icon: ClipboardList },
-  { label: appCopy.nav.results, to: '/results', icon: BarChart3 },
-  { label: appCopy.nav.admin, to: '/admin', icon: ShieldCheck },
+  { label: appCopy.nav.dashboard, to: '/', icon: LayoutDashboard, adminOnly: false },
+  { label: appCopy.nav.tests, to: '/tests', icon: ClipboardList, adminOnly: false },
+  { label: appCopy.nav.results, to: '/results', icon: BarChart3, adminOnly: false },
+  { label: 'Analytics', to: '/analytics', icon: LineChart, adminOnly: false },
+  { label: appCopy.nav.admin, to: '/admin', icon: ShieldCheck, adminOnly: true },
 ] as const;
 
 export function PageShell({ children }: { children: ReactNode }) {
   const { user, profile, isLoading, isAdmin } = useAuth();
-  const visibleNavigation = navigation.filter((item) => item.to !== '/admin' || isAdmin);
+  const visibleNavigation = navigation.filter((item) => !item.adminOnly || isAdmin);
 
   const onSignOut = async () => {
     try {

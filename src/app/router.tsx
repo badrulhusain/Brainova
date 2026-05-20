@@ -6,16 +6,29 @@ const HomePage = lazy(() => import('../pages/HomePage'));
 const LoginPage = lazy(() => import('../pages/LoginPage'));
 const SignupPage = lazy(() => import('../pages/SignupPage'));
 const NotFoundPage = lazy(() => import('../pages/NotFoundPage'));
-const UpcomingPage = lazy(() => import('../pages/UpcomingPage'));
 const DashboardPage = lazy(() => import('../pages/DashboardPage'));
 const VerifyEmailPage = lazy(() => import('../pages/VerifyEmailPage'));
+
+// Admin
 const AdminPage = lazy(() => import('../pages/AdminPage'));
 const AdminQuestionNewPage = lazy(() => import('../pages/AdminQuestionNewPage'));
+const AdminTestConfigPage = lazy(() => import('../pages/admin/AdminTestConfigPage'));
+const AdminTestConfigNewPage = lazy(() => import('../pages/admin/AdminTestConfigNewPage'));
+
+// Tests + results + analytics
+const TestsPage = lazy(() => import('../pages/TestsPage'));
+const TestPage = lazy(() => import('../pages/TestPage'));
+const ResultsListPage = lazy(() => import('../pages/ResultsListPage'));
+const ResultPage = lazy(() => import('../pages/ResultPage'));
+const AnalyticsPage = lazy(() => import('../pages/AnalyticsPage'));
 
 export function AppRouter() {
   return (
     <Routes>
       <Route path="/" element={<HomePage />} />
+      <Route path="/login" element={<LoginPage />} />
+      <Route path="/signup" element={<SignupPage />} />
+
       <Route
         path="/dashboard"
         element={
@@ -24,8 +37,6 @@ export function AppRouter() {
           </ProtectedRoute>
         }
       />
-      <Route path="/login" element={<LoginPage />} />
-      <Route path="/signup" element={<SignupPage />} />
       <Route
         path="/verify-email"
         element={
@@ -34,22 +45,54 @@ export function AppRouter() {
           </ProtectedRoute>
         }
       />
+
+      {/* Tests */}
       <Route
         path="/tests"
         element={
           <ProtectedRoute>
-            <UpcomingPage page="tests" />
+            <TestsPage />
           </ProtectedRoute>
         }
       />
       <Route
-        path="/results"
+        path="/tests/:sessionId"
         element={
           <ProtectedRoute>
-            <UpcomingPage page="results" />
+            <TestPage />
           </ProtectedRoute>
         }
       />
+
+      {/* Results */}
+      <Route
+        path="/results"
+        element={
+          <ProtectedRoute>
+            <ResultsListPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/results/:resultId"
+        element={
+          <ProtectedRoute>
+            <ResultPage />
+          </ProtectedRoute>
+        }
+      />
+
+      {/* Analytics */}
+      <Route
+        path="/analytics"
+        element={
+          <ProtectedRoute>
+            <AnalyticsPage />
+          </ProtectedRoute>
+        }
+      />
+
+      {/* Admin */}
       <Route
         path="/admin"
         element={
@@ -66,6 +109,23 @@ export function AppRouter() {
           </AdminRoute>
         }
       />
+      <Route
+        path="/admin/test-configs"
+        element={
+          <AdminRoute>
+            <AdminTestConfigPage />
+          </AdminRoute>
+        }
+      />
+      <Route
+        path="/admin/test-configs/new"
+        element={
+          <AdminRoute>
+            <AdminTestConfigNewPage />
+          </AdminRoute>
+        }
+      />
+
       <Route path="*" element={<NotFoundPage />} />
     </Routes>
   );

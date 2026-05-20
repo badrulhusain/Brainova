@@ -56,3 +56,21 @@ select {
 .font-numeric {
   font-family: 'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
 }
+
+@media print {
+  header,
+  footer,
+  nav,
+  .print\:hidden {
+    display: none !important;
+  }
+
+  body {
+    background: white;
+    color: black;
+  }
+
+  .print\:break-inside-avoid {
+    break-inside: avoid;
+  }
+}

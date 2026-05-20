@@ -77,9 +77,12 @@ export default function AdminPage() {
             >
               Create a question and private answer key
             </Link>
-            <div className="rounded-lg border border-border bg-background px-4 py-4 text-sm text-muted">
-              Question list, edit, CSV import, and flags come next.
-            </div>
+            <Link
+              className="rounded-lg border border-border bg-background px-4 py-4 text-sm font-semibold transition hover:bg-surfaceSoft focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500"
+              to="/admin/test-configs"
+            >
+              Manage test configurations
+            </Link>
           </div>
         </Card>
       </div>
