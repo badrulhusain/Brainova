@@ -1,0 +1,227 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  name          String?
+  emailVerified Boolean   @default(false)
+  image         String?
+  role          Role      @default(STUDENT)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  accounts      Account[]
+  sessions      AuthSession[]
+  testSessions  TestSession[]
+  testAttempts  TestAttempt[]
+}
+
+model Account {
+  id           String    @id @default(cuid())
+  userId       String
+  accountId    String
+  providerId   String
+  accessToken  String?
+  refreshToken String?
+  idToken      String?
+  expiresAt    DateTime?
+  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model AuthSession {
+  id        String   @id @default(cuid())
+  userId    String
+  token     String   @unique
+  expiresAt DateTime
+  ipAddress String?
+  userAgent String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Verification {
+  id         String   @id @default(cuid())
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+}
+
+model Domain {
+  id           String       @id @default(cuid())
+  name         String
+  description  String
+  icon         String
+  order        Int          @default(0)
+  active       Boolean      @default(true)
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+  topics       Topic[]
+  questions    Question[]
+  testConfigs  TestConfig[]
+  testAttempts TestAttempt[]
+}
+
+model Topic {
+  id          String     @id @default(cuid())
+  domainId    String
+  name        String
+  description String
+  order       Int        @default(0)
+  active      Boolean    @default(true)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  domain      Domain     @relation(fields: [domainId], references: [id])
+  subtopics   Subtopic[]
+  questions   Question[]
+}
+
+model Subtopic {
+  id          String     @id @default(cuid())
+  topicId     String
+  name        String
+  description String
+  order       Int        @default(0)
+  active      Boolean    @default(true)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  topic       Topic      @relation(fields: [topicId], references: [id])
+  questions   Question[]
+}
+
+model Question {
+  id              String       @id @default(cuid())
+  domainId        String
+  topicId         String
+  subtopicId      String
+  type            QuestionType
+  difficulty      Difficulty
+  text            String
+  options         String[]
+  marks           Float        @default(1)
+  negativeMarks   Float        @default(0.25)
+  timeRecommended Int          @default(60)
+  tags            String[]
+  active          Boolean      @default(true)
+  createdBy       String
+  updatedBy       String
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+  domain          Domain       @relation(fields: [domainId], references: [id])
+  topic           Topic        @relation(fields: [topicId], references: [id])
+  subtopic        Subtopic     @relation(fields: [subtopicId], references: [id])
+  answerKey       AnswerKey?
+}
+
+model AnswerKey {
+  id            String   @id @default(cuid())
+  questionId    String   @unique
+  correctAnswer String
+  explanation   String
+  updatedBy     String
+  updatedAt     DateTime @updatedAt
+  question      Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+}
+
+model TestConfig {
+  id                 String       @id @default(cuid())
+  name               String
+  description        String
+  domainId           String
+  totalQuestions     Int
+  duration           Int
+  marksPerQuestion   Float        @default(1)
+  negativeMarksRatio Float        @default(0.25)
+  easyCount          Int
+  mediumCount        Int
+  hardCount          Int
+  topicFilter        String[]     @default([])
+  shuffleQuestions   Boolean      @default(true)
+  shuffleOptions     Boolean      @default(false)
+  active             Boolean      @default(true)
+  createdBy          String
+  createdAt          DateTime     @default(now())
+  updatedAt          DateTime     @updatedAt
+  domain             Domain       @relation(fields: [domainId], references: [id])
+  testSessions       TestSession[]
+}
+
+model TestSession {
+  id               String        @id @default(cuid())
+  userId           String
+  configId         String
+  domainId         String
+  status           SessionStatus @default(IN_PROGRESS)
+  questionSnapshot Json
+  answers          Json          @default("{}")
+  markedForReview  Json          @default("{}")
+  tabSwitchCount   Int           @default(0)
+  startedAt        DateTime      @default(now())
+  expiresAt        DateTime
+  submittedAt      DateTime?
+  lastSavedAt      DateTime      @default(now())
+  user             User          @relation(fields: [userId], references: [id])
+  config           TestConfig    @relation(fields: [configId], references: [id])
+  result           TestResult?
+  events           SessionEvent[]
+}
+
+model SessionEvent {
+  id        String      @id @default(cuid())
+  sessionId String
+  type      String
+  payload   Json        @default("{}")
+  createdAt DateTime    @default(now())
+  session   TestSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+}
+
+model TestResult {
+  id                  String      @id @default(cuid())
+  sessionId           String      @unique
+  userId              String
+  domainId            String
+  configId            String
+  scoredMarks         Float
+  totalMarks          Float
+  percentageScore     Float
+  accuracy            Float
+  totalQuestions      Int
+  attemptedCount      Int
+  correctCount        Int
+  incorrectCount      Int
+  skippedCount        Int
+  topicBreakdown      Json
+  difficultyBreakdown Json
+  questionResults     Json
+  createdAt           DateTime    @default(now())
+  session             TestSession @relation(fields: [sessionId], references: [id])
+  testAttempt         TestAttempt?
+}
+
+model TestAttempt {
+  id             String     @id @default(cuid())
+  userId         String
+  resultId       String     @unique
+  domainId       String
+  scoredMarks    Float
+  totalMarks     Float
+  accuracy       Float
+  correctCount   Int
+  totalQuestions Int
+  date           DateTime   @default(now())
+  user           User       @relation(fields: [userId], references: [id])
+  result         TestResult @relation(fields: [resultId], references: [id])
+  domain         Domain     @relation(fields: [domainId], references: [id])
+}
+
+enum Role          { STUDENT TEACHER ADMIN }
+enum QuestionType  { MCQ TRUE_FALSE FILL }
+enum Difficulty    { EASY MEDIUM HARD }
+enum SessionStatus { IN_PROGRESS SCORING SUBMITTED ABANDONED EXPIRED }
