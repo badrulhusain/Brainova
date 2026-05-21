@@ -1,97 +1,61 @@
 import type { ReactNode } from 'react';
 import { createContext, useContext, useEffect, useMemo, useState } from 'react';
-import { onIdTokenChanged } from 'firebase/auth';
-import { doc, getDoc } from 'firebase/firestore';
-import { auth, db } from '../../lib/firebase/client';
-import type { AuthClaims, AuthProfile, AuthState } from './types';
+import { getSession } from './authService';
+import type { AppUser, AuthClaims, AuthProfile, AuthState } from './types';
 
-const defaultClaims: AuthClaims = {
-  admin: false,
-};
+const defaultClaims: AuthClaims = { admin: false };
 
 const AuthContext = createContext<AuthState | null>(null);
 
-function createProfile(user: NonNullable<AuthState['user']>, role?: AuthProfile['role']): AuthProfile {
+function toProfile(user: AppUser): AuthProfile {
   return {
     uid: user.uid,
     email: user.email,
     displayName: user.displayName,
     photoURL: user.photoURL,
-    isAnonymous: user.isAnonymous,
-    role,
+    isAnonymous: false,
+    role: user.role === 'ADMIN' ? 'admin' : user.role === 'TEACHER' ? 'teacher' : 'student',
   };
 }
 
-async function getProfileRole(uid: string): Promise<AuthProfile['role'] | undefined> {
-  const profile = await getDoc(doc(db, 'users', uid));
-  const role = profile.data()?.role;
-
-  if (role === 'student' || role === 'admin' || role === 'guest') {
-    return role;
-  }
-
-  return undefined;
-}
-
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<AuthState['user']>(null);
-  const [profile, setProfile] = useState<AuthProfile | null>(null);
-  const [claims, setClaims] = useState<AuthClaims>(defaultClaims);
+  const [user, setUser] = useState<AppUser | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const unsubscribe = onIdTokenChanged(auth, (nextUser) => {
-      setIsLoading(true);
+    // Replace Firebase onIdTokenChanged with a single session check on mount.
+    // Better Auth manages session refresh automatically via cookies.
+    let cancelled = false;
 
-      if (!nextUser) {
-        setUser(null);
-        setProfile(null);
-        setClaims(defaultClaims);
-        setIsLoading(false);
-        return;
-      }
+    getSession()
+      .then((appUser) => {
+        if (!cancelled) setUser(appUser);
+      })
+      .finally(() => {
+        if (!cancelled) setIsLoading(false);
+      });
 
-      Promise.all([nextUser.getIdTokenResult(true), getProfileRole(nextUser.uid)])
-        .then(([tokenResult, role]) => {
-          setUser(nextUser);
-          setProfile(createProfile(nextUser, role));
-          setClaims({
-            admin: tokenResult.claims.admin === true || role === 'admin',
-          });
-        })
-        .catch(() => {
-          setUser(nextUser);
-          setProfile(createProfile(nextUser));
-          setClaims(defaultClaims);
-        })
-        .finally(() => {
-          setIsLoading(false);
-        });
-    });
-
-    return unsubscribe;
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
-  const value = useMemo(
-    () => ({
+  const value = useMemo<AuthState>(() => {
+    const isAdmin = user?.role === 'ADMIN';
+    return {
       user,
-      profile,
-      claims,
+      profile: user ? toProfile(user) : null,
+      claims: { admin: isAdmin },
       isLoading,
-      isAdmin: claims.admin,
-    }),
-    [claims, isLoading, profile, user],
-  );
+      isAdmin,
+    };
+  }, [user, isLoading]);
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
-export function useAuth() {
+export function useAuth(): AuthState {
   const context = useContext(AuthContext);
-
-  if (!context) {
-    throw new Error('useAuth must be used within AuthProvider');
-  }
-
+  if (!context) throw new Error('useAuth must be used within AuthProvider');
   return context;
 }

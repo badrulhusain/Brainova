@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
-import { doc, onSnapshot, type Unsubscribe } from 'firebase/firestore';
-import { db } from '../../../lib/firebase/client';
+import { useEffect, useRef, useState } from 'react';
+import { apiClient } from '../../../lib/api/client';
+import { connectSocket } from '../../../lib/socket/client';
 import { useTestSessionStore } from '../store/testSessionStore';
 import type { TestSession } from '../types';
 
@@ -10,74 +10,62 @@ interface UseTestSessionResult {
   error: string | null;
 }
 
-function toTestSession(id: string, data: Record<string, unknown>): TestSession {
-  return {
-    id,
-    ownerUid: data['ownerUid'] as string,
-    configId: data['configId'] as string,
-    domainId: data['domainId'] as string,
-    status: data['status'] as TestSession['status'],
-    startedAt: data['startedAt'] as TestSession['startedAt'],
-    expiresAt: data['expiresAt'] as TestSession['expiresAt'],
-    duration: data['duration'] as number,
-    questionSnapshot: data['questionSnapshot'] as TestSession['questionSnapshot'],
-    answers: (data['answers'] as Record<string, string>) ?? {},
-    markedForReview: (data['markedForReview'] as Record<string, boolean>) ?? {},
-    tabSwitchCount: (data['tabSwitchCount'] as number) ?? 0,
-    questionCount: data['questionCount'] as number,
-    lastSavedAt: data['lastSavedAt'] as TestSession['lastSavedAt'],
-    resultId: data['resultId'] as string | undefined,
-    submittedAt: data['submittedAt'] as TestSession['submittedAt'],
-  };
-}
-
 export function useTestSession(sessionId: string): UseTestSessionResult {
   const [session, setSession] = useState<TestSession | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [hydrated, setHydrated] = useState(false);
-
+  const hydratedRef = useRef(false);
   const hydrate = useTestSessionStore((s) => s.hydrate);
 
   useEffect(() => {
-    setIsLoading(true);
-    setError(null);
-    setHydrated(false);
+    let cancelled = false;
+    hydratedRef.current = false;
 
-    const unsub: Unsubscribe = onSnapshot(
-      doc(db, 'test_sessions', sessionId),
-      (snap) => {
-        if (!snap.exists()) {
-          setError('Session not found.');
-          setIsLoading(false);
-          return;
-        }
+    // 1. Fetch initial session state via REST
+    const fetchSession = async () => {
+      try {
+        setIsLoading(true);
+        setError(null);
+        const res = await apiClient.get<TestSession>(`/sessions/${sessionId}`);
+        if (cancelled) return;
 
-        const data = snap.data() as Record<string, unknown>;
-        const ts = toTestSession(snap.id, data);
+        const ts = res.data;
         setSession(ts);
-        setIsLoading(false);
 
-        // Hydrate store once on initial load
-        if (!hydrated) {
+        // Hydrate Zustand store once from the server state
+        if (!hydratedRef.current) {
           hydrate({
-            sessionId: snap.id,
+            sessionId,
             answers: ts.answers,
             markedForReview: ts.markedForReview,
             tabSwitchCount: ts.tabSwitchCount,
           });
-          setHydrated(true);
+          hydratedRef.current = true;
         }
-      },
-      (err) => {
-        setError(err.message);
-        setIsLoading(false);
-      },
-    );
+      } catch (err) {
+        if (!cancelled) setError(err instanceof Error ? err.message : 'Session not found');
+      } finally {
+        if (!cancelled) setIsLoading(false);
+      }
+    };
 
-    return () => unsub();
-    // hydrated excluded — only hydrate once
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    void fetchSession();
+
+    // 2. Connect to WebSocket, join session room for real-time events
+    const socket = connectSocket();
+    socket.emit('join_session', { sessionId });
+
+    // Server broadcasts tab_warned to all room members
+    const onTabWarned = ({ tabSwitchCount }: { tabSwitchCount: number }) => {
+      setSession((prev) => (prev ? { ...prev, tabSwitchCount } : prev));
+    };
+
+    socket.on('tab_warned', onTabWarned);
+
+    return () => {
+      cancelled = true;
+      socket.off('tab_warned', onTabWarned);
+    };
   }, [sessionId, hydrate]);
 
   return { session, isLoading, error };

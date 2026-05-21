@@ -2,6 +2,7 @@ import { MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/c
 import { ScheduleModule } from '@nestjs/schedule';
 import { AppConfigModule } from './config/config.module';
 import { DatabaseModule } from './database/database.module';
+import { EmailModule } from './modules/email/email.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { UsersModule } from './modules/users/users.module';
 import { TaxonomyModule } from './modules/taxonomy/taxonomy.module';
@@ -17,6 +18,7 @@ import { AnalyticsModule } from './modules/analytics/analytics.module';
     ScheduleModule.forRoot(),
     AppConfigModule,
     DatabaseModule,
+    EmailModule,   // must precede AuthModule so EmailService is available on init
     AuthModule,
     UsersModule,
     TaxonomyModule,

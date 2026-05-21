@@ -1,7 +1,6 @@
 import { useEffect, useRef } from 'react';
-import { doc, increment, serverTimestamp, updateDoc } from 'firebase/firestore';
 import { toast } from 'sonner';
-import { db } from '../../../lib/firebase/client';
+import { getSocket } from '../../../lib/socket/client';
 import { useTestSessionStore } from '../store/testSessionStore';
 
 export function useTabSwitchGuard(sessionId: string, active: boolean): void {
@@ -16,29 +15,21 @@ export function useTabSwitchGuard(sessionId: string, active: boolean): void {
   useEffect(() => {
     if (!active) return;
 
-    const handleVisibilityChange = async () => {
+    const handleVisibilityChange = () => {
       if (document.visibilityState === 'hidden') {
         const newCount = tabCountRef.current + 1;
         tabCountRef.current = newCount;
         setTabSwitchCount(newCount);
 
-        // Update Firestore immediately — only tabSwitchCount + updatedAt are touched,
-        // both allowed by safeSessionAutosave
-        try {
-          await updateDoc(doc(db, 'test_sessions', sessionId), {
-            tabSwitchCount: increment(1),
-            updatedAt: serverTimestamp(),
-          });
-        } catch {
-          // Non-fatal; local count is still incremented
-        }
+        // Emit tab_switch to the server; server increments DB count and
+        // broadcasts tab_warned to all sockets in the session room.
+        getSocket().emit('tab_switch', { sessionId });
       } else {
         toast.warning(`Tab switch detected (${tabCountRef.current} total)`);
       }
     };
 
-    const listener = () => void handleVisibilityChange();
-    document.addEventListener('visibilitychange', listener);
-    return () => document.removeEventListener('visibilitychange', listener);
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
   }, [sessionId, active, setTabSwitchCount]);
 }

@@ -1,8 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
-import type { Timestamp } from 'firebase/firestore';
 
+/**
+ * Countdown in seconds until `expiresAt`.
+ * Accepts an ISO date string or a Date object (replaces the former Firestore Timestamp).
+ */
 export function useCountdown(
-  expiresAt: Timestamp | null | undefined,
+  expiresAt: string | Date | null | undefined,
   onExpire: () => void,
 ): number {
   const [remaining, setRemaining] = useState(0);
@@ -15,8 +18,8 @@ export function useCountdown(
   useEffect(() => {
     if (!expiresAt) return;
 
-    const compute = () =>
-      Math.max(0, Math.floor((expiresAt.toDate().getTime() - Date.now()) / 1000));
+    const expiresMs = new Date(expiresAt).getTime();
+    const compute = () => Math.max(0, Math.floor((expiresMs - Date.now()) / 1000));
 
     setRemaining(compute());
 

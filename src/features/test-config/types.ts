@@ -1,4 +1,4 @@
-import type { Timestamp } from 'firebase/firestore';
+import type { ISODate } from '../test-taking/types';
 
 export interface TestConfig {
   id: string;
@@ -9,16 +9,15 @@ export interface TestConfig {
   duration: number;
   marksPerQuestion: number;
   negativeMarksRatio: number;
-  difficultyDistribution: {
-    easy: number;
-    medium: number;
-    hard: number;
-  };
+  easyCount: number;
+  mediumCount: number;
+  hardCount: number;
   topicFilter: string[];
   shuffleQuestions: boolean;
   shuffleOptions: boolean;
   active: boolean;
-  createdAt: Timestamp;
-  updatedAt: Timestamp;
+  createdAt: ISODate;
+  updatedAt: ISODate;
   createdBy: string;
+  domain?: { id: string; name: string; icon: string };
 }

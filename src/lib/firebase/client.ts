@@ -1,35 +1,13 @@
-import { initializeApp } from 'firebase/app';
-import { getAuth } from 'firebase/auth';
-import { getFirestore } from 'firebase/firestore';
-import { getFunctions } from 'firebase/functions';
-import { getStorage } from 'firebase/storage';
+/**
+ * Firebase client stub.
+ * The app has been migrated to the NestJS REST API + Better Auth.
+ * This file is kept (not deleted) so components that import from this path
+ * (TestShell.tsx, TestsPage.tsx) continue to compile without modification.
+ * The `functions` export is intentionally null — all callable-function calls
+ * are now intercepted by src/lib/firebase/functions-shim.ts via the Vite alias.
+ */
 
-const requiredEnv = {
-  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
-  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
-  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
-  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
-  appId: import.meta.env.VITE_FIREBASE_APP_ID,
-} as const;
-
-const missingEnv = Object.entries(requiredEnv)
-  .filter(([, value]) => !value)
-  .map(([key]) => key);
-
-if (missingEnv.length > 0) {
-  throw new Error(`Missing Firebase environment values: ${missingEnv.join(', ')}`);
-}
-
-const firebaseConfig = {
-  ...requiredEnv,
-  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID,
-};
-
-const app = initializeApp(firebaseConfig);
-const functionsRegion = import.meta.env.VITE_FIREBASE_FUNCTIONS_REGION || 'us-central1';
-
-export const auth = getAuth(app);
-export const db = getFirestore(app);
-export const functions = getFunctions(app, functionsRegion);
-export const storage = getStorage(app);
+export const functions: unknown = null;
+export const auth: unknown = null;
+export const db: unknown = null;
+export const storage: unknown = null;

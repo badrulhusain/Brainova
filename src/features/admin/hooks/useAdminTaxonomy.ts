@@ -1,74 +1,23 @@
 import { useQuery } from '@tanstack/react-query';
-import { collection, getDocs, orderBy, query } from 'firebase/firestore';
-import { db } from '../../../lib/firebase/client';
-import type { Subtopic } from '../../test-taking/types';
-import type { AdminDomain, AdminTopic } from '../types';
+import { apiClient } from '../../../lib/api/client';
+import type { AdminDomain } from '../types';
 
 export function useAdminTaxonomy() {
   return useQuery({
     queryKey: ['admin-taxonomy'],
     queryFn: async (): Promise<AdminDomain[]> => {
-      const domainSnapshot = await getDocs(query(collection(db, 'domains'), orderBy('order', 'asc')));
+      const domainsRes = await apiClient.get<AdminDomain[]>('/domains');
+      const domains = domainsRes.data as AdminDomain[];
 
-      const domains = await Promise.all(
-        domainSnapshot.docs.map(async (domainDocument) => {
-          const domainData = domainDocument.data() as Omit<AdminDomain, 'id' | 'topics'>;
-          const topicSnapshot = await getDocs(
-            query(collection(db, 'domains', domainDocument.id, 'topics'), orderBy('order', 'asc')),
-          );
-
-          const topics = await Promise.all(
-            topicSnapshot.docs.map(async (topicDocument) => {
-              const topicData = topicDocument.data() as Omit<AdminTopic, 'id' | 'subtopics'>;
-              const subtopicSnapshot = await getDocs(
-                query(
-                  collection(db, 'domains', domainDocument.id, 'topics', topicDocument.id, 'subtopics'),
-                  orderBy('order', 'asc'),
-                ),
-              );
-
-              const subtopics: Subtopic[] = subtopicSnapshot.docs.map((subtopicDocument) => {
-                const subtopicData = subtopicDocument.data() as Omit<Subtopic, 'id'>;
-
-                return {
-                  id: subtopicDocument.id,
-                  name: subtopicData.name,
-                  description: subtopicData.description,
-                  order: subtopicData.order,
-                  active: subtopicData.active,
-                  createdAt: subtopicData.createdAt,
-                  updatedAt: subtopicData.updatedAt,
-                };
-              });
-
-              return {
-                id: topicDocument.id,
-                name: topicData.name,
-                description: topicData.description,
-                order: topicData.order,
-                active: topicData.active,
-                createdAt: topicData.createdAt,
-                updatedAt: topicData.updatedAt,
-                subtopics,
-              };
-            }),
-          );
-
-          return {
-            id: domainDocument.id,
-            name: domainData.name,
-            description: domainData.description,
-            icon: domainData.icon,
-            active: domainData.active,
-            order: domainData.order,
-            createdAt: domainData.createdAt,
-            updatedAt: domainData.updatedAt,
-            topics,
-          };
+      // Fetch topics (with nested subtopics) for every domain in parallel
+      const enriched = await Promise.all(
+        domains.map(async (domain) => {
+          const topicsRes = await apiClient.get(`/domains/${domain.id}/topics`);
+          return { ...domain, topics: topicsRes.data as AdminDomain['topics'] };
         }),
       );
 
-      return domains;
+      return enriched.sort((a, b) => a.order - b.order);
     },
   });
 }

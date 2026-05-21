@@ -1,16 +1,14 @@
-import { collection, doc, serverTimestamp, writeBatch } from 'firebase/firestore';
-import { db } from '../../../lib/firebase/client';
+import { apiClient } from '../../../lib/api/client';
 import type { AdminQuestionInput } from '../../../lib/validators/adminQuestion';
 
-export async function createAdminQuestion(input: AdminQuestionInput, uid: string) {
-  const questionRef = doc(collection(db, 'questions'));
-  const batch = writeBatch(db);
-
-  batch.set(questionRef, {
-    id: questionRef.id,
-    domain: input.domain,
-    topic: input.topic,
-    subtopic: input.subtopic,
+export async function createAdminQuestion(
+  input: AdminQuestionInput,
+  _uid: string, // userId is derived server-side from the auth session
+): Promise<string> {
+  const res = await apiClient.post<{ id: string }>('/questions', {
+    domainId: input.domain,
+    topicId: input.topic,
+    subtopicId: input.subtopic,
     type: input.type,
     difficulty: input.difficulty,
     text: input.text,
@@ -20,21 +18,10 @@ export async function createAdminQuestion(input: AdminQuestionInput, uid: string
     timeRecommended: input.timeRecommended,
     tags: input.tags,
     active: input.active,
-    createdAt: serverTimestamp(),
-    updatedAt: serverTimestamp(),
-    createdBy: uid,
-    updatedBy: uid,
+    answerKey: {
+      correctAnswer: input.correctAnswer,
+      explanation: input.explanation,
+    },
   });
-
-  batch.set(doc(db, 'answer_keys', questionRef.id), {
-    questionId: questionRef.id,
-    correctAnswer: input.correctAnswer,
-    explanation: input.explanation,
-    updatedAt: serverTimestamp(),
-    updatedBy: uid,
-  });
-
-  await batch.commit();
-
-  return questionRef.id;
+  return (res.data as { id: string }).id;
 }

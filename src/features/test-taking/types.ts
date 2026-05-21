@@ -1,8 +1,9 @@
-import type { Timestamp } from 'firebase/firestore';
+/** ISO date string returned by the NestJS REST API. */
+export type ISODate = string;
 
-export type QuestionType = 'mcq' | 'true_false' | 'fill';
-export type QuestionDifficulty = 'easy' | 'medium' | 'hard';
-export type TestSessionStatus = 'in_progress' | 'scoring' | 'submitted' | 'abandoned' | 'expired';
+export type QuestionType = 'MCQ' | 'TRUE_FALSE' | 'FILL';
+export type QuestionDifficulty = 'EASY' | 'MEDIUM' | 'HARD';
+export type TestSessionStatus = 'IN_PROGRESS' | 'SCORING' | 'SUBMITTED' | 'ABANDONED' | 'EXPIRED';
 
 export interface Domain {
   id: string;
@@ -11,8 +12,8 @@ export interface Domain {
   icon: string;
   active: boolean;
   order: number;
-  createdAt?: Timestamp;
-  updatedAt?: Timestamp;
+  createdAt?: ISODate;
+  updatedAt?: ISODate;
 }
 
 export interface Topic {
@@ -21,8 +22,8 @@ export interface Topic {
   description: string;
   order: number;
   active: boolean;
-  createdAt?: Timestamp;
-  updatedAt?: Timestamp;
+  createdAt?: ISODate;
+  updatedAt?: ISODate;
 }
 
 export interface Subtopic {
@@ -31,15 +32,15 @@ export interface Subtopic {
   description: string;
   order: number;
   active: boolean;
-  createdAt?: Timestamp;
-  updatedAt?: Timestamp;
+  createdAt?: ISODate;
+  updatedAt?: ISODate;
 }
 
 export interface PublicQuestion {
   id: string;
-  domain: string;
-  topic: string;
-  subtopic: string;
+  domainId: string;
+  topicId: string;
+  subtopicId: string;
   type: QuestionType;
   difficulty: QuestionDifficulty;
   text: string;
@@ -49,18 +50,18 @@ export interface PublicQuestion {
   timeRecommended: number;
   tags: string[];
   active: boolean;
-  createdAt: Timestamp;
-  updatedAt: Timestamp;
+  createdAt: ISODate;
+  updatedAt: ISODate;
   createdBy: string;
   updatedBy: string;
 }
 
-/** Question as stored in test_sessions — no correctAnswer or explanation */
+/** Question as stored in session snapshot — no correctAnswer or explanation. */
 export interface SnapshotQuestion {
   id: string;
-  domain: string;
-  topic: string;
-  subtopic: string;
+  domainId: string;
+  topicId: string;
+  subtopicId: string;
   type: QuestionType;
   difficulty: QuestionDifficulty;
   text: string;
@@ -72,21 +73,25 @@ export interface SnapshotQuestion {
 
 export interface TestSession {
   id: string;
-  ownerUid: string;
+  userId: string;
   configId: string;
   domainId: string;
   status: TestSessionStatus;
-  startedAt: Timestamp;
-  expiresAt: Timestamp;
-  duration: number;
+  startedAt: ISODate;
+  expiresAt: ISODate;
   questionSnapshot: SnapshotQuestion[];
   answers: Record<string, string>;
   markedForReview: Record<string, boolean>;
   tabSwitchCount: number;
-  questionCount: number;
-  lastSavedAt?: Timestamp;
-  resultId?: string;
-  submittedAt?: Timestamp;
+  lastSavedAt?: ISODate;
+  submittedAt?: ISODate;
+  config: {
+    name: string;
+    duration: number;
+    marksPerQuestion: number;
+    negativeMarksRatio: number;
+    totalQuestions: number;
+  };
 }
 
 export interface TopicResultSummary {
@@ -103,28 +108,28 @@ export interface DifficultyResultSummary {
   correct: number;
   incorrect: number;
   skipped: number;
+  accuracy: number;
 }
 
 export interface QuestionResult {
   questionId: string;
-  questionText: string;
+  text: string;
   options: string[];
   type: QuestionType;
   difficulty: QuestionDifficulty;
   topicId: string;
   subtopicId: string;
-  userAnswer: string;
+  userAnswer: string | null;
   correctAnswer: string;
-  isCorrect: boolean;
-  isSkipped: boolean;
   explanation: string;
-  marksEarned: number;
+  status: 'CORRECT' | 'INCORRECT' | 'SKIPPED';
+  marks: number;
 }
 
 export interface TestResult {
   id: string;
-  ownerUid: string;
   sessionId: string;
+  userId: string;
   configId: string;
   domainId: string;
   totalMarks: number;
@@ -137,20 +142,19 @@ export interface TestResult {
   skippedCount: number;
   accuracy: number;
   topicBreakdown: Record<string, TopicResultSummary>;
-  difficultyBreakdown: Record<QuestionDifficulty, DifficultyResultSummary>;
+  difficultyBreakdown: Record<string, DifficultyResultSummary>;
   questionResults: QuestionResult[];
-  createdAt: Timestamp;
+  createdAt: ISODate;
 }
 
 export interface TestAttemptSummary {
   id: string;
   domainId: string;
-  configId: string;
   resultId: string;
-  score: number;
+  scoredMarks: number;
   totalMarks: number;
   accuracy: number;
   correctCount: number;
   totalQuestions: number;
-  date: Timestamp;
+  date: ISODate;
 }
