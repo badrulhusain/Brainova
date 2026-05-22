@@ -22,7 +22,7 @@ export function QuestionReviewList({
   const [filter, setFilter] = useState<FilterMode>('all');
 
   const filtered = questionResults.filter((r) => {
-    if (filter === 'incorrect') return !r.isCorrect;
+    if (filter === 'incorrect') return r.status !== 'CORRECT';
     if (filter === 'marked') return Boolean(markedForReview[r.questionId]);
     return true;
   });

@@ -15,13 +15,13 @@ interface DifficultyBreakdownChartProps {
   breakdown: Partial<Record<QuestionDifficulty, DifficultyResultSummary>>;
 }
 
-const DIFFICULTIES: QuestionDifficulty[] = ['easy', 'medium', 'hard'];
+const DIFFICULTIES: QuestionDifficulty[] = ['EASY', 'MEDIUM', 'HARD'];
 
 export function DifficultyBreakdownChart({ breakdown }: DifficultyBreakdownChartProps) {
   const data = DIFFICULTIES.map((diff) => {
     const summary = breakdown[diff] ?? { total: 0, correct: 0, incorrect: 0, skipped: 0 };
     return {
-      name: diff.charAt(0).toUpperCase() + diff.slice(1),
+      name: diff.charAt(0).toUpperCase() + diff.slice(1).toLowerCase(),
       correct: summary.correct,
       incorrect: summary.incorrect,
       skipped: summary.skipped,

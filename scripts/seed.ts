@@ -1,1065 +1,247 @@
-import { initializeApp, type AppOptions } from 'firebase-admin/app';
-import { FieldValue, getFirestore, type WriteBatch } from 'firebase-admin/firestore';
-import { existsSync, readFileSync } from 'node:fs';
+/**
+ * Seed script — populates domains, topics, subtopics, questions, and test configs
+ * via the NestJS REST API. No Firebase dependency.
+ *
+ * Usage:
+ *   npm run seed                           # defaults: localhost:3000, admin/Admin@1234
+ *   npm run seed -- --url http://...       # custom API URL
+ *   npm run seed -- --user bob --pass X    # custom admin credentials
+ */
 
-type QuestionType = 'mcq' | 'true_false' | 'fill';
-type QuestionDifficulty = 'easy' | 'medium' | 'hard';
+import axios, { type AxiosInstance } from 'axios';
 
-interface SubtopicSeed {
-  id: string;
-  name: string;
-  description: string;
-  order: number;
-  active: boolean;
+// ── Config ────────────────────────────────────────────────────────────────────
+const args = process.argv.slice(2);
+const flag = (name: string, fallback: string): string => {
+  const i = args.indexOf(`--${name}`);
+  return i >= 0 && args[i + 1] ? (args[i + 1] as string) : fallback;
+};
+const API_URL = flag('url', 'http://localhost:3000/api');
+const ADMIN_USER = flag('user', process.env['ADMIN_USERNAME'] ?? 'admin');
+const ADMIN_PASS = flag('pass', process.env['ADMIN_PASSWORD'] ?? 'Admin@1234');
+
+// ── HTTP client ───────────────────────────────────────────────────────────────
+const http: AxiosInstance = axios.create({ baseURL: API_URL });
+// Unwrap { success, data } envelope from ResponseInterceptor
+http.interceptors.response.use((res) => {
+  const d = res.data as { success?: boolean; data?: unknown };
+  if (d?.success === true && 'data' in d) res.data = d.data;
+  return res;
+});
+
+// ── Helpers ───────────────────────────────────────────────────────────────────
+const log = (msg: string) => process.stdout.write(`  ✓ ${msg}\n`);
+const section = (msg: string) => process.stdout.write(`\n▸ ${msg}\n`);
+
+interface WithId { id: string }
+
+async function post<T extends WithId>(path: string, body: object): Promise<T> {
+  const res = await http.post<T>(path, body);
+  return res.data as T;
 }
 
-interface TopicSeed {
-  id: string;
-  name: string;
-  description: string;
-  order: number;
-  active: boolean;
-  subtopics: SubtopicSeed[];
+async function login(): Promise<void> {
+  const res = await http.post<{ token: string }>('/auth/admin/login', {
+    username: ADMIN_USER, password: ADMIN_PASS,
+  });
+  const token = (res.data as unknown as { token: string }).token;
+  http.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+  log(`Logged in as "${ADMIN_USER}"`);
 }
 
-interface DomainSeed {
-  id: string;
-  name: string;
-  description: string;
-  icon: string;
-  active: boolean;
-  order: number;
-  topics: TopicSeed[];
-}
+type Difficulty = 'EASY' | 'MEDIUM' | 'HARD';
 
-interface QuestionSeed {
-  id: string;
-  domain: string;
-  topic: string;
-  subtopic: string;
-  type: QuestionType;
-  difficulty: QuestionDifficulty;
+interface QuestionDef {
   text: string;
   options: string[];
-  correctAnswer: string;
-  explanation: string;
-  marks: number;
-  negativeMarks: number;
-  timeRecommended: number;
-  tags: string[];
+  topicId: string;
+  subtopicId: string;
+  answerKey: { correctAnswer: string; explanation: string };
 }
 
-const seedActor = 'system-seed';
-const seedTag = 'seed:milestone-1-aptitude';
-const expectedQuestionsPerDomain = 12;
-
-const domains: DomainSeed[] = [
-  {
-    id: 'quantitative-aptitude',
-    name: 'Quantitative Aptitude',
-    description: 'Arithmetic and numerical reasoning for exam-style aptitude practice.',
-    icon: 'calculator',
-    active: true,
-    order: 0,
-    topics: [
-      {
-        id: 'percentages',
-        name: 'Percentages',
-        description: 'Percent values, percentage change, and comparison questions.',
-        order: 0,
-        active: true,
-        subtopics: [
-          {
-            id: 'percentage-change',
-            name: 'Percentage Change',
-            description: 'Increase, decrease, and comparison by percent.',
-            order: 0,
-            active: true,
-          },
-        ],
-      },
-      {
-        id: 'ratio-proportion',
-        name: 'Ratio and Proportion',
-        description: 'Ratio simplification, sharing, and direct proportion.',
-        order: 1,
-        active: true,
-        subtopics: [
-          {
-            id: 'ratio-sharing',
-            name: 'Ratio Sharing',
-            description: 'Distributing values by a given ratio.',
-            order: 0,
-            active: true,
-          },
-        ],
-      },
-      {
-        id: 'profit-loss',
-        name: 'Profit and Loss',
-        description: 'Cost price, selling price, gain, loss, and discount.',
-        order: 2,
-        active: true,
-        subtopics: [
-          {
-            id: 'basic-profit-loss',
-            name: 'Basic Profit and Loss',
-            description: 'Single-step profit, loss, and discount calculations.',
-            order: 0,
-            active: true,
-          },
-        ],
-      },
-      {
-        id: 'time-work',
-        name: 'Time and Work',
-        description: 'Work rates, combined work, and completion time.',
-        order: 3,
-        active: true,
-        subtopics: [
-          {
-            id: 'work-rates',
-            name: 'Work Rates',
-            description: 'Individual and combined efficiency problems.',
-            order: 0,
-            active: true,
-          },
-        ],
-      },
-    ],
-  },
-  {
-    id: 'logical-reasoning',
-    name: 'Logical Reasoning',
-    description: 'Pattern recognition, deduction, and structured reasoning practice.',
-    icon: 'brain-circuit',
-    active: true,
-    order: 1,
-    topics: [
-      {
-        id: 'series',
-        name: 'Series',
-        description: 'Number, letter, and mixed sequence patterns.',
-        order: 0,
-        active: true,
-        subtopics: [
-          {
-            id: 'number-series',
-            name: 'Number Series',
-            description: 'Arithmetic, geometric, and alternating number patterns.',
-            order: 0,
-            active: true,
-          },
-        ],
-      },
-      {
-        id: 'analogies',
-        name: 'Analogies',
-        description: 'Relationship matching between words, ideas, or symbols.',
-        order: 1,
-        active: true,
-        subtopics: [
-          {
-            id: 'word-analogies',
-            name: 'Word Analogies',
-            description: 'Meaning-based and function-based analogy pairs.',
-            order: 0,
-            active: true,
-          },
-        ],
-      },
-      {
-        id: 'coding-decoding',
-        name: 'Coding and Decoding',
-        description: 'Rule-based symbol and letter transformations.',
-        order: 2,
-        active: true,
-        subtopics: [
-          {
-            id: 'letter-coding',
-            name: 'Letter Coding',
-            description: 'Alphabet shifting and positional coding.',
-            order: 0,
-            active: true,
-          },
-        ],
-      },
-      {
-        id: 'syllogisms',
-        name: 'Syllogisms',
-        description: 'Logical conclusions from stated premises.',
-        order: 3,
-        active: true,
-        subtopics: [
-          {
-            id: 'basic-syllogisms',
-            name: 'Basic Syllogisms',
-            description: 'Validity of conclusions under universal and particular statements.',
-            order: 0,
-            active: true,
-          },
-        ],
-      },
-    ],
-  },
-  {
-    id: 'verbal-ability',
-    name: 'Verbal Ability',
-    description: 'Vocabulary, grammar, and reading comprehension fundamentals.',
-    icon: 'book-open-text',
-    active: true,
-    order: 2,
-    topics: [
-      {
-        id: 'synonyms-antonyms',
-        name: 'Synonyms and Antonyms',
-        description: 'Vocabulary meaning, opposites, and context usage.',
-        order: 0,
-        active: true,
-        subtopics: [
-          {
-            id: 'word-meaning',
-            name: 'Word Meaning',
-            description: 'Closest meaning and opposite meaning questions.',
-            order: 0,
-            active: true,
-          },
-        ],
-      },
-      {
-        id: 'sentence-correction',
-        name: 'Sentence Correction',
-        description: 'Grammar, agreement, tense, and concise expression.',
-        order: 1,
-        active: true,
-        subtopics: [
-          {
-            id: 'grammar-usage',
-            name: 'Grammar Usage',
-            description: 'Common grammar and sentence structure corrections.',
-            order: 0,
-            active: true,
-          },
-        ],
-      },
-      {
-        id: 'reading-comprehension',
-        name: 'Reading Comprehension',
-        description: 'Main idea, inference, and factual understanding.',
-        order: 2,
-        active: true,
-        subtopics: [
-          {
-            id: 'short-passages',
-            name: 'Short Passages',
-            description: 'Brief passages with direct and inferential questions.',
-            order: 0,
-            active: true,
-          },
-        ],
-      },
-      {
-        id: 'fill-blanks',
-        name: 'Fill Blanks',
-        description: 'Contextual word choice and sentence completion.',
-        order: 3,
-        active: true,
-        subtopics: [
-          {
-            id: 'contextual-completion',
-            name: 'Contextual Completion',
-            description: 'Choosing the best word or phrase for a sentence gap.',
-            order: 0,
-            active: true,
-          },
-        ],
-      },
-    ],
-  },
-];
-
-const questions: QuestionSeed[] = [
-  {
-    id: 'qa-percentages-easy-001',
-    domain: 'quantitative-aptitude',
-    topic: 'percentages',
-    subtopic: 'percentage-change',
-    type: 'mcq',
-    difficulty: 'easy',
-    text: 'What is 20% of 250?',
-    options: ['25', '40', '50', '75'],
-    correctAnswer: '50',
-    explanation: '20% of 250 is 0.20 x 250 = 50.',
-    marks: 1,
-    negativeMarks: 0.25,
-    timeRecommended: 45,
-    tags: ['aptitude', 'percentage', 'calculation'],
-  },
-  {
-    id: 'qa-percentages-easy-002',
-    domain: 'quantitative-aptitude',
-    topic: 'percentages',
-    subtopic: 'percentage-change',
-    type: 'true_false',
-    difficulty: 'easy',
-    text: 'Increasing 80 by 25% gives 100.',
-    options: ['True', 'False'],
-    correctAnswer: 'True',
-    explanation: '25% of 80 is 20, and 80 + 20 = 100.',
-    marks: 1,
-    negativeMarks: 0,
-    timeRecommended: 40,
-    tags: ['aptitude', 'percentage', 'increase'],
-  },
-  {
-    id: 'qa-percentages-medium-001',
-    domain: 'quantitative-aptitude',
-    topic: 'percentages',
-    subtopic: 'percentage-change',
-    type: 'mcq',
-    difficulty: 'medium',
-    text: 'A number is increased by 10% and then decreased by 10%. What is the net change?',
-    options: ['No change', '1% decrease', '1% increase', '10% decrease'],
-    correctAnswer: '1% decrease',
-    explanation: 'Successive changes multiply: 1.10 x 0.90 = 0.99, so the result is 1% less.',
-    marks: 1,
-    negativeMarks: 0.25,
-    timeRecommended: 75,
-    tags: ['aptitude', 'percentage', 'successive-change'],
-  },
-  {
-    id: 'qa-ratio-easy-001',
-    domain: 'quantitative-aptitude',
-    topic: 'ratio-proportion',
-    subtopic: 'ratio-sharing',
-    type: 'mcq',
-    difficulty: 'easy',
-    text: 'Simplify the ratio 18:24.',
-    options: ['2:3', '3:4', '4:3', '6:8'],
-    correctAnswer: '3:4',
-    explanation: 'Divide both terms by their greatest common divisor, 6, to get 3:4.',
-    marks: 1,
-    negativeMarks: 0.25,
-    timeRecommended: 45,
-    tags: ['aptitude', 'ratio', 'simplification'],
-  },
-  {
-    id: 'qa-ratio-medium-001',
-    domain: 'quantitative-aptitude',
-    topic: 'ratio-proportion',
-    subtopic: 'ratio-sharing',
-    type: 'mcq',
-    difficulty: 'medium',
-    text: 'A sum of 840 is divided between A and B in the ratio 3:4. What is B share?',
-    options: ['240', '360', '420', '480'],
-    correctAnswer: '480',
-    explanation: 'The total parts are 7. B gets 4 parts, so 840 x 4 / 7 = 480.',
-    marks: 1,
-    negativeMarks: 0.25,
-    timeRecommended: 75,
-    tags: ['aptitude', 'ratio', 'sharing'],
-  },
-  {
-    id: 'qa-ratio-hard-001',
-    domain: 'quantitative-aptitude',
-    topic: 'ratio-proportion',
-    subtopic: 'ratio-sharing',
-    type: 'mcq',
-    difficulty: 'hard',
-    text: 'The ratio of boys to girls is 5:3. If there are 16 more boys than girls, how many students are there in total?',
-    options: ['48', '56', '64', '72'],
-    correctAnswer: '64',
-    explanation: 'The difference is 2 parts, which equals 16, so 1 part is 8. Total is 8 parts = 64.',
-    marks: 1,
-    negativeMarks: 0.25,
-    timeRecommended: 95,
-    tags: ['aptitude', 'ratio', 'word-problem'],
-  },
-  {
-    id: 'qa-profit-easy-001',
-    domain: 'quantitative-aptitude',
-    topic: 'profit-loss',
-    subtopic: 'basic-profit-loss',
-    type: 'mcq',
-    difficulty: 'easy',
-    text: 'An item bought for 500 is sold for 600. What is the profit?',
-    options: ['50', '75', '100', '120'],
-    correctAnswer: '100',
-    explanation: 'Profit is selling price minus cost price: 600 - 500 = 100.',
-    marks: 1,
-    negativeMarks: 0.25,
-    timeRecommended: 45,
-    tags: ['aptitude', 'profit-loss', 'basic'],
-  },
-  {
-    id: 'qa-profit-medium-001',
-    domain: 'quantitative-aptitude',
-    topic: 'profit-loss',
-    subtopic: 'basic-profit-loss',
-    type: 'mcq',
-    difficulty: 'medium',
-    text: 'A shopkeeper sells an item at a 15% profit. If the cost price is 800, what is the selling price?',
-    options: ['900', '920', '940', '960'],
-    correctAnswer: '920',
-    explanation: '15% of 800 is 120, so the selling price is 800 + 120 = 920.',
-    marks: 1,
-    negativeMarks: 0.25,
-    timeRecommended: 70,
-    tags: ['aptitude', 'profit-loss', 'percentage'],
-  },
-  {
-    id: 'qa-profit-hard-001',
-    domain: 'quantitative-aptitude',
-    topic: 'profit-loss',
-    subtopic: 'basic-profit-loss',
-    type: 'mcq',
-    difficulty: 'hard',
-    text: 'After a 20% discount, an article sells for 960. What was the marked price?',
-    options: ['1,120', '1,152', '1,200', '1,280'],
-    correctAnswer: '1,200',
-    explanation: 'After 20% discount, selling price is 80% of marked price. 960 / 0.80 = 1,200.',
-    marks: 1,
-    negativeMarks: 0.25,
-    timeRecommended: 90,
-    tags: ['aptitude', 'discount', 'marked-price'],
-  },
-  {
-    id: 'qa-work-medium-001',
-    domain: 'quantitative-aptitude',
-    topic: 'time-work',
-    subtopic: 'work-rates',
-    type: 'mcq',
-    difficulty: 'medium',
-    text: 'A can complete a task in 12 days and B can complete it in 6 days. Working together, how long will they take?',
-    options: ['3 days', '4 days', '6 days', '9 days'],
-    correctAnswer: '4 days',
-    explanation: 'Their combined rate is 1/12 + 1/6 = 3/12 = 1/4 task per day, so they take 4 days.',
-    marks: 1,
-    negativeMarks: 0.25,
-    timeRecommended: 85,
-    tags: ['aptitude', 'time-work', 'combined-work'],
-  },
-  {
-    id: 'qa-work-medium-002',
-    domain: 'quantitative-aptitude',
-    topic: 'time-work',
-    subtopic: 'work-rates',
-    type: 'true_false',
-    difficulty: 'medium',
-    text: 'If two people have equal efficiency, working together they finish the same job in half the time taken by one person.',
-    options: ['True', 'False'],
-    correctAnswer: 'True',
-    explanation: 'Equal rates add together, so the combined rate doubles and the time becomes half.',
-    marks: 1,
-    negativeMarks: 0,
-    timeRecommended: 60,
-    tags: ['aptitude', 'time-work', 'efficiency'],
-  },
-  {
-    id: 'qa-work-hard-001',
-    domain: 'quantitative-aptitude',
-    topic: 'time-work',
-    subtopic: 'work-rates',
-    type: 'mcq',
-    difficulty: 'hard',
-    text: 'A pipe fills a tank in 8 hours and a leak empties it in 24 hours. If both are open, when will the tank fill?',
-    options: ['10 hours', '12 hours', '16 hours', '18 hours'],
-    correctAnswer: '12 hours',
-    explanation: 'Net rate is 1/8 - 1/24 = 2/24 = 1/12 tank per hour.',
-    marks: 1,
-    negativeMarks: 0.25,
-    timeRecommended: 100,
-    tags: ['aptitude', 'pipes-cisterns', 'time-work'],
-  },
-  {
-    id: 'lr-series-easy-001',
-    domain: 'logical-reasoning',
-    topic: 'series',
-    subtopic: 'number-series',
-    type: 'mcq',
-    difficulty: 'easy',
-    text: 'Find the next number in the series: 2, 4, 6, 8, ?',
-    options: ['9', '10', '12', '14'],
-    correctAnswer: '10',
-    explanation: 'The sequence increases by 2 each time.',
-    marks: 1,
-    negativeMarks: 0.25,
-    timeRecommended: 35,
-    tags: ['reasoning', 'series', 'arithmetic-pattern'],
-  },
-  {
-    id: 'lr-series-easy-002',
-    domain: 'logical-reasoning',
-    topic: 'series',
-    subtopic: 'number-series',
-    type: 'mcq',
-    difficulty: 'easy',
-    text: 'Find the next letter in the series: A, C, E, G, ?',
-    options: ['H', 'I', 'J', 'K'],
-    correctAnswer: 'I',
-    explanation: 'The pattern skips one letter each time: A, C, E, G, I.',
-    marks: 1,
-    negativeMarks: 0.25,
-    timeRecommended: 40,
-    tags: ['reasoning', 'letter-series', 'pattern'],
-  },
-  {
-    id: 'lr-series-medium-001',
-    domain: 'logical-reasoning',
-    topic: 'series',
-    subtopic: 'number-series',
-    type: 'mcq',
-    difficulty: 'medium',
-    text: 'Find the next number in the series: 3, 6, 12, 24, ?',
-    options: ['30', '36', '42', '48'],
-    correctAnswer: '48',
-    explanation: 'Each term is multiplied by 2.',
-    marks: 1,
-    negativeMarks: 0.25,
-    timeRecommended: 55,
-    tags: ['reasoning', 'series', 'geometric-pattern'],
-  },
-  {
-    id: 'lr-analogy-easy-001',
-    domain: 'logical-reasoning',
-    topic: 'analogies',
-    subtopic: 'word-analogies',
-    type: 'mcq',
-    difficulty: 'easy',
-    text: 'Bird is to Nest as Bee is to ____.',
-    options: ['Hive', 'Web', 'Stable', 'Den'],
-    correctAnswer: 'Hive',
-    explanation: 'A bird lives in a nest, and a bee lives in a hive.',
-    marks: 1,
-    negativeMarks: 0.25,
-    timeRecommended: 40,
-    tags: ['reasoning', 'analogy', 'relationship'],
-  },
-  {
-    id: 'lr-analogy-easy-002',
-    domain: 'logical-reasoning',
-    topic: 'analogies',
-    subtopic: 'word-analogies',
-    type: 'mcq',
-    difficulty: 'easy',
-    text: 'Doctor is to Hospital as Teacher is to ____.',
-    options: ['Court', 'School', 'Factory', 'Market'],
-    correctAnswer: 'School',
-    explanation: 'The relationship is profession to typical workplace.',
-    marks: 1,
-    negativeMarks: 0.25,
-    timeRecommended: 50,
-    tags: ['reasoning', 'analogy', 'workplace'],
-  },
-  {
-    id: 'lr-analogy-hard-001',
-    domain: 'logical-reasoning',
-    topic: 'analogies',
-    subtopic: 'word-analogies',
-    type: 'mcq',
-    difficulty: 'hard',
-    text: 'Seed is to Tree as Idea is to ____.',
-    options: ['Book', 'Plan', 'Thought', 'Outcome'],
-    correctAnswer: 'Outcome',
-    explanation: 'A seed develops into a tree; an idea can develop into an outcome.',
-    marks: 1,
-    negativeMarks: 0.25,
-    timeRecommended: 75,
-    tags: ['reasoning', 'analogy', 'abstract-relationship'],
-  },
-  {
-    id: 'lr-coding-medium-001',
-    domain: 'logical-reasoning',
-    topic: 'coding-decoding',
-    subtopic: 'letter-coding',
-    type: 'mcq',
-    difficulty: 'medium',
-    text: 'If CAT is coded as DBU, how is DOG coded?',
-    options: ['EPH', 'EPI', 'FQH', 'CNG'],
-    correctAnswer: 'EPH',
-    explanation: 'Each letter shifts forward by one: D->E, O->P, G->H.',
-    marks: 1,
-    negativeMarks: 0.25,
-    timeRecommended: 65,
-    tags: ['reasoning', 'coding-decoding', 'letter-shift'],
-  },
-  {
-    id: 'lr-coding-medium-002',
-    domain: 'logical-reasoning',
-    topic: 'coding-decoding',
-    subtopic: 'letter-coding',
-    type: 'true_false',
-    difficulty: 'medium',
-    text: 'If every letter is shifted two places forward, M becomes O.',
-    options: ['True', 'False'],
-    correctAnswer: 'True',
-    explanation: 'M shifted forward two places is O.',
-    marks: 1,
-    negativeMarks: 0,
-    timeRecommended: 45,
-    tags: ['reasoning', 'coding-decoding', 'letter-shift'],
-  },
-  {
-    id: 'lr-coding-hard-001',
-    domain: 'logical-reasoning',
-    topic: 'coding-decoding',
-    subtopic: 'letter-coding',
-    type: 'mcq',
-    difficulty: 'hard',
-    text: 'In a code, TABLE is written as UBCMF. How will CHAIR be written?',
-    options: ['DIBJS', 'DJBIS', 'DIBIR', 'BGZHQ'],
-    correctAnswer: 'DIBJS',
-    explanation: 'Each letter shifts forward by one: C->D, H->I, A->B, I->J, R->S.',
-    marks: 1,
-    negativeMarks: 0.25,
-    timeRecommended: 80,
-    tags: ['reasoning', 'coding-decoding', 'alphabet'],
-  },
-  {
-    id: 'lr-syllogism-medium-001',
-    domain: 'logical-reasoning',
-    topic: 'syllogisms',
-    subtopic: 'basic-syllogisms',
-    type: 'mcq',
-    difficulty: 'medium',
-    text: 'Statements: All roses are flowers. Some flowers are red. Which conclusion definitely follows?',
-    options: ['All roses are red', 'Some roses are red', 'Some flowers are roses', 'No rose is a flower'],
-    correctAnswer: 'Some flowers are roses',
-    explanation: 'If all roses are flowers, then the rose group is within flowers, so some flowers are roses.',
-    marks: 1,
-    negativeMarks: 0.25,
-    timeRecommended: 80,
-    tags: ['reasoning', 'syllogism', 'deduction'],
-  },
-  {
-    id: 'lr-syllogism-medium-002',
-    domain: 'logical-reasoning',
-    topic: 'syllogisms',
-    subtopic: 'basic-syllogisms',
-    type: 'mcq',
-    difficulty: 'medium',
-    text: 'Statements: No pens are pencils. All pencils are tools. Which conclusion follows?',
-    options: ['No tools are pens', 'Some tools are pencils', 'All tools are pencils', 'Some pens are tools'],
-    correctAnswer: 'Some tools are pencils',
-    explanation: 'All pencils being tools means the pencils are included in tools, so some tools are pencils.',
-    marks: 1,
-    negativeMarks: 0.25,
-    timeRecommended: 85,
-    tags: ['reasoning', 'syllogism', 'deduction'],
-  },
-  {
-    id: 'lr-syllogism-hard-001',
-    domain: 'logical-reasoning',
-    topic: 'syllogisms',
-    subtopic: 'basic-syllogisms',
-    type: 'mcq',
-    difficulty: 'hard',
-    text: 'Statements: All artists are creative people. Some creative people are engineers. Which conclusion definitely follows?',
-    options: ['All artists are engineers', 'Some engineers are artists', 'Some creative people are artists', 'No engineer is creative'],
-    correctAnswer: 'Some creative people are artists',
-    explanation: 'Because all artists are within creative people, at least those artists are creative people.',
-    marks: 1,
-    negativeMarks: 0.25,
-    timeRecommended: 90,
-    tags: ['reasoning', 'syllogism', 'validity'],
-  },
-  {
-    id: 'va-vocab-easy-001',
-    domain: 'verbal-ability',
-    topic: 'synonyms-antonyms',
-    subtopic: 'word-meaning',
-    type: 'mcq',
-    difficulty: 'easy',
-    text: 'Choose the closest synonym of "rapid".',
-    options: ['Slow', 'Quick', 'Weak', 'Late'],
-    correctAnswer: 'Quick',
-    explanation: 'Rapid means fast or quick.',
-    marks: 1,
-    negativeMarks: 0.25,
-    timeRecommended: 35,
-    tags: ['verbal', 'synonym', 'vocabulary'],
-  },
-  {
-    id: 'va-vocab-easy-002',
-    domain: 'verbal-ability',
-    topic: 'synonyms-antonyms',
-    subtopic: 'word-meaning',
-    type: 'mcq',
-    difficulty: 'easy',
-    text: 'Choose the antonym of "ancient".',
-    options: ['Old', 'Modern', 'Historic', 'Former'],
-    correctAnswer: 'Modern',
-    explanation: 'Ancient means very old; modern is its opposite in this context.',
-    marks: 1,
-    negativeMarks: 0.25,
-    timeRecommended: 40,
-    tags: ['verbal', 'antonym', 'vocabulary'],
-  },
-  {
-    id: 'va-vocab-medium-001',
-    domain: 'verbal-ability',
-    topic: 'synonyms-antonyms',
-    subtopic: 'word-meaning',
-    type: 'mcq',
-    difficulty: 'medium',
-    text: 'Choose the closest meaning of "reluctant".',
-    options: ['Unwilling', 'Excited', 'Careless', 'Certain'],
-    correctAnswer: 'Unwilling',
-    explanation: 'Reluctant means hesitant or unwilling to do something.',
-    marks: 1,
-    negativeMarks: 0.25,
-    timeRecommended: 50,
-    tags: ['verbal', 'synonym', 'vocabulary'],
-  },
-  {
-    id: 'va-correction-easy-001',
-    domain: 'verbal-ability',
-    topic: 'sentence-correction',
-    subtopic: 'grammar-usage',
-    type: 'mcq',
-    difficulty: 'easy',
-    text: 'Choose the correct sentence.',
-    options: ['She go to school daily.', 'She goes to school daily.', 'She going to school daily.', 'She gone to school daily.'],
-    correctAnswer: 'She goes to school daily.',
-    explanation: 'For third-person singular present tense, the verb takes -s: she goes.',
-    marks: 1,
-    negativeMarks: 0.25,
-    timeRecommended: 45,
-    tags: ['verbal', 'grammar', 'subject-verb-agreement'],
-  },
-  {
-    id: 'va-correction-medium-001',
-    domain: 'verbal-ability',
-    topic: 'sentence-correction',
-    subtopic: 'grammar-usage',
-    type: 'mcq',
-    difficulty: 'medium',
-    text: 'Choose the best correction: "Neither of the answers are correct."',
-    options: [
-      'Neither of the answers is correct.',
-      'Neither of the answers were correct.',
-      'Neither answers is correct.',
-      'Neither answer are correct.',
-    ],
-    correctAnswer: 'Neither of the answers is correct.',
-    explanation: 'Neither is singular, so it takes the singular verb is.',
-    marks: 1,
-    negativeMarks: 0.25,
-    timeRecommended: 65,
-    tags: ['verbal', 'grammar', 'agreement'],
-  },
-  {
-    id: 'va-correction-hard-001',
-    domain: 'verbal-ability',
-    topic: 'sentence-correction',
-    subtopic: 'grammar-usage',
-    type: 'mcq',
-    difficulty: 'hard',
-    text: 'Choose the most concise and grammatically correct sentence.',
-    options: [
-      'Due to the fact that it rained, the match was postponed.',
-      'Because it rained, the match was postponed.',
-      'The match was postponed due to raining was there.',
-      'Since raining, therefore the match postponed.',
-    ],
-    correctAnswer: 'Because it rained, the match was postponed.',
-    explanation: 'This option is both concise and grammatically complete.',
-    marks: 1,
-    negativeMarks: 0.25,
-    timeRecommended: 80,
-    tags: ['verbal', 'grammar', 'conciseness'],
-  },
-  {
-    id: 'va-reading-medium-001',
-    domain: 'verbal-ability',
-    topic: 'reading-comprehension',
-    subtopic: 'short-passages',
-    type: 'mcq',
-    difficulty: 'medium',
-    text: 'Passage: "Regular practice improves speed, but careful review improves accuracy." What is the main idea?',
-    options: [
-      'Speed is always more important than accuracy.',
-      'Review has no effect on performance.',
-      'Practice and review improve different skills.',
-      'Accuracy cannot be improved.',
-    ],
-    correctAnswer: 'Practice and review improve different skills.',
-    explanation: 'The passage contrasts speed from practice with accuracy from review.',
-    marks: 1,
-    negativeMarks: 0.25,
-    timeRecommended: 75,
-    tags: ['verbal', 'reading-comprehension', 'main-idea'],
-  },
-  {
-    id: 'va-reading-medium-002',
-    domain: 'verbal-ability',
-    topic: 'reading-comprehension',
-    subtopic: 'short-passages',
-    type: 'true_false',
-    difficulty: 'medium',
-    text: 'Passage: "The library opens at 8 AM on weekdays and 10 AM on Sundays." The library opens later on Sundays than on weekdays.',
-    options: ['True', 'False'],
-    correctAnswer: 'True',
-    explanation: '10 AM is later than 8 AM.',
-    marks: 1,
-    negativeMarks: 0,
-    timeRecommended: 45,
-    tags: ['verbal', 'reading-comprehension', 'detail'],
-  },
-  {
-    id: 'va-reading-hard-001',
-    domain: 'verbal-ability',
-    topic: 'reading-comprehension',
-    subtopic: 'short-passages',
-    type: 'mcq',
-    difficulty: 'hard',
-    text: 'Passage: "The manager praised the proposal but delayed approval until costs were verified." What can be inferred?',
-    options: [
-      'The proposal was rejected immediately.',
-      'The manager had no interest in the proposal.',
-      'Cost verification was required before approval.',
-      'The costs were already proven incorrect.',
-    ],
-    correctAnswer: 'Cost verification was required before approval.',
-    explanation: 'Approval was delayed until costs were verified, so verification was a condition before approval.',
-    marks: 1,
-    negativeMarks: 0.25,
-    timeRecommended: 90,
-    tags: ['verbal', 'reading-comprehension', 'inference'],
-  },
-  {
-    id: 'va-fill-easy-001',
-    domain: 'verbal-ability',
-    topic: 'fill-blanks',
-    subtopic: 'contextual-completion',
-    type: 'mcq',
-    difficulty: 'easy',
-    text: 'Choose the best word: The instructions were clear, so the task was ____ to complete.',
-    options: ['difficult', 'easy', 'unclear', 'impossible'],
-    correctAnswer: 'easy',
-    explanation: 'Clear instructions make a task easy to complete.',
-    marks: 1,
-    negativeMarks: 0.25,
-    timeRecommended: 40,
-    tags: ['verbal', 'fill-blanks', 'context'],
-  },
-  {
-    id: 'va-fill-medium-001',
-    domain: 'verbal-ability',
-    topic: 'fill-blanks',
-    subtopic: 'contextual-completion',
-    type: 'mcq',
-    difficulty: 'medium',
-    text: 'Choose the best word: Despite several setbacks, the team remained ____ and finished the project.',
-    options: ['discouraged', 'persistent', 'careless', 'confused'],
-    correctAnswer: 'persistent',
-    explanation: 'Persistent means continuing despite difficulty, which fits the sentence.',
-    marks: 1,
-    negativeMarks: 0.25,
-    timeRecommended: 55,
-    tags: ['verbal', 'fill-blanks', 'context'],
-  },
-  {
-    id: 'va-fill-hard-001',
-    domain: 'verbal-ability',
-    topic: 'fill-blanks',
-    subtopic: 'contextual-completion',
-    type: 'mcq',
-    difficulty: 'hard',
-    text: 'Choose the best word: Her explanation was so ____ that even beginners understood the concept.',
-    options: ['ambiguous', 'lucid', 'irrelevant', 'hostile'],
-    correctAnswer: 'lucid',
-    explanation: 'Lucid means clear and easy to understand.',
-    marks: 1,
-    negativeMarks: 0.25,
-    timeRecommended: 70,
-    tags: ['verbal', 'fill-blanks', 'vocabulary'],
-  },
-];
-
-const appOptions: AppOptions = {};
-const envLocalPath = new URL('../.env.local', import.meta.url);
-const envLocalProjectId = existsSync(envLocalPath)
-  ? readFileSync(envLocalPath, 'utf8')
-      .split('\n')
-      .map((line) => line.trim())
-      .find((line) => line.startsWith('VITE_FIREBASE_PROJECT_ID='))
-      ?.replace('VITE_FIREBASE_PROJECT_ID=', '')
-  : undefined;
-const projectId = process.env.FIREBASE_PROJECT_ID ?? envLocalProjectId;
-
-if (projectId) {
-  appOptions.projectId = projectId;
-}
-
-initializeApp(appOptions);
-
-const db = getFirestore();
-
-function validateSeed() {
-  const domainIds = new Set(domains.map((domain) => domain.id));
-  const questionIds = new Set<string>();
-
-  domains.forEach((domain) => {
-    const domainQuestionCount = questions.filter((question) => question.domain === domain.id).length;
-    const difficultyCounts = questions
-      .filter((question) => question.domain === domain.id)
-      .reduce<Record<QuestionDifficulty, number>>(
-        (counts, question) => ({
-          ...counts,
-          [question.difficulty]: counts[question.difficulty] + 1,
-        }),
-        { easy: 0, medium: 0, hard: 0 },
-      );
-
-    if (domainQuestionCount !== expectedQuestionsPerDomain) {
-      throw new Error(`Expected ${expectedQuestionsPerDomain} questions for ${domain.id}, received ${domainQuestionCount}.`);
-    }
-
-    if (difficultyCounts.easy !== 4 || difficultyCounts.medium !== 5 || difficultyCounts.hard !== 3) {
-      throw new Error(
-        `Invalid difficulty mix for ${domain.id}: easy=${difficultyCounts.easy}, medium=${difficultyCounts.medium}, hard=${difficultyCounts.hard}.`,
-      );
-    }
-  });
-
-  questions.forEach((question) => {
-    const domain = domains.find((candidate) => candidate.id === question.domain);
-    const topic = domain?.topics.find((candidate) => candidate.id === question.topic);
-    const subtopic = topic?.subtopics.find((candidate) => candidate.id === question.subtopic);
-
-    if (!domainIds.has(question.domain) || !domain || !topic || !subtopic) {
-      throw new Error(`Question ${question.id} references an unknown domain/topic/subtopic.`);
-    }
-
-    if (questionIds.has(question.id)) {
-      throw new Error(`Duplicate question id: ${question.id}.`);
-    }
-
-    questionIds.add(question.id);
-
-    if (question.options.includes(question.correctAnswer) === false) {
-      throw new Error(`Question ${question.id} has a correct answer that is not in its options.`);
-    }
-  });
-}
-
-function setDomainTree(batch: WriteBatch) {
-  domains.forEach((domain) => {
-    const domainRef = db.collection('domains').doc(domain.id);
-
-    batch.set(
-      domainRef,
-      {
-        id: domain.id,
-        name: domain.name,
-        description: domain.description,
-        icon: domain.icon,
-        active: domain.active,
-        order: domain.order,
-        createdAt: FieldValue.serverTimestamp(),
-        updatedAt: FieldValue.serverTimestamp(),
-      },
-      { merge: true },
-    );
-
-    domain.topics.forEach((topic) => {
-      const topicRef = domainRef.collection('topics').doc(topic.id);
-
-      batch.set(
-        topicRef,
-        {
-          id: topic.id,
-          name: topic.name,
-          description: topic.description,
-          order: topic.order,
-          active: topic.active,
-          createdAt: FieldValue.serverTimestamp(),
-          updatedAt: FieldValue.serverTimestamp(),
-        },
-        { merge: true },
-      );
-
-      topic.subtopics.forEach((subtopic) => {
-        batch.set(
-          topicRef.collection('subtopics').doc(subtopic.id),
-          {
-            id: subtopic.id,
-            name: subtopic.name,
-            description: subtopic.description,
-            order: subtopic.order,
-            active: subtopic.active,
-            createdAt: FieldValue.serverTimestamp(),
-            updatedAt: FieldValue.serverTimestamp(),
-          },
-          { merge: true },
-        );
-      });
+async function seedQuestions(domainId: string, difficulty: Difficulty, timeRec: number, questions: QuestionDef[]) {
+  for (const q of questions) {
+    await post('/questions', {
+      domainId, topicId: q.topicId, subtopicId: q.subtopicId,
+      type: 'MCQ', difficulty, text: q.text, options: q.options,
+      marks: 1, negativeMarks: 0.25, timeRecommended: timeRec, tags: [],
+      answerKey: q.answerKey,
     });
-  });
+  }
 }
 
-function setQuestions(batch: WriteBatch) {
-  questions.forEach((question) => {
-    const questionRef = db.collection('questions').doc(question.id);
-    const tags = Array.from(new Set([...question.tags, seedTag])).sort();
+// ── Main ──────────────────────────────────────────────────────────────────────
+async function main(): Promise<void> {
+  process.stdout.write('\nBrainova Seed Script\n' + '='.repeat(42) + '\n');
+  await login();
 
-    batch.set(
-      questionRef,
-      {
-        id: question.id,
-        domain: question.domain,
-        topic: question.topic,
-        subtopic: question.subtopic,
-        type: question.type,
-        difficulty: question.difficulty,
-        text: question.text,
-        options: question.options,
-        marks: question.marks,
-        negativeMarks: question.negativeMarks,
-        timeRecommended: question.timeRecommended,
-        tags,
-        active: true,
-        createdAt: FieldValue.serverTimestamp(),
-        updatedAt: FieldValue.serverTimestamp(),
-        createdBy: seedActor,
-        updatedBy: seedActor,
-      },
-      { merge: true },
-    );
-
-    batch.set(
-      db.collection('answer_keys').doc(question.id),
-      {
-        questionId: question.id,
-        correctAnswer: question.correctAnswer,
-        explanation: question.explanation,
-        updatedAt: FieldValue.serverTimestamp(),
-        updatedBy: seedActor,
-      },
-      { merge: true },
-    );
+  // ══════════════════════════════════════════════════════
+  //  DOMAIN 1 — Quantitative Aptitude
+  // ══════════════════════════════════════════════════════
+  section('Domain 1: Quantitative Aptitude');
+  const qa = await post<WithId>('/domains', {
+    name: 'Quantitative Aptitude',
+    description: 'Arithmetic, percentages, profit/loss and numerical reasoning.',
+    icon: 'calculator', order: 0,
   });
+
+  const pct = await post<WithId>(`/domains/${qa.id}/topics`, { name: 'Percentages', description: 'Percentage calculations and applications.', order: 0 });
+  const pctS = await post<WithId>(`/domains/${qa.id}/topics/${pct.id}/subtopics`, { name: 'Basic Percentages', description: 'Finding % of a number, % change.', order: 0 });
+
+  const pl = await post<WithId>(`/domains/${qa.id}/topics`, { name: 'Profit & Loss', description: 'Cost price, selling price, profit/loss.', order: 1 });
+  const plS = await post<WithId>(`/domains/${qa.id}/topics/${pl.id}/subtopics`, { name: 'Profit & Loss Calculations', description: 'Computing profit%, loss%, marked price.', order: 0 });
+
+  const tw = await post<WithId>(`/domains/${qa.id}/topics`, { name: 'Time & Work', description: 'Work rate problems and pipe/cistern.', order: 2 });
+  const twS = await post<WithId>(`/domains/${qa.id}/topics/${tw.id}/subtopics`, { name: 'Work Rate', description: 'Individual and combined work rates.', order: 0 });
+
+  const ts = await post<WithId>(`/domains/${qa.id}/topics`, { name: 'Time, Speed & Distance', description: 'Speed, distance, and time problems.', order: 3 });
+  const tsS = await post<WithId>(`/domains/${qa.id}/topics/${ts.id}/subtopics`, { name: 'Speed & Distance', description: 'Basic and relative speed problems.', order: 0 });
+
+  await seedQuestions(qa.id, 'EASY', 60, [
+    { text: 'What is 25% of 200?', options: ['40', '50', '60', '75'], topicId: pct.id, subtopicId: pctS.id, answerKey: { correctAnswer: '50', explanation: '25% of 200 = (25/100)×200 = 50.' } },
+    { text: 'A shopkeeper buys at ₹80 and sells at ₹100. What is the profit%?', options: ['15%', '20%', '25%', '30%'], topicId: pl.id, subtopicId: plS.id, answerKey: { correctAnswer: '25%', explanation: 'Profit=20. Profit%=(20/80)×100=25%.' } },
+    { text: 'A car travels 120 km in 2 hours. What is its speed in km/h?', options: ['50', '55', '60', '65'], topicId: ts.id, subtopicId: tsS.id, answerKey: { correctAnswer: '60', explanation: 'Speed=Distance÷Time=120÷2=60 km/h.' } },
+    { text: '8 workers can finish a job in 12 days. How many days will 4 workers take?', options: ['6', '8', '16', '24'], topicId: tw.id, subtopicId: twS.id, answerKey: { correctAnswer: '24', explanation: '8×12=4×D → D=24 days.' } },
+    { text: 'What is 15% of 400?', options: ['50', '55', '60', '65'], topicId: pct.id, subtopicId: pctS.id, answerKey: { correctAnswer: '60', explanation: '15% of 400=(15/100)×400=60.' } },
+  ]);
+
+  await seedQuestions(qa.id, 'MEDIUM', 90, [
+    { text: 'A price increases by 20% then decreases by 20%. What is the net change?', options: ['0%', '-4%', '+4%', '-2%'], topicId: pct.id, subtopicId: pctS.id, answerKey: { correctAnswer: '-4%', explanation: '1.2×0.8=0.96 → net change=-4%.' } },
+    { text: 'Simple interest on ₹5,000 at 8% per annum for 2 years is:', options: ['₹700', '₹750', '₹800', '₹850'], topicId: pl.id, subtopicId: plS.id, answerKey: { correctAnswer: '₹800', explanation: 'SI=5000×8×2÷100=₹800.' } },
+    { text: 'Two numbers in ratio 3:5 have sum 160. Find the larger number.', options: ['60', '80', '100', '120'], topicId: pct.id, subtopicId: pctS.id, answerKey: { correctAnswer: '100', explanation: '8x=160→x=20. Larger=5×20=100.' } },
+    { text: 'A shopkeeper marks goods 40% above cost and gives 10% discount. Profit%?', options: ['26%', '28%', '30%', '32%'], topicId: pl.id, subtopicId: plS.id, answerKey: { correctAnswer: '26%', explanation: 'SP=Cost×1.4×0.9=1.26×Cost → profit=26%.' } },
+    { text: 'A train travels at 60 km/h. How long (in minutes) to cover 45 km?', options: ['30', '40', '45', '50'], topicId: ts.id, subtopicId: tsS.id, answerKey: { correctAnswer: '45', explanation: 'Time=45÷60 hours=0.75 h=45 minutes.' } },
+  ]);
+
+  await seedQuestions(qa.id, 'HARD', 120, [
+    { text: 'A and B together finish work in 6 days. A alone in 10 days. Days for B alone?', options: ['12', '15', '18', '20'], topicId: tw.id, subtopicId: twS.id, answerKey: { correctAnswer: '15', explanation: '1/B=1/6-1/10=2/30 → B=15 days.' } },
+    { text: 'A 150 m train passes a pole in 15 s. Time to pass a 300 m platform?', options: ['30 s', '35 s', '40 s', '45 s'], topicId: ts.id, subtopicId: tsS.id, answerKey: { correctAnswer: '45 s', explanation: 'Speed=10 m/s. Time=(150+300)÷10=45 s.' } },
+    { text: 'Sugar price rises 25%. By what % must a family reduce consumption to keep expenditure unchanged?', options: ['20%', '25%', '15%', '10%'], topicId: pct.id, subtopicId: pctS.id, answerKey: { correctAnswer: '20%', explanation: 'Reduction=25÷125×100=20%.' } },
+    { text: 'Two pipes fill a tank in 15 and 20 min. A drain empties it in 30 min. Time to fill with all open?', options: ['10 min', '12 min', '15 min', '8 min'], topicId: tw.id, subtopicId: twS.id, answerKey: { correctAnswer: '12 min', explanation: 'Rate=1/15+1/20-1/30=(4+3-2)/60=5/60=1/12 → 12 min.' } },
+    { text: 'A sum doubles in 8 years at simple interest. In how many years will it triple?', options: ['12', '16', '18', '20'], topicId: pl.id, subtopicId: plS.id, answerKey: { correctAnswer: '16', explanation: 'Rate=100/8=12.5% p.a. Triple: 2P=P×12.5/100×T → T=16 years.' } },
+  ]);
+  log(`Quantitative Aptitude: 15 questions created`);
+
+  // ══════════════════════════════════════════════════════
+  //  DOMAIN 2 — Logical Reasoning
+  // ══════════════════════════════════════════════════════
+  section('Domain 2: Logical Reasoning');
+  const lr = await post<WithId>('/domains', {
+    name: 'Logical Reasoning',
+    description: 'Number series, analogies, and logical deduction problems.',
+    icon: 'brain', order: 1,
+  });
+
+  const ns = await post<WithId>(`/domains/${lr.id}/topics`, { name: 'Number Series', description: 'Find the pattern and next term.', order: 0 });
+  const nsS = await post<WithId>(`/domains/${lr.id}/topics/${ns.id}/subtopics`, { name: 'Pattern Finding', description: 'Arithmetic and geometric sequence patterns.', order: 0 });
+
+  const an = await post<WithId>(`/domains/${lr.id}/topics`, { name: 'Analogies', description: 'Word and number analogy questions.', order: 1 });
+  const anS = await post<WithId>(`/domains/${lr.id}/topics/${an.id}/subtopics`, { name: 'Word Analogies', description: 'Relationship between pairs of words.', order: 0 });
+
+  const sy = await post<WithId>(`/domains/${lr.id}/topics`, { name: 'Syllogisms', description: 'Logical deduction from given statements.', order: 2 });
+  const syS = await post<WithId>(`/domains/${lr.id}/topics/${sy.id}/subtopics`, { name: 'Deductive Reasoning', description: 'Drawing valid conclusions from premises.', order: 0 });
+
+  await seedQuestions(lr.id, 'EASY', 60, [
+    { text: 'Find the next number: 2, 4, 8, 16, ?', options: ['24', '28', '32', '36'], topicId: ns.id, subtopicId: nsS.id, answerKey: { correctAnswer: '32', explanation: 'Each number is doubled. 16×2=32.' } },
+    { text: 'Find the next number: 3, 6, 9, 12, ?', options: ['14', '15', '16', '18'], topicId: ns.id, subtopicId: nsS.id, answerKey: { correctAnswer: '15', explanation: 'Common difference 3. 12+3=15.' } },
+    { text: 'Book : Library :: Patient : ?', options: ['Doctor', 'Hospital', 'Medicine', 'Nurse'], topicId: an.id, subtopicId: anS.id, answerKey: { correctAnswer: 'Hospital', explanation: 'Books are kept in a Library; Patients are treated in a Hospital.' } },
+    { text: 'Find the odd one out: Cat, Dog, Lion, Rose, Tiger', options: ['Cat', 'Dog', 'Rose', 'Tiger'], topicId: an.id, subtopicId: anS.id, answerKey: { correctAnswer: 'Rose', explanation: 'Rose is a plant; all others are animals.' } },
+    { text: 'Find the next number: 1, 1, 2, 3, 5, 8, ?', options: ['10', '11', '13', '16'], topicId: ns.id, subtopicId: nsS.id, answerKey: { correctAnswer: '13', explanation: 'Fibonacci: each term = sum of two preceding. 5+8=13.' } },
+  ]);
+
+  await seedQuestions(lr.id, 'MEDIUM', 90, [
+    { text: 'Find the next number: 1, 4, 9, 16, 25, ?', options: ['30', '35', '36', '49'], topicId: ns.id, subtopicId: nsS.id, answerKey: { correctAnswer: '36', explanation: 'Perfect squares: 1²,2²,...,6²=36.' } },
+    { text: 'Find the next number: 2, 6, 12, 20, 30, ?', options: ['40', '42', '45', '50'], topicId: ns.id, subtopicId: nsS.id, answerKey: { correctAnswer: '42', explanation: 'n(n+1): 1×2=2,...,6×7=42. Differences 4,6,8,10,12: 30+12=42.' } },
+    { text: 'In a row, A is 5th from the left and 8th from the right. How many people are in the row?', options: ['11', '12', '13', '14'], topicId: sy.id, subtopicId: syS.id, answerKey: { correctAnswer: '12', explanation: 'Total=5+8-1=12.' } },
+    { text: 'Doctor : Hospital :: Teacher : ?', options: ['Book', 'School', 'Student', 'Classroom'], topicId: an.id, subtopicId: anS.id, answerKey: { correctAnswer: 'School', explanation: 'A Doctor works in a Hospital; a Teacher works in a School.' } },
+    { text: 'Find the next number: 3, 7, 13, 21, 31, ?', options: ['40', '41', '43', '45'], topicId: ns.id, subtopicId: nsS.id, answerKey: { correctAnswer: '43', explanation: 'Differences 4,6,8,10,12. 31+12=43.' } },
+  ]);
+
+  await seedQuestions(lr.id, 'HARD', 120, [
+    { text: 'All roses are flowers. Some flowers fade quickly. Which conclusion is definitely valid?', options: ['All roses fade quickly', 'Some roses may fade quickly', 'No roses fade quickly', 'Roses never fade'], topicId: sy.id, subtopicId: syS.id, answerKey: { correctAnswer: 'Some roses may fade quickly', explanation: 'Only "some flowers" fade quickly, so roses may or may not be among them.' } },
+    { text: 'Find the next number: 4, 8, 24, 96, 480, ?', options: ['2400', '2880', '3360', '1920'], topicId: ns.id, subtopicId: nsS.id, answerKey: { correctAnswer: '2880', explanation: 'Multiply by 2,3,4,5,6: 480×6=2880.' } },
+    { text: '30% failed Maths, 20% failed English, 10% failed both. What % passed in both?', options: ['50%', '55%', '60%', '65%'], topicId: sy.id, subtopicId: syS.id, answerKey: { correctAnswer: '60%', explanation: 'Failed at least one=30+20-10=40%. Passed both=60%.' } },
+    { text: 'A is taller than B. C is taller than A. D is shorter than B. Who is tallest?', options: ['A', 'B', 'C', 'D'], topicId: sy.id, subtopicId: syS.id, answerKey: { correctAnswer: 'C', explanation: 'Order: C>A>B>D. C is tallest.' } },
+    { text: 'Find the next number: 1, 2, 6, 24, 120, ?', options: ['240', '360', '720', '600'], topicId: ns.id, subtopicId: nsS.id, answerKey: { correctAnswer: '720', explanation: 'Factorials: 1!=1,2!=2,3!=6,4!=24,5!=120,6!=720.' } },
+  ]);
+  log(`Logical Reasoning: 15 questions created`);
+
+  // ══════════════════════════════════════════════════════
+  //  DOMAIN 3 — Verbal Ability
+  // ══════════════════════════════════════════════════════
+  section('Domain 3: Verbal Ability');
+  const va = await post<WithId>('/domains', {
+    name: 'Verbal Ability',
+    description: 'Vocabulary, synonyms, antonyms, and grammar for aptitude tests.',
+    icon: 'book-open', order: 2,
+  });
+
+  const syn = await post<WithId>(`/domains/${va.id}/topics`, { name: 'Synonyms & Antonyms', description: 'Words with same or opposite meanings.', order: 0 });
+  const synS = await post<WithId>(`/domains/${va.id}/topics/${syn.id}/subtopics`, { name: 'Word Meanings', description: 'Vocabulary and word relationship.', order: 0 });
+
+  const gr = await post<WithId>(`/domains/${va.id}/topics`, { name: 'Grammar', description: 'Error spotting and sentence correction.', order: 1 });
+  const grS = await post<WithId>(`/domains/${va.id}/topics/${gr.id}/subtopics`, { name: 'Sentence Correction', description: 'Identify and correct grammatical errors.', order: 0 });
+
+  await seedQuestions(va.id, 'EASY', 45, [
+    { text: 'Choose the synonym of "HAPPY":', options: ['Sad', 'Joyful', 'Angry', 'Tired'], topicId: syn.id, subtopicId: synS.id, answerKey: { correctAnswer: 'Joyful', explanation: '"Joyful" means great happiness — a synonym of "happy".' } },
+    { text: 'Choose the antonym of "BRIGHT":', options: ['Shiny', 'Clever', 'Dim', 'Radiant'], topicId: syn.id, subtopicId: synS.id, answerKey: { correctAnswer: 'Dim', explanation: '"Dim" means not bright — the antonym of "bright".' } },
+    { text: 'Choose the synonym of "BRAVE":', options: ['Cowardly', 'Fearful', 'Courageous', 'Timid'], topicId: syn.id, subtopicId: synS.id, answerKey: { correctAnswer: 'Courageous', explanation: '"Courageous" means ready to face danger — a synonym of "brave".' } },
+    { text: 'Fill in the blank: She ___ to school every day.', options: ['go', 'goes', 'going', 'gone'], topicId: gr.id, subtopicId: grS.id, answerKey: { correctAnswer: 'goes', explanation: 'Singular third-person subject requires "goes".' } },
+    { text: 'Choose the antonym of "ANCIENT":', options: ['Old', 'Modern', 'Vintage', 'Historic'], topicId: syn.id, subtopicId: synS.id, answerKey: { correctAnswer: 'Modern', explanation: '"Modern" refers to the present — antonym of "ancient".' } },
+  ]);
+
+  await seedQuestions(va.id, 'MEDIUM', 60, [
+    { text: 'Choose the synonym of "VERBOSE":', options: ['Concise', 'Wordy', 'Silent', 'Brief'], topicId: syn.id, subtopicId: synS.id, answerKey: { correctAnswer: 'Wordy', explanation: '"Verbose" means using too many words — synonym of "wordy".' } },
+    { text: 'Choose the antonym of "OPAQUE":', options: ['Dark', 'Cloudy', 'Transparent', 'Dense'], topicId: syn.id, subtopicId: synS.id, answerKey: { correctAnswer: 'Transparent', explanation: '"Opaque" means not see-through — antonym is "transparent".' } },
+    { text: 'Identify the error: "Each of the students have submitted their assignment."', options: ['Each of', 'the students', 'have submitted', 'their assignment'], topicId: gr.id, subtopicId: grS.id, answerKey: { correctAnswer: 'have submitted', explanation: '"Each" is singular → verb should be "has submitted".' } },
+    { text: 'Choose the synonym of "EPHEMERAL":', options: ['Permanent', 'Temporary', 'Eternal', 'Lasting'], topicId: syn.id, subtopicId: synS.id, answerKey: { correctAnswer: 'Temporary', explanation: '"Ephemeral" means lasting a very short time — synonym of "temporary".' } },
+    { text: 'Fill in the blank: Neither the manager nor the employees ___ satisfied.', options: ['was', 'were', 'is', 'are'], topicId: gr.id, subtopicId: grS.id, answerKey: { correctAnswer: 'were', explanation: 'With "neither...nor", verb agrees with closer subject ("employees" — plural) → "were".' } },
+  ]);
+
+  await seedQuestions(va.id, 'HARD', 90, [
+    { text: 'Choose the word closest in meaning to "LACONIC":', options: ['Talkative', 'Melodious', 'Brief and concise', 'Complicated'], topicId: syn.id, subtopicId: synS.id, answerKey: { correctAnswer: 'Brief and concise', explanation: '"Laconic" means using very few words. From Laconia (Sparta), famous for brevity.' } },
+    { text: 'Choose the antonym of "SANGUINE":', options: ['Optimistic', 'Hopeful', 'Pessimistic', 'Confident'], topicId: syn.id, subtopicId: synS.id, answerKey: { correctAnswer: 'Pessimistic', explanation: '"Sanguine" means optimistic — antonym is "pessimistic".' } },
+    { text: 'Identify the correctly written sentence:', options: ['The committee have reached their decision.', 'The committee has reached its decision.', 'The committee have reached its decision.', 'The committee has reached their decision.'], topicId: gr.id, subtopicId: grS.id, answerKey: { correctAnswer: 'The committee has reached its decision.', explanation: '"Committee" is a collective noun treated as singular → "has" and "its".' } },
+    { text: 'Choose the synonym of "PERFIDIOUS":', options: ['Loyal', 'Treacherous', 'Honest', 'Reliable'], topicId: syn.id, subtopicId: synS.id, answerKey: { correctAnswer: 'Treacherous', explanation: '"Perfidious" means deceitful and untrustworthy — synonym of "treacherous".' } },
+    { text: 'Fill in the blank: Had I known earlier, I ___ helped you.', options: ['would have', 'will have', 'would', 'should'], topicId: gr.id, subtopicId: grS.id, answerKey: { correctAnswer: 'would have', explanation: 'Third conditional (unreal past): "Had I known, I would have [done]".' } },
+  ]);
+  log(`Verbal Ability: 15 questions created`);
+
+  // ══════════════════════════════════════════════════════
+  //  TEST CONFIGURATIONS
+  // ══════════════════════════════════════════════════════
+  section('Test Configurations');
+
+  await post('/test-configs', {
+    name: 'Quantitative Aptitude — Starter', domainId: qa.id,
+    description: 'Basic arithmetic, percentages, and profit/loss. 10 questions, 20 minutes.',
+    totalQuestions: 10, duration: 1200, marksPerQuestion: 1, negativeMarksRatio: 0.25,
+    easyCount: 4, mediumCount: 3, hardCount: 3, shuffleQuestions: true, shuffleOptions: false,
+  });
+  await post('/test-configs', {
+    name: 'Logical Reasoning — Starter', domainId: lr.id,
+    description: 'Number series, analogies, and logical deduction. 10 questions, 20 minutes.',
+    totalQuestions: 10, duration: 1200, marksPerQuestion: 1, negativeMarksRatio: 0.25,
+    easyCount: 4, mediumCount: 3, hardCount: 3, shuffleQuestions: true, shuffleOptions: false,
+  });
+  await post('/test-configs', {
+    name: 'Verbal Ability — Starter', domainId: va.id,
+    description: 'Synonyms, antonyms, and grammar. 10 questions, 15 minutes.',
+    totalQuestions: 10, duration: 900, marksPerQuestion: 1, negativeMarksRatio: 0.25,
+    easyCount: 4, mediumCount: 3, hardCount: 3, shuffleQuestions: true, shuffleOptions: false,
+  });
+  log('3 test configurations created');
+
+  process.stdout.write('\n' + '='.repeat(42) + '\n');
+  process.stdout.write('Seed complete!  3 domains · 45 questions · 3 test configs\n');
+  process.stdout.write(`Go to http://localhost:4173/tests to take your first test.\n\n`);
 }
 
-async function main() {
-  validateSeed();
-
-  const batch = db.batch();
-
-  setDomainTree(batch);
-  setQuestions(batch);
-
-  await batch.commit();
-
-  process.stdout.write(`Seeded ${domains.length} aptitude domains with ${questions.length} public questions.\n`);
-  process.stdout.write(`Created or updated ${questions.length} private answer key documents.\n`);
-}
-
-main()
-  .then(() => process.exit(0))
-  .catch((error: unknown) => {
-    const message = error instanceof Error ? error.message : 'Unknown seed failure.';
-    process.stderr.write(`${message}\n`);
-    process.exit(1);
-  });
+main().catch((err: unknown) => {
+  const msg = err instanceof Error ? err.message : String(err);
+  process.stderr.write(`\nSeed failed: ${msg}\n`);
+  if (axios.isAxiosError(err) && err.response) {
+    process.stderr.write(JSON.stringify(err.response.data, null, 2) + '\n');
+  }
+  process.exit(1);
+});

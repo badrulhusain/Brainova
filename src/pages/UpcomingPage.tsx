@@ -67,7 +67,7 @@ function AptitudeQuestionBankPage() {
   const questions = questionsQuery.data ?? [];
   const questionCounts = questionCountsQuery.data ?? {};
   const totalQuestionCount = Object.values(questionCounts).reduce((total, count) => total + count, 0);
-  const topicNames = Array.from(new Set(questions.map((question) => question.topic)));
+  const topicNames = Array.from(new Set(questions.map((question) => question.topicId)));
 
   return (
     <main className="bg-background px-4 py-8 text-foreground sm:px-6 lg:py-10">
@@ -197,7 +197,7 @@ function AptitudeQuestionBankPage() {
 
                 {topicNames.map((topic, index) => {
                   const Icon = topicIcons[topic as keyof typeof topicIcons] ?? fallbackTopicIcons[index % fallbackTopicIcons.length] ?? Calculator;
-                  const topicQuestionCount = questions.filter((question) => question.topic === topic).length;
+                  const topicQuestionCount = questions.filter((question) => question.topicId === topic).length;
 
                   return (
                     <Card key={topic} className="p-5">
@@ -221,7 +221,7 @@ function AptitudeQuestionBankPage() {
                     <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                       <div className="flex flex-wrap items-center gap-2 text-xs font-semibold uppercase">
                         <span className="rounded-lg bg-sky-50 px-2.5 py-1 text-sky-800 dark:bg-sky-950/60 dark:text-sky-200">
-                          {item.topic}
+                          {item.topicId}
                         </span>
                         <span className="rounded-lg bg-amber-50 px-2.5 py-1 text-amber-800 dark:bg-amber-950/60 dark:text-amber-200">
                           {item.difficulty}

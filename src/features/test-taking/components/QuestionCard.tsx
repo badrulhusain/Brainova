@@ -43,9 +43,9 @@ export function QuestionCard({
           <span
             className={cn(
               'rounded-full px-2.5 py-0.5 text-xs font-medium capitalize',
-              question.difficulty === 'easy'
+              question.difficulty === 'EASY'
                 ? 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300'
-                : question.difficulty === 'medium'
+                : question.difficulty === 'MEDIUM'
                   ? 'bg-amber-50 text-amber-700 dark:bg-amber-950/60 dark:text-amber-300'
                   : 'bg-red-50 text-red-700 dark:bg-red-950/60 dark:text-red-300',
             )}
@@ -82,7 +82,7 @@ export function QuestionCard({
       </div>
 
       {/* Answer area */}
-      {question.type === 'fill' ? (
+      {question.type === 'FILL' ? (
         <div>
           <label className="mb-2 block text-sm font-medium text-muted" htmlFor="fill-answer">
             Your answer

@@ -24,16 +24,16 @@ export default function TestPage() {
   // Guard: redirect if session doesn't belong to current user
   useEffect(() => {
     if (!session || !user) return;
-    if (session.ownerUid !== user.uid) {
+    if (session.userId !== user.uid) {
       navigate('/dashboard', { replace: true });
     }
   }, [session, user, navigate]);
 
-  // Redirect completed sessions to result
+  // Redirect completed sessions to results list
   useEffect(() => {
     if (!session) return;
-    if (session.status === 'submitted' && session.resultId) {
-      navigate(`/results/${session.resultId}`, { replace: true });
+    if (session.status === 'SUBMITTED') {
+      navigate('/results', { replace: true });
     }
   }, [session, navigate]);
 
@@ -73,7 +73,7 @@ export default function TestPage() {
     );
   }
 
-  if (session.status !== 'in_progress') {
+  if (session.status !== 'IN_PROGRESS') {
     return (
       <main className="flex min-h-screen items-center justify-center bg-background text-foreground">
         <Card className="max-w-sm p-8 text-center">

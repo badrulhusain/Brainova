@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { getSocket } from '../../../lib/socket/client';
+import { apiClient } from '../../../lib/api/client';
 import { useTestSessionStore } from '../store/testSessionStore';
 
 type SaveStatus = 'idle' | 'saving' | 'saved' | 'error';
@@ -7,28 +7,29 @@ type SaveStatus = 'idle' | 'saving' | 'saved' | 'error';
 export function useTestAutosave(sessionId: string): SaveStatus {
   const [status, setStatus] = useState<SaveStatus>('idle');
 
-  const answers = useTestSessionStore((s) => s.answers);
+  const answers = useTestSessionStore((s) => s.answers ?? {});
+  const markedForReview = useTestSessionStore((s) => s.markedForReview ?? {});
   const isDirty = useTestSessionStore((s) => s.isDirty);
   const markClean = useTestSessionStore((s) => s.markClean);
 
   // Refs capture latest values in async callbacks without re-creating the save fn
   const latestAnswers = useRef(answers);
+  const latestMarkedForReview = useRef(markedForReview);
   const latestIsDirty = useRef(isDirty);
   useEffect(() => { latestAnswers.current = answers; }, [answers]);
+  useEffect(() => { latestMarkedForReview.current = markedForReview; }, [markedForReview]);
   useEffect(() => { latestIsDirty.current = isDirty; }, [isDirty]);
 
-  const save = useCallback(() => {
+  const save = useCallback(async () => {
     if (!latestIsDirty.current) return;
 
     setStatus('saving');
-    const socket = getSocket();
 
     try {
-      // Emit one save_answer event per answered question.
-      // The server merges answers atomically and confirms with answer_saved.
-      for (const [questionId, answer] of Object.entries(latestAnswers.current)) {
-        socket.emit('save_answer', { sessionId, questionId, answer });
-      }
+      await apiClient.put(`/sessions/${sessionId}/answers`, {
+        answers: latestAnswers.current,
+        markedForReview: latestMarkedForReview.current,
+      });
       markClean();
       setStatus('saved');
     } catch {
@@ -41,14 +42,14 @@ export function useTestAutosave(sessionId: string): SaveStatus {
   useEffect(() => {
     if (!isDirty) return;
     clearTimeout(debounceRef.current);
-    debounceRef.current = window.setTimeout(save, 3000);
+    debounceRef.current = window.setTimeout(() => void save(), 3000);
     return () => clearTimeout(debounceRef.current);
-  }, [answers, isDirty, save]);
+  }, [answers, markedForReview, isDirty, save]);
 
   // Heartbeat: flush every 30 s if dirty
   useEffect(() => {
     const id = window.setInterval(() => {
-      if (latestIsDirty.current) save();
+      if (latestIsDirty.current) void save();
     }, 30_000);
     return () => clearInterval(id);
   }, [sessionId, save]);

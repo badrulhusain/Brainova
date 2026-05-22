@@ -9,12 +9,12 @@ import {
   Patch,
   Post,
   Query,
+  Req,
   UseGuards,
 } from '@nestjs/common';
-import type { User } from '@prisma/client';
-import { AuthGuard } from '../../common/guards/auth.guard';
+import type { Request } from 'express';
+import { AnyUserGuard } from '../../common/guards/any-user.guard';
 import { AdminGuard } from '../../common/guards/admin.guard';
-import { CurrentUser } from '../../common/decorators/current-user.decorator';
 import { ZodValidationPipe } from '../../common/pipes/zod-validation.pipe';
 import { QuestionsService } from './questions.service';
 import { CreateQuestionSchema, type CreateQuestionDto } from './dto/create-question.dto';
@@ -22,11 +22,11 @@ import { UpdateQuestionSchema, type UpdateQuestionDto } from './dto/update-quest
 import { QuestionFilterSchema, type QuestionFilterDto } from './dto/question-filter.dto';
 
 @Controller('questions')
-@UseGuards(AuthGuard)
 export class QuestionsController {
   constructor(private readonly questionsService: QuestionsService) {}
 
   @Get()
+  @UseGuards(AnyUserGuard)
   findAll(
     @Query(new ZodValidationPipe(QuestionFilterSchema)) filter: QuestionFilterDto,
   ) {
@@ -34,6 +34,7 @@ export class QuestionsController {
   }
 
   @Get(':id')
+  @UseGuards(AnyUserGuard)
   findOne(@Param('id') id: string) {
     return this.questionsService.findById(id);
   }
@@ -48,9 +49,9 @@ export class QuestionsController {
   @UseGuards(AdminGuard)
   create(
     @Body(new ZodValidationPipe(CreateQuestionSchema)) dto: CreateQuestionDto,
-    @CurrentUser() user: User,
+    @Req() req: Request & { user: { id: string } },
   ) {
-    return this.questionsService.create(dto, user.id);
+    return this.questionsService.create(dto, req.user.id);
   }
 
   @Patch(':id')
@@ -58,9 +59,9 @@ export class QuestionsController {
   update(
     @Param('id') id: string,
     @Body(new ZodValidationPipe(UpdateQuestionSchema)) dto: UpdateQuestionDto,
-    @CurrentUser() user: User,
+    @Req() req: Request & { user: { id: string } },
   ) {
-    return this.questionsService.update(id, dto, user.id);
+    return this.questionsService.update(id, dto, req.user.id);
   }
 
   @Delete(':id')

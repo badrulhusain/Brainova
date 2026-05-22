@@ -1,41 +1,37 @@
-import { Global, Module, Logger } from '@nestjs/common';
+import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 import { z } from 'zod';
 
 const envSchema = z.object({
-  DATABASE_URL: z.string().min(1),
-  BETTER_AUTH_SECRET: z.string().min(32),
-  BETTER_AUTH_URL: z.string().url(),
-  GOOGLE_CLIENT_ID: z.string().min(1),
-  GOOGLE_CLIENT_SECRET: z.string().min(1),
-  RESEND_API_KEY: z.string().min(1),
+  MONGODB_URI: z.string().min(1),
+  JWT_SECRET: z.string().min(1),
+  JWT_EXPIRES_IN: z.string().default('7d'),
+  ADMIN_USERNAME: z.string().min(1),
+  ADMIN_PASSWORD: z.string().min(1),
   FRONTEND_URL: z.string().url(),
   NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
-  PORT: z.string().default('3000'),
+  PORT: z.coerce.number().int().positive().default(3000),
 });
 
 export type AppEnv = z.infer<typeof envSchema>;
 
-export const APP_ENV = Symbol('APP_ENV');
-
-@Global()
 @Module({
-  providers: [
-    {
-      provide: APP_ENV,
-      useFactory: (): AppEnv => {
-        const result = envSchema.safeParse(process.env);
+  imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: ['.env.local', '.env'],
+      validate: (config: Record<string, unknown>): AppEnv => {
+        const result = envSchema.safeParse(config);
         if (!result.success) {
-          const logger = new Logger('ConfigModule');
-          logger.error('Invalid environment variables:');
-          result.error.errors.forEach((e) =>
-            logger.error(`  ${e.path.join('.')}: ${e.message}`),
-          );
-          process.exit(1);
+          const message = result.error.errors
+            .map((error) => `${error.path.join('.')}: ${error.message}`)
+            .join('; ');
+          throw new Error(`Invalid environment configuration: ${message}`);
         }
         return result.data;
       },
-    },
+    }),
   ],
-  exports: [APP_ENV],
+  exports: [ConfigModule],
 })
 export class AppConfigModule {}

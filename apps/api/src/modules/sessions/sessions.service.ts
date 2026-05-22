@@ -1,19 +1,22 @@
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
 import {
-  BadRequestException,
-  ConflictException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
-import type { Prisma, Question, TestSession } from '@prisma/client';
-import { PrismaService } from '../../database/prisma.service';
+  QuestionModelName,
+  serialize,
+  serializeMany,
+  TestConfigModelName,
+  TestSessionModelName,
+  type MongoModel,
+  type Question,
+  type TestConfig,
+  type TestSession,
+} from '../../database/mongo.schemas';
 import { shuffleArray } from './helpers/shuffle';
 
-// Shape of each question stored in the session snapshot.
-// answerKey is intentionally omitted — Prisma does not include it by default,
-// and we never select it here. This guarantees the snapshot is always safe.
-export type SnapshotQuestion = Omit<Question, 'createdAt' | 'updatedAt'>;
+export type SnapshotQuestion = Question;
 
 type SessionWithConfig = TestSession & {
+  userId: string;
   config: {
     name: string;
     duration: number;
@@ -25,194 +28,172 @@ type SessionWithConfig = TestSession & {
 
 @Injectable()
 export class SessionsService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    @InjectModel(TestSessionModelName)
+    private readonly sessionModel: MongoModel<TestSession>,
+    @InjectModel(TestConfigModelName)
+    private readonly configModel: MongoModel<TestConfig>,
+    @InjectModel(QuestionModelName)
+    private readonly questionModel: MongoModel<Question>,
+  ) {}
 
-  // ── Create ────────────────────────────────────────────────────────────────
-
-  async createSession(
-    userId: string,
-    configId: string,
-  ): Promise<{ sessionId: string }> {
-    // 1. Prevent duplicate active sessions for the same user + config
-    const existing = await this.prisma.testSession.findFirst({
-      where: { userId, configId, status: 'IN_PROGRESS' },
+  async createSession(studentId: string, configId: string): Promise<{ sessionId: string }> {
+    const existing = await this.sessionModel.findOne({
+      studentId,
+      configId,
+      status: 'IN_PROGRESS',
     });
-    if (existing) {
-      throw new ConflictException(
-        'You already have an active session for this test. Resume it instead.',
-      );
-    }
+    if (existing) return { sessionId: String(existing._id) };
 
-    // 2. Load config (must be active)
-    const config = await this.prisma.testConfig.findUnique({
-      where: { id: configId, active: true },
-    });
+    const config = serialize<TestConfig>(
+      await this.configModel.findOne({ _id: configId, active: true }),
+    );
     if (!config) throw new NotFoundException('Test configuration not found');
 
-    // 3. Build per-difficulty where clause
-    const topicFilter = config.topicFilter as string[];
-    const baseWhere: Prisma.QuestionWhereInput = {
+    const topicFilter = config.topicFilter ?? [];
+    const baseWhere = {
       domainId: config.domainId,
       active: true,
-      ...(topicFilter.length > 0 && { topicId: { in: topicFilter } }),
+      ...(topicFilter.length > 0 && { topicId: { $in: topicFilter } }),
     };
 
-    // 4. One query per difficulty bucket — answerKey is NOT included (Prisma default)
     const [easyPool, mediumPool, hardPool] = await Promise.all([
-      this.prisma.question.findMany({ where: { ...baseWhere, difficulty: 'EASY' } }),
-      this.prisma.question.findMany({ where: { ...baseWhere, difficulty: 'MEDIUM' } }),
-      this.prisma.question.findMany({ where: { ...baseWhere, difficulty: 'HARD' } }),
+      this.questionModel.find({ ...baseWhere, difficulty: 'EASY' }),
+      this.questionModel.find({ ...baseWhere, difficulty: 'MEDIUM' }),
+      this.questionModel.find({ ...baseWhere, difficulty: 'HARD' }),
     ]);
 
-    // 5. Validate pool sizes before selection
-    this.assertPoolSize('EASY', easyPool.length, config.easyCount);
-    this.assertPoolSize('MEDIUM', mediumPool.length, config.mediumCount);
-    this.assertPoolSize('HARD', hardPool.length, config.hardCount);
+    const easy = serializeMany<Question>(easyPool);
+    const medium = serializeMany<Question>(mediumPool);
+    const hard = serializeMany<Question>(hardPool);
 
-    // 6. Fisher-Yates shuffle each bucket, then slice to required count
-    const easySelected = shuffleArray(easyPool).slice(0, config.easyCount);
-    const mediumSelected = shuffleArray(mediumPool).slice(0, config.mediumCount);
-    const hardSelected = shuffleArray(hardPool).slice(0, config.hardCount);
+    this.assertPoolSize('EASY', easy.length, config.easyCount);
+    this.assertPoolSize('MEDIUM', medium.length, config.mediumCount);
+    this.assertPoolSize('HARD', hard.length, config.hardCount);
 
-    // 7. Merge buckets, optionally shuffle the full set
-    let questions: Question[] = [...easySelected, ...mediumSelected, ...hardSelected];
-    if (config.shuffleQuestions) {
-      questions = shuffleArray(questions);
-    }
+    const selected = [
+      ...shuffleArray(easy).slice(0, config.easyCount),
+      ...shuffleArray(medium).slice(0, config.mediumCount),
+      ...shuffleArray(hard).slice(0, config.hardCount),
+    ];
 
-    // 8. Optionally shuffle option order within each question
-    //    correctAnswer is stored as the option TEXT so scoring is unaffected by option reordering
-    const snapshot: SnapshotQuestion[] = questions.map((q) => ({
-      ...q,
-      options: config.shuffleOptions ? shuffleArray(q.options) : q.options,
+    const questions = config.shuffleQuestions ? shuffleArray(selected) : selected;
+    const snapshot: SnapshotQuestion[] = questions.map((question) => ({
+      ...question,
+      options: config.shuffleOptions ? shuffleArray(question.options) : question.options,
     }));
 
-    // 9. Create session — expiresAt = now + duration seconds
     const now = new Date();
-    const expiresAt = new Date(now.getTime() + config.duration * 1000);
-
-    const session = await this.prisma.testSession.create({
-      data: {
-        userId,
-        configId,
-        domainId: config.domainId,
-        status: 'IN_PROGRESS',
-        questionSnapshot: snapshot as unknown as Prisma.InputJsonValue,
-        answers: {},
-        markedForReview: {},
-        expiresAt,
-      },
+    const session = await this.sessionModel.create({
+      studentId,
+      configId,
+      domainId: config.domainId,
+      status: 'IN_PROGRESS',
+      questionSnapshot: snapshot,
+      answers: {},
+      markedForReview: {},
+      startedAt: now,
+      expiresAt: new Date(now.getTime() + config.duration * 1000),
+      lastSavedAt: now,
     });
 
-    // 10. Return only sessionId — questions are never returned here
-    return { sessionId: session.id };
+    return { sessionId: String(session._id) };
   }
-
-  // ── Read ──────────────────────────────────────────────────────────────────
 
   async getSession(sessionId: string): Promise<SessionWithConfig> {
-    const session = await this.prisma.testSession.findUnique({
-      where: { id: sessionId },
-      include: {
-        config: {
-          select: {
-            name: true,
-            duration: true,
-            marksPerQuestion: true,
-            negativeMarksRatio: true,
-            totalQuestions: true,
-          },
-        },
+    const session = serialize<TestSession>(await this.sessionModel.findById(sessionId));
+    if (!session) throw new NotFoundException('Session not found');
+    const config = serialize<TestConfig>(await this.configModel.findById(session.configId));
+    if (!config) throw new NotFoundException('Test configuration not found');
+
+    return {
+      ...session,
+      userId: session.studentId,
+      answers: (session.answers as Record<string, string> | null) ?? {},
+      markedForReview: (session.markedForReview as Record<string, boolean> | null) ?? {},
+      tabSwitchCount: session.tabSwitchCount ?? 0,
+      config: {
+        name: config.name,
+        duration: config.duration,
+        marksPerQuestion: config.marksPerQuestion,
+        negativeMarksRatio: config.negativeMarksRatio,
+        totalQuestions: config.totalQuestions,
       },
-    });
+    };
+  }
+
+  async getActiveSession(studentId: string): Promise<TestSession | null> {
+    const session = await this.sessionModel
+      .findOne({ studentId, status: 'IN_PROGRESS' })
+      .sort({ startedAt: -1 });
+    return session ? serialize<TestSession>(session) : null;
+  }
+
+  async verifyOwnership(sessionId: string, studentId: string): Promise<TestSession> {
+    const session = serialize<TestSession>(await this.sessionModel.findById(sessionId));
     if (!session) throw new NotFoundException('Session not found');
+    if (session.studentId !== studentId) throw new NotFoundException('Session not found');
     return session;
   }
 
-  async getActiveSession(userId: string): Promise<TestSession | null> {
-    return this.prisma.testSession.findFirst({
-      where: { userId, status: 'IN_PROGRESS' },
-      orderBy: { startedAt: 'desc' },
-    });
-  }
-
-  // ── Internal helpers (used by gateway and scheduler) ──────────────────────
-
-  async verifyOwnership(sessionId: string, userId: string): Promise<TestSession> {
-    const session = await this.prisma.testSession.findUnique({
-      where: { id: sessionId },
-    });
-    if (!session) throw new NotFoundException('Session not found');
-    if (session.userId !== userId) throw new NotFoundException('Session not found');
-    return session;
-  }
-
-  async saveAnswer(
-    sessionId: string,
-    questionId: string,
-    answer: string,
-  ): Promise<void> {
-    const session = await this.prisma.testSession.findUnique({
-      where: { id: sessionId },
-      select: { answers: true, status: true },
-    });
+  async saveAnswer(sessionId: string, questionId: string, answer: string): Promise<void> {
+    const session = await this.sessionModel.findById(sessionId).select('answers status');
     if (!session) throw new NotFoundException('Session not found');
     if (session.status !== 'IN_PROGRESS') {
       throw new BadRequestException('Session is no longer active');
     }
 
-    const answers = { ...(session.answers as Record<string, string>), [questionId]: answer };
-    await this.prisma.testSession.update({
-      where: { id: sessionId },
-      data: { answers, lastSavedAt: new Date() },
-    });
+    const answers = { ...((session.answers as Record<string, string>) ?? {}), [questionId]: answer };
+    await this.sessionModel.updateOne({ _id: sessionId }, { answers, lastSavedAt: new Date() });
+  }
+
+  async saveAnswers(
+    sessionId: string,
+    studentId: string,
+    answers: Record<string, string>,
+    markedForReview?: Record<string, boolean>,
+  ): Promise<{ saved: true }> {
+    const session = await this.verifyOwnership(sessionId, studentId);
+    if (session.status !== 'IN_PROGRESS') {
+      throw new BadRequestException('This test has already been submitted');
+    }
+
+    await this.sessionModel.updateOne(
+      { _id: sessionId },
+      {
+        answers,
+        ...(markedForReview ? { markedForReview } : {}),
+        lastSavedAt: new Date(),
+      },
+    );
+
+    return { saved: true };
   }
 
   async toggleReview(sessionId: string, questionId: string): Promise<boolean> {
-    const session = await this.prisma.testSession.findUnique({
-      where: { id: sessionId },
-      select: { markedForReview: true, status: true },
-    });
+    const session = await this.sessionModel.findById(sessionId).select('markedForReview status');
     if (!session) throw new NotFoundException('Session not found');
     if (session.status !== 'IN_PROGRESS') {
       throw new BadRequestException('Session is no longer active');
     }
 
-    const marked = { ...(session.markedForReview as Record<string, boolean>) };
+    const marked = { ...((session.markedForReview as Record<string, boolean>) ?? {}) };
     marked[questionId] = !marked[questionId];
-
-    await this.prisma.testSession.update({
-      where: { id: sessionId },
-      data: { markedForReview: marked },
-    });
-
+    await this.sessionModel.updateOne({ _id: sessionId }, { marked });
     return marked[questionId] ?? false;
   }
 
   async recordTabSwitch(sessionId: string): Promise<number> {
-    const [updated] = await this.prisma.$transaction([
-      this.prisma.testSession.update({
-        where: { id: sessionId },
-        data: { tabSwitchCount: { increment: 1 } },
-      }),
-      this.prisma.sessionEvent.create({
-        data: {
-          sessionId,
-          type: 'TAB_SWITCH',
-          payload: {},
-        },
-      }),
-    ]);
+    const updated = await this.sessionModel.findByIdAndUpdate(
+      sessionId,
+      { $inc: { tabSwitchCount: 1 } },
+      { new: true },
+    );
+    if (!updated) throw new NotFoundException('Session not found');
     return updated.tabSwitchCount;
   }
 
-  // ── Private ───────────────────────────────────────────────────────────────
-
-  private assertPoolSize(
-    difficulty: string,
-    available: number,
-    required: number,
-  ): void {
+  private assertPoolSize(difficulty: string, available: number, required: number): void {
     if (available < required) {
       throw new BadRequestException(
         `Insufficient ${difficulty} questions: need ${required}, available ${available}. ` +

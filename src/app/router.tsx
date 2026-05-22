@@ -7,13 +7,14 @@ const LoginPage = lazy(() => import('../pages/LoginPage'));
 const SignupPage = lazy(() => import('../pages/SignupPage'));
 const NotFoundPage = lazy(() => import('../pages/NotFoundPage'));
 const DashboardPage = lazy(() => import('../pages/DashboardPage'));
-const VerifyEmailPage = lazy(() => import('../pages/VerifyEmailPage'));
 
 // Admin
 const AdminPage = lazy(() => import('../pages/AdminPage'));
 const AdminQuestionNewPage = lazy(() => import('../pages/AdminQuestionNewPage'));
 const AdminTestConfigPage = lazy(() => import('../pages/admin/AdminTestConfigPage'));
 const AdminTestConfigNewPage = lazy(() => import('../pages/admin/AdminTestConfigNewPage'));
+const AdminsPage = lazy(() => import('../pages/admin/AdminsPage'));
+const AdminTaxonomyPage = lazy(() => import('../pages/admin/AdminTaxonomyPage'));
 
 // Tests + results + analytics
 const TestsPage = lazy(() => import('../pages/TestsPage'));
@@ -37,15 +38,6 @@ export function AppRouter() {
           </ProtectedRoute>
         }
       />
-      <Route
-        path="/verify-email"
-        element={
-          <ProtectedRoute>
-            <VerifyEmailPage />
-          </ProtectedRoute>
-        }
-      />
-
       {/* Tests */}
       <Route
         path="/tests"
@@ -122,6 +114,22 @@ export function AppRouter() {
         element={
           <AdminRoute>
             <AdminTestConfigNewPage />
+          </AdminRoute>
+        }
+      />
+      <Route
+        path="/admin/admins"
+        element={
+          <AdminRoute>
+            <AdminsPage />
+          </AdminRoute>
+        }
+      />
+      <Route
+        path="/admin/taxonomy"
+        element={
+          <AdminRoute>
+            <AdminTaxonomyPage />
           </AdminRoute>
         }
       />

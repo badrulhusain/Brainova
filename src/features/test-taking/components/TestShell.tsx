@@ -1,9 +1,8 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { httpsCallable } from 'firebase/functions';
 import { toast } from 'sonner';
 import { Menu, X } from 'lucide-react';
-import { functions } from '../../../lib/firebase/client';
+import { apiClient } from '../../../lib/api/client';
 import { Button } from '../../../components/ui/button';
 import { Card } from '../../../components/ui/card';
 import { useTestSessionStore } from '../store/testSessionStore';
@@ -39,7 +38,7 @@ export function TestShell({ session }: TestShellProps) {
   const goTo = useTestSessionStore((s) => s.goTo);
 
   const saveStatus = useTestAutosave(session.id);
-  useTabSwitchGuard(session.id, session.status === 'in_progress');
+  useTabSwitchGuard(session.id, session.status === 'IN_PROGRESS');
 
   const questions = session.questionSnapshot;
   const question = questions[currentIndex];
@@ -47,15 +46,10 @@ export function TestShell({ session }: TestShellProps) {
   const submitTest = async () => {
     setIsSubmitting(true);
     try {
-      const submit = httpsCallable<{ sessionId: string }, SubmitResult>(
-        functions,
-        'submitTest',
-      );
-      const result = await submit({ sessionId: session.id });
-      navigate(`/results/${result.data.resultId}`, { replace: true });
+      const res = await apiClient.post<SubmitResult>(`/sessions/${session.id}/submit`);
+      navigate(`/results/${res.data.resultId}`, { replace: true });
     } catch (err) {
-      const msg = err instanceof Error ? err.message : 'Submission failed.';
-      toast.error(msg);
+      toast.error(err instanceof Error ? err.message : 'Submission failed.');
       setIsSubmitting(false);
       setShowModal(false);
     }
@@ -68,9 +62,11 @@ export function TestShell({ session }: TestShellProps) {
 
   const remaining = useCountdown(session.expiresAt, handleAutoSubmit);
 
-  const answeredCount = questions.filter((q) => Boolean(answers[q.id])).length;
+  const safeAnswers = answers ?? {};
+  const safeMarked = markedForReview ?? {};
+  const answeredCount = questions.filter((q) => Boolean(safeAnswers[q.id])).length;
   const unansweredCount = questions.length - answeredCount;
-  const markedCount = Object.values(markedForReview).filter(Boolean).length;
+  const markedCount = Object.values(safeMarked).filter(Boolean).length;
 
   if (!question) {
     return (
@@ -80,8 +76,8 @@ export function TestShell({ session }: TestShellProps) {
     );
   }
 
-  const currentAnswer = answers[question.id] ?? '';
-  const currentMarked = Boolean(markedForReview[question.id]);
+  const currentAnswer = safeAnswers[question.id] ?? '';
+  const currentMarked = Boolean(safeMarked[question.id]);
 
   return (
     <div className="flex min-h-screen flex-col bg-background text-foreground">
@@ -114,8 +110,8 @@ export function TestShell({ session }: TestShellProps) {
         <aside className="hidden w-64 shrink-0 border-r border-border bg-surface p-5 lg:block">
           <QuestionNavigator
             questions={questions}
-            answers={answers}
-            markedForReview={markedForReview}
+            answers={safeAnswers}
+            markedForReview={safeMarked}
             currentIndex={currentIndex}
             onNavigate={(idx) => {
               goTo(idx);

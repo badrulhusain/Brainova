@@ -2,8 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Clock, BookOpen, AlertCircle } from 'lucide-react';
 import { toast } from 'sonner';
-import { httpsCallable } from 'firebase/functions';
-import { functions } from '../lib/firebase/client';
+import { apiClient } from '../lib/api/client';
 import { Button } from '../components/ui/button';
 import { Card } from '../components/ui/card';
 import { ThemeAwareSkeleton } from '../components/ui/theme-toggle';
@@ -43,20 +42,10 @@ export default function TestsPage() {
   const handleStartTest = async (configId: string) => {
     setStartingConfigId(configId);
     try {
-      const createSession = httpsCallable<{ configId: string }, CreateSessionResult>(
-        functions,
-        'createTestSession',
-      );
-      const result = await createSession({ configId });
-      navigate(`/tests/${result.data.sessionId}`);
+      const res = await apiClient.post<CreateSessionResult>('/sessions', { configId });
+      navigate(`/tests/${res.data.sessionId}`);
     } catch (err) {
-      const message =
-        err instanceof Error ? err.message : 'Failed to start test. Please try again.';
-      if (message.includes('already-exists')) {
-        toast.error('You already have an active session for this test.');
-      } else {
-        toast.error(message);
-      }
+      toast.error(err instanceof Error ? err.message : 'Failed to start test. Please try again.');
     } finally {
       setStartingConfigId(null);
     }
@@ -138,13 +127,13 @@ export default function TestsPage() {
                         </div>
                         <div className="flex gap-2 text-xs text-muted">
                           <span className="rounded bg-emerald-50 px-2 py-0.5 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300">
-                            {config.difficultyDistribution.easy} easy
+                            {config.easyCount} easy
                           </span>
                           <span className="rounded bg-amber-50 px-2 py-0.5 text-amber-700 dark:bg-amber-950/60 dark:text-amber-300">
-                            {config.difficultyDistribution.medium} medium
+                            {config.mediumCount} medium
                           </span>
                           <span className="rounded bg-red-50 px-2 py-0.5 text-red-700 dark:bg-red-950/60 dark:text-red-300">
-                            {config.difficultyDistribution.hard} hard
+                            {config.hardCount} hard
                           </span>
                         </div>
                         <Button

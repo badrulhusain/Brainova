@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
 import { apiClient } from '../../../lib/api/client';
-import { connectSocket } from '../../../lib/socket/client';
 import { useTestSessionStore } from '../store/testSessionStore';
 import type { TestSession } from '../types';
 
@@ -36,9 +35,9 @@ export function useTestSession(sessionId: string): UseTestSessionResult {
         if (!hydratedRef.current) {
           hydrate({
             sessionId,
-            answers: ts.answers,
-            markedForReview: ts.markedForReview,
-            tabSwitchCount: ts.tabSwitchCount,
+            answers: ts.answers ?? {},
+            markedForReview: ts.markedForReview ?? {},
+            tabSwitchCount: ts.tabSwitchCount ?? 0,
           });
           hydratedRef.current = true;
         }
@@ -51,20 +50,8 @@ export function useTestSession(sessionId: string): UseTestSessionResult {
 
     void fetchSession();
 
-    // 2. Connect to WebSocket, join session room for real-time events
-    const socket = connectSocket();
-    socket.emit('join_session', { sessionId });
-
-    // Server broadcasts tab_warned to all room members
-    const onTabWarned = ({ tabSwitchCount }: { tabSwitchCount: number }) => {
-      setSession((prev) => (prev ? { ...prev, tabSwitchCount } : prev));
-    };
-
-    socket.on('tab_warned', onTabWarned);
-
     return () => {
       cancelled = true;
-      socket.off('tab_warned', onTabWarned);
     };
   }, [sessionId, hydrate]);
 

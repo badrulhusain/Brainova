@@ -1,78 +1,65 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { PrismaService } from '../../database/prisma.service';
+import { InjectModel } from '@nestjs/mongoose';
+import {
+  serialize,
+  TestConfigModelName,
+  TestResultModelName,
+  TestSessionModelName,
+  type MongoModel,
+  type TestConfig,
+  type TestResult,
+  type TestSession,
+} from '../../database/mongo.schemas';
 import type { ResultSummaryDto } from './dto/result-summary.dto';
 import type { ResultReviewDto } from './dto/result-review.dto';
 
-const SESSION_FIELDS = {
-  select: {
-    startedAt: true,
-    submittedAt: true,
-    tabSwitchCount: true,
-    config: { select: { name: true, duration: true } },
-  },
-} as const;
-
 @Injectable()
 export class ResultsService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    @InjectModel(TestResultModelName)
+    private readonly resultModel: MongoModel<TestResult>,
+    @InjectModel(TestSessionModelName)
+    private readonly sessionModel: MongoModel<TestSession>,
+    @InjectModel(TestConfigModelName)
+    private readonly configModel: MongoModel<TestConfig>,
+  ) {}
 
-  /**
-   * Full result including questionResults (correctAnswer + explanation per question).
-   * Only returned to the result owner; throws 404 to avoid revealing existence.
-   */
-  async findById(resultId: string, userId: string): Promise<ResultReviewDto> {
-    const result = await this.prisma.testResult.findUnique({
-      where: { id: resultId },
-      include: { session: SESSION_FIELDS },
-    });
-
-    this.assertOwnership(result, userId);
+  async findById(resultId: string, studentId: string): Promise<ResultReviewDto> {
+    const result = await this.loadResult(resultId, studentId);
     return result as unknown as ResultReviewDto;
   }
 
-  /**
-   * Score-card only — questionResults is excluded from the Prisma select
-   * so answer key data never travels to the client via this endpoint.
-   */
-  async findSummary(resultId: string, userId: string): Promise<ResultSummaryDto> {
-    const result = await this.prisma.testResult.findUnique({
-      where: { id: resultId },
-      select: {
-        id: true,
-        sessionId: true,
-        userId: true,
-        domainId: true,
-        configId: true,
-        scoredMarks: true,
-        totalMarks: true,
-        percentageScore: true,
-        accuracy: true,
-        totalQuestions: true,
-        attemptedCount: true,
-        correctCount: true,
-        incorrectCount: true,
-        skippedCount: true,
-        topicBreakdown: true,
-        difficultyBreakdown: true,
-        createdAt: true,
-        // questionResults deliberately omitted
-        session: SESSION_FIELDS,
-      },
-    });
-
-    this.assertOwnership(result, userId);
-    return result as unknown as ResultSummaryDto;
+  async findSummary(resultId: string, studentId: string): Promise<ResultSummaryDto> {
+    const result = await this.loadResult(resultId, studentId);
+    const { questionResults: _questionResults, ...summary } = result;
+    return summary as unknown as ResultSummaryDto;
   }
 
-  // ── Private ───────────────────────────────────────────────────────────────
-
-  private assertOwnership(
-    result: { userId: string } | null,
-    userId: string,
-  ): asserts result is NonNullable<typeof result> {
-    // Return 404 rather than 403 to avoid leaking whether the result exists
-    if (!result || result.userId !== userId) {
+  private async loadResult(resultId: string, studentId: string) {
+    const result = serialize<TestResult>(await this.resultModel.findById(resultId));
+    if (!result || result.studentId !== studentId) {
       throw new NotFoundException('Result not found');
     }
+
+    const session = serialize<TestSession>(await this.sessionModel.findById(result.sessionId));
+    const config = session
+      ? serialize<TestConfig>(await this.configModel.findById(session.configId))
+      : null;
+
+    return {
+      ...result,
+      userId: result.studentId,
+      session: session
+        ? {
+            startedAt: session.startedAt,
+            submittedAt: session.submittedAt ?? null,
+            tabSwitchCount: session.tabSwitchCount,
+            config: {
+              name: config?.name ?? 'Test',
+              duration: config?.duration ?? 0,
+            },
+          }
+        : null,
+    };
   }
 }

@@ -8,12 +8,11 @@ import {
   Param,
   Patch,
   Post,
+  Req,
   UseGuards,
 } from '@nestjs/common';
-import type { User } from '@prisma/client';
-import { AuthGuard } from '../../common/guards/auth.guard';
+import type { Request } from 'express';
 import { AdminGuard } from '../../common/guards/admin.guard';
-import { CurrentUser } from '../../common/decorators/current-user.decorator';
 import { ZodValidationPipe } from '../../common/pipes/zod-validation.pipe';
 import { TestConfigsService } from './test-configs.service';
 import {
@@ -26,28 +25,26 @@ import {
 } from './dto/update-test-config.dto';
 
 @Controller('test-configs')
-@UseGuards(AuthGuard)
 export class TestConfigsController {
   constructor(private readonly testConfigsService: TestConfigsService) {}
 
   @Get()
-  findAll(@CurrentUser() user: User) {
-    // Students see only active configs; admins see all
-    return this.testConfigsService.findAll(user.role);
+  findAll() {
+    return this.testConfigsService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string, @CurrentUser() user: User) {
-    return this.testConfigsService.findById(id, user.role);
+  findOne(@Param('id') id: string) {
+    return this.testConfigsService.findById(id);
   }
 
   @Post()
   @UseGuards(AdminGuard)
   create(
     @Body(new ZodValidationPipe(CreateTestConfigSchema)) dto: CreateTestConfigDto,
-    @CurrentUser() user: User,
+    @Req() req: Request & { user: { id: string } },
   ) {
-    return this.testConfigsService.create(dto, user.id);
+    return this.testConfigsService.create(dto, req.user.id);
   }
 
   @Patch(':id')
@@ -55,9 +52,8 @@ export class TestConfigsController {
   update(
     @Param('id') id: string,
     @Body(new ZodValidationPipe(UpdateTestConfigSchema)) dto: UpdateTestConfigDto,
-    @CurrentUser() user: User,
   ) {
-    return this.testConfigsService.update(id, dto, user.id);
+    return this.testConfigsService.update(id, dto);
   }
 
   @Delete(':id')

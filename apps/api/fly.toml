@@ -4,11 +4,6 @@ primary_region = "sin"
 [build]
   dockerfile = "Dockerfile"
 
-[deploy]
-  # Runs inside the new release container before traffic is shifted.
-  # Applies pending Prisma migrations atomically on every deploy.
-  release_command = "npx prisma migrate deploy"
-
 [env]
   NODE_ENV = "production"
   PORT     = "3000"

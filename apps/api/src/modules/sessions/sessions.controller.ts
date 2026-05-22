@@ -1,21 +1,21 @@
-import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
-import type { User } from '@prisma/client';
-import { AuthGuard } from '../../common/guards/auth.guard';
+import { Body, Controller, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
+import { AnyUserGuard } from '../../common/guards/any-user.guard';
 import { SessionOwnerGuard } from '../../common/guards/session-owner.guard';
-import { CurrentUser } from '../../common/decorators/current-user.decorator';
+import { CurrentUser, type AuthUser } from '../../common/decorators/current-user.decorator';
 import { ZodValidationPipe } from '../../common/pipes/zod-validation.pipe';
 import { SessionsService } from './sessions.service';
 import { CreateSessionSchema, type CreateSessionDto } from './dto/create-session.dto';
+import { SaveAnswersSchema, type SaveAnswersDto } from './dto/save-answer.dto';
 
 @Controller('sessions')
-@UseGuards(AuthGuard)
+@UseGuards(AnyUserGuard)
 export class SessionsController {
   constructor(private readonly sessionsService: SessionsService) {}
 
   // IMPORTANT: static route 'active' must be declared BEFORE the dynamic ':id'
   // route so Express resolves it correctly.
   @Get('active')
-  getActive(@CurrentUser() user: User) {
+  getActive(@CurrentUser() user: AuthUser) {
     return this.sessionsService.getActiveSession(user.id);
   }
 
@@ -28,8 +28,18 @@ export class SessionsController {
   @Post()
   createSession(
     @Body(new ZodValidationPipe(CreateSessionSchema)) dto: CreateSessionDto,
-    @CurrentUser() user: User,
+    @CurrentUser() user: AuthUser,
   ) {
     return this.sessionsService.createSession(user.id, dto.configId);
+  }
+
+  @Put(':id/answers')
+  @UseGuards(SessionOwnerGuard)
+  saveAnswers(
+    @Param('id') id: string,
+    @Body(new ZodValidationPipe(SaveAnswersSchema)) dto: SaveAnswersDto,
+    @CurrentUser() user: AuthUser,
+  ) {
+    return this.sessionsService.saveAnswers(id, user.id, dto.answers, dto.markedForReview);
   }
 }

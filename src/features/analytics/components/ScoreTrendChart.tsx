@@ -34,12 +34,12 @@ export function ScoreTrendChart({ attempts }: ScoreTrendChartProps) {
   const byDate = [...attempts]
     .reverse()
     .reduce<Record<string, Record<string, number>>>((acc, attempt) => {
-      const label = attempt.date.toDate().toLocaleDateString(undefined, {
+      const label = new Date(attempt.date).toLocaleDateString(undefined, {
         month: 'short',
         day: 'numeric',
       });
       if (!acc[label]) acc[label] = {};
-      const pct = attempt.totalMarks > 0 ? Math.round((attempt.score / attempt.totalMarks) * 100) : 0;
+      const pct = attempt.totalMarks > 0 ? Math.round((attempt.scoredMarks / attempt.totalMarks) * 100) : 0;
       acc[label]![attempt.domainId] = pct;
       return acc;
     }, {});

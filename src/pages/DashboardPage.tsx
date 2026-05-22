@@ -6,7 +6,7 @@ import { appCopy } from '../lib/constants/copy';
 
 export default function DashboardPage() {
   const { profile, isAdmin } = useAuth();
-  const displayName = profile?.displayName ?? profile?.email ?? 'Guest learner';
+  const displayName = profile?.displayName ?? 'Student';
 
   return (
     <main className="bg-background px-4 py-8 text-foreground sm:px-6 lg:py-10">
@@ -21,9 +21,9 @@ export default function DashboardPage() {
             <Link to="/tests">
               <Button className="w-full sm:w-auto">View tests</Button>
             </Link>
-            <Link to="/verify-email">
+            <Link to="/analytics">
               <Button className="w-full sm:w-auto" variant="secondary">
-                Verify email
+                View analytics
               </Button>
             </Link>
           </div>

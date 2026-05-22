@@ -20,6 +20,6 @@
       "@/*": ["src/*"]
     }
   },
-  "include": ["src/**/*", "prisma/**/*"],
+  "include": ["src/**/*", "scripts/**/*"],
   "exclude": ["node_modules", "dist"]
 }

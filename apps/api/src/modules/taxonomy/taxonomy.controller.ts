@@ -1,5 +1,4 @@
 import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
-import { AuthGuard } from '../../common/guards/auth.guard';
 import { AdminGuard } from '../../common/guards/admin.guard';
 import { ZodValidationPipe } from '../../common/pipes/zod-validation.pipe';
 import { TaxonomyService } from './taxonomy.service';
@@ -19,7 +18,7 @@ export class TaxonomyController {
   }
 
   @Post()
-  @UseGuards(AuthGuard, AdminGuard)
+  @UseGuards(AdminGuard)
   createDomain(
     @Body(new ZodValidationPipe(CreateDomainSchema)) dto: CreateDomainDto,
   ) {
@@ -29,13 +28,12 @@ export class TaxonomyController {
   // ── Topics ────────────────────────────────────────────────────────────────
 
   @Get(':id/topics')
-  @UseGuards(AuthGuard)
   findTopics(@Param('id') domainId: string) {
     return this.taxonomyService.findTopicsByDomain(domainId);
   }
 
   @Post(':domainId/topics')
-  @UseGuards(AuthGuard, AdminGuard)
+  @UseGuards(AdminGuard)
   createTopic(
     @Param('domainId') domainId: string,
     @Body(new ZodValidationPipe(CreateTopicSchema)) dto: CreateTopicDto,
@@ -46,7 +44,7 @@ export class TaxonomyController {
   // ── Subtopics ─────────────────────────────────────────────────────────────
 
   @Post(':domainId/topics/:topicId/subtopics')
-  @UseGuards(AuthGuard, AdminGuard)
+  @UseGuards(AdminGuard)
   createSubtopic(
     @Param('domainId') domainId: string,
     @Param('topicId') topicId: string,

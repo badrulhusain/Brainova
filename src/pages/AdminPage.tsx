@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Database, FilePlus2, ShieldCheck } from 'lucide-react';
+import { Database, FilePlus2, FolderTree, ShieldCheck, Users } from 'lucide-react';
 import { Card } from '../components/ui/card';
 import { useAdminTaxonomy } from '../features/admin/hooks/useAdminTaxonomy';
 
@@ -11,7 +11,8 @@ export default function AdminPage() {
   const domains = taxonomyQuery.data ?? [];
   const topicCount = domains.reduce((count, domain) => count + domain.topics.length, 0);
   const subtopicCount = domains.reduce(
-    (count, domain) => count + domain.topics.reduce((topicTotal, topic) => topicTotal + topic.subtopics.length, 0),
+    (count, domain) =>
+      count + domain.topics.reduce((t, topic) => t + topic.subtopics.length, 0),
     0,
   );
 
@@ -23,7 +24,7 @@ export default function AdminPage() {
             <p className="text-sm font-semibold uppercase text-brand-700 dark:text-brand-300">Admin Console</p>
             <h1 className="mt-3 text-4xl font-semibold tracking-tight">Question bank management</h1>
             <p className="mt-3 max-w-3xl text-base leading-7 text-muted">
-              Add secure public questions while storing correct answers and explanations in private answer keys.
+              Manage questions, test configurations, and admin accounts.
             </p>
           </div>
           <Link className={actionLinkClass} to="/admin/questions/new">
@@ -64,7 +65,7 @@ export default function AdminPage() {
 
         {taxonomyQuery.isError ? (
           <Card className="p-5 text-sm text-red-700 dark:text-red-300">
-            Unable to load admin taxonomy. Confirm your account has admin access and Firestore rules are deployed.
+            Unable to load taxonomy. Check your admin access and API connection.
           </Card>
         ) : null}
 
@@ -75,13 +76,27 @@ export default function AdminPage() {
               className="rounded-lg border border-border bg-background px-4 py-4 text-sm font-semibold transition hover:bg-surfaceSoft focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500"
               to="/admin/questions/new"
             >
-              Create a question and private answer key
+              Create a question and answer key
             </Link>
             <Link
               className="rounded-lg border border-border bg-background px-4 py-4 text-sm font-semibold transition hover:bg-surfaceSoft focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500"
               to="/admin/test-configs"
             >
               Manage test configurations
+            </Link>
+            <Link
+              className="flex items-center gap-2 rounded-lg border border-border bg-background px-4 py-4 text-sm font-semibold transition hover:bg-surfaceSoft focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500"
+              to="/admin/taxonomy"
+            >
+              <FolderTree className="h-4 w-4 text-muted" />
+              Manage domains &amp; topics
+            </Link>
+            <Link
+              className="flex items-center gap-2 rounded-lg border border-border bg-background px-4 py-4 text-sm font-semibold transition hover:bg-surfaceSoft focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500"
+              to="/admin/admins"
+            >
+              <Users className="h-4 w-4 text-muted" />
+              Manage admin accounts
             </Link>
           </div>
         </Card>

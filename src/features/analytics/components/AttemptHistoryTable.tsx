@@ -10,12 +10,12 @@ interface AttemptHistoryTableProps {
 }
 
 function AttemptRow({ attempt }: { attempt: TestAttemptSummary }) {
-  const pct = attempt.totalMarks > 0 ? Math.round((attempt.score / attempt.totalMarks) * 100) : 0;
+  const pct = attempt.totalMarks > 0 ? Math.round((attempt.scoredMarks / attempt.totalMarks) * 100) : 0;
 
   return (
     <tr className="transition hover:bg-surfaceSoft">
       <td className="px-4 py-3 text-xs text-muted tabular-nums">
-        {attempt.date.toDate().toLocaleDateString(undefined, {
+        {new Date(attempt.date).toLocaleDateString(undefined, {
           year: 'numeric',
           month: 'short',
           day: 'numeric',
@@ -23,7 +23,7 @@ function AttemptRow({ attempt }: { attempt: TestAttemptSummary }) {
       </td>
       <td className="px-4 py-3 text-sm text-muted">{attempt.domainId}</td>
       <td className="px-4 py-3 text-right tabular-nums">
-        {attempt.score}/{attempt.totalMarks}
+        {attempt.scoredMarks}/{attempt.totalMarks}
       </td>
       <td className="px-4 py-3 text-right tabular-nums">{pct}%</td>
       <td className="px-4 py-3 text-right tabular-nums">

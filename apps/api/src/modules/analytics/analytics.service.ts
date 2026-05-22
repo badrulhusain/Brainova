@@ -1,5 +1,17 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from '../../database/prisma.service';
+import { InjectModel } from '@nestjs/mongoose';
+import {
+  DomainModelName,
+  serializeMany,
+  TestAttemptModelName,
+  TestResultModelName,
+  TopicModelName,
+  type Domain,
+  type MongoModel,
+  type TestAttempt,
+  type TestResult,
+  type Topic,
+} from '../../database/mongo.schemas';
 
 interface TopicBreakdownJson {
   correct: number;
@@ -17,65 +29,68 @@ interface DifficultyBreakdownJson {
 
 @Injectable()
 export class AnalyticsService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    @InjectModel(TestResultModelName)
+    private readonly resultModel: MongoModel<TestResult>,
+    @InjectModel(TestAttemptModelName)
+    private readonly attemptModel: MongoModel<TestAttempt>,
+    @InjectModel(DomainModelName)
+    private readonly domainModel: MongoModel<Domain>,
+    @InjectModel(TopicModelName)
+    private readonly topicModel: MongoModel<Topic>,
+  ) {}
 
-  // ── GET /analytics/summary ────────────────────────────────────────────────
-
-  async getSummary(userId: string) {
-    const stats = await this.prisma.testResult.aggregate({
-      where: { userId },
-      _count: { id: true },
-      _avg: { percentageScore: true, accuracy: true },
-      _max: { percentageScore: true },
-      _sum: { correctCount: true, attemptedCount: true, totalQuestions: true },
-    });
-
-    const totalTests = stats._count.id;
-    const totalCorrect = stats._sum.correctCount ?? 0;
-    const totalAttempted = stats._sum.attemptedCount ?? 0;
+  async getSummary(studentId: string) {
+    const results = serializeMany<TestResult>(await this.resultModel.find({ studentId }));
+    const totalTests = results.length;
+    const totalCorrect = results.reduce((sum, result) => sum + result.correctCount, 0);
+    const totalAttempted = results.reduce((sum, result) => sum + result.attemptedCount, 0);
+    const totalQuestions = results.reduce((sum, result) => sum + result.totalQuestions, 0);
+    const averageScore =
+      totalTests > 0
+        ? results.reduce((sum, result) => sum + result.percentageScore, 0) / totalTests
+        : 0;
+    const bestScore = Math.max(0, ...results.map((result) => result.percentageScore));
 
     return {
       totalTests,
-      averageScore: Math.round((stats._avg.percentageScore ?? 0) * 100) / 100,
-      bestScore: Math.round((stats._max.percentageScore ?? 0) * 100) / 100,
+      averageScore: Math.round(averageScore * 100) / 100,
+      bestScore: Math.round(bestScore * 100) / 100,
       totalCorrect,
       totalAttempted,
-      totalQuestions: stats._sum.totalQuestions ?? 0,
+      totalQuestions,
       overallAccuracy:
-        totalAttempted > 0
-          ? Math.round((totalCorrect / totalAttempted) * 10000) / 100
-          : 0,
+        totalAttempted > 0 ? Math.round((totalCorrect / totalAttempted) * 10000) / 100 : 0,
     };
   }
 
-  // ── GET /analytics/attempts ───────────────────────────────────────────────
-
-  async getAttempts(
-    userId: string,
-    page: number,
-    limit: number,
-    domainId?: string,
-  ) {
-    const where = { userId, ...(domainId && { domainId }) };
-
-    const [total, items] = await this.prisma.$transaction([
-      this.prisma.testAttempt.count({ where }),
-      this.prisma.testAttempt.findMany({
-        where,
-        include: {
-          domain: { select: { id: true, name: true, icon: true } },
-          result: {
-            select: { id: true, percentageScore: true, configId: true },
-          },
-        },
-        orderBy: { date: 'desc' },
-        skip: (page - 1) * limit,
-        take: limit,
-      }),
+  async getAttempts(studentId: string, page: number, limit: number, domainId?: string) {
+    const where = { studentId, ...(domainId && { domainId }) };
+    const [total, attempts] = await Promise.all([
+      this.attemptModel.countDocuments(where),
+      this.attemptModel
+        .find(where)
+        .sort({ date: -1 })
+        .skip((page - 1) * limit)
+        .limit(limit),
     ]);
 
+    const items = serializeMany<TestAttempt>(attempts);
+    const domains = serializeMany<Domain>(
+      await this.domainModel.find({ _id: { $in: [...new Set(items.map((item) => item.domainId))] } }),
+    );
+    const results = serializeMany<TestResult>(
+      await this.resultModel.find({ _id: { $in: items.map((item) => item.resultId) } }),
+    );
+    const domainMap = new Map(domains.map((domain) => [domain.id, domain]));
+    const resultMap = new Map(results.map((result) => [result.id, result]));
+
     return {
-      items,
+      items: items.map((item) => ({
+        ...item,
+        domain: domainMap.get(item.domainId) ?? null,
+        result: resultMap.get(item.resultId) ?? null,
+      })),
       total,
       page,
       limit,
@@ -83,94 +98,74 @@ export class AnalyticsService {
     };
   }
 
-  // ── GET /analytics/score-trend ────────────────────────────────────────────
+  async getScoreTrend(studentId: string) {
+    const attempts = serializeMany<TestAttempt>(
+      await this.attemptModel.find({ studentId }).sort({ date: -1 }).limit(20),
+    );
+    const domains = serializeMany<Domain>(
+      await this.domainModel.find({ _id: { $in: [...new Set(attempts.map((a) => a.domainId))] } }),
+    );
+    const results = serializeMany<TestResult>(
+      await this.resultModel.find({ _id: { $in: attempts.map((a) => a.resultId) } }),
+    );
+    const domainMap = new Map(domains.map((domain) => [domain.id, domain]));
+    const resultMap = new Map(results.map((result) => [result.id, result]));
 
-  async getScoreTrend(userId: string) {
-    const attempts = await this.prisma.testAttempt.findMany({
-      where: { userId },
-      select: {
-        date: true,
-        domainId: true,
-        scoredMarks: true,
-        totalMarks: true,
-        domain: { select: { name: true } },
-        result: { select: { percentageScore: true } },
-      },
-      orderBy: { date: 'desc' },
-      take: 20,
-    });
-
-    // Return in chronological order (oldest first) for chart rendering
     return attempts
-      .map((a) => ({
-        date: a.date,
-        percentageScore: a.result?.percentageScore ?? 0,
-        scoredMarks: a.scoredMarks,
-        totalMarks: a.totalMarks,
-        domainId: a.domainId,
-        domainName: a.domain.name,
+      .map((attempt) => ({
+        date: attempt.date,
+        percentageScore: resultMap.get(attempt.resultId)?.percentageScore ?? 0,
+        scoredMarks: attempt.scoredMarks,
+        totalMarks: attempt.totalMarks,
+        domainId: attempt.domainId,
+        domainName: domainMap.get(attempt.domainId)?.name ?? 'Unknown',
       }))
       .reverse();
   }
 
-  // ── GET /analytics/weak-topics ────────────────────────────────────────────
-
-  async getWeakTopics(userId: string) {
-    const results = await this.prisma.testResult.findMany({
-      where: { userId },
-      select: { topicBreakdown: true },
-    });
-
-    // Aggregate across all test results in memory
+  async getWeakTopics(studentId: string) {
+    const results = serializeMany<TestResult>(
+      await this.resultModel.find({ studentId }).select('topicBreakdown'),
+    );
     const topicStats = new Map<string, { correct: number; attempted: number }>();
 
     for (const result of results) {
       const breakdown = result.topicBreakdown as Record<string, TopicBreakdownJson>;
       for (const [topicId, data] of Object.entries(breakdown)) {
-        const cur = topicStats.get(topicId) ?? { correct: 0, attempted: 0 };
-        cur.correct += data.correct;
-        cur.attempted += data.correct + data.incorrect;
-        topicStats.set(topicId, cur);
+        const current = topicStats.get(topicId) ?? { correct: 0, attempted: 0 };
+        current.correct += data.correct;
+        current.attempted += data.correct + data.incorrect;
+        topicStats.set(topicId, current);
       }
     }
 
-    // Lowest accuracy first, limit to 3, exclude topics with no attempts
     const sorted = Array.from(topicStats.entries())
-      .filter(([, s]) => s.attempted > 0)
-      .map(([topicId, s]) => ({
+      .filter(([, stats]) => stats.attempted > 0)
+      .map(([topicId, stats]) => ({
         topicId,
-        correct: s.correct,
-        attempted: s.attempted,
-        accuracy: Math.round((s.correct / s.attempted) * 10000) / 100,
+        correct: stats.correct,
+        attempted: stats.attempted,
+        accuracy: Math.round((stats.correct / stats.attempted) * 10000) / 100,
       }))
       .sort((a, b) => a.accuracy - b.accuracy)
       .slice(0, 3);
 
-    if (sorted.length === 0) return [];
+    const topics = serializeMany<Topic>(
+      await this.topicModel.find({ _id: { $in: sorted.map((topic) => topic.topicId) } }),
+    );
+    const topicMap = new Map(topics.map((topic) => [topic.id, topic]));
 
-    // Enrich with topic metadata in one query
-    const topicIds = sorted.map((t) => t.topicId);
-    const topics = await this.prisma.topic.findMany({
-      where: { id: { in: topicIds } },
-      select: { id: true, name: true, domainId: true },
-    });
-    const topicMap = new Map(topics.map((t) => [t.id, t]));
-
-    return sorted.map((wt) => ({
-      ...wt,
-      topicName: topicMap.get(wt.topicId)?.name ?? 'Unknown',
-      domainId: topicMap.get(wt.topicId)?.domainId ?? '',
+    return sorted.map((weakTopic) => ({
+      ...weakTopic,
+      topicName: topicMap.get(weakTopic.topicId)?.name ?? 'Unknown',
+      domainId: topicMap.get(weakTopic.topicId)?.domainId ?? '',
     }));
   }
 
-  // ── GET /analytics/difficulty-chart ──────────────────────────────────────
-
-  async getDifficultyChart(userId: string) {
-    const results = await this.prisma.testResult.findMany({
-      where: { userId },
-      select: { difficultyBreakdown: true },
-    });
-
+  async getDifficultyChart(studentId: string) {
+    const results = serializeMany<TestResult>(
+      await this.resultModel.find({ studentId }).select('difficultyBreakdown'),
+    );
     const accum: Record<string, { correct: number; attempted: number; total: number }> = {
       EASY: { correct: 0, attempted: 0, total: 0 },
       MEDIUM: { correct: 0, attempted: 0, total: 0 },
@@ -178,12 +173,9 @@ export class AnalyticsService {
     };
 
     for (const result of results) {
-      const breakdown = result.difficultyBreakdown as Record<
-        string,
-        DifficultyBreakdownJson
-      >;
-      for (const [diff, data] of Object.entries(breakdown)) {
-        const key = diff.toUpperCase();
+      const breakdown = result.difficultyBreakdown as Record<string, DifficultyBreakdownJson>;
+      for (const [difficulty, data] of Object.entries(breakdown)) {
+        const key = difficulty.toUpperCase();
         if (key in accum) {
           accum[key].correct += data.correct;
           accum[key].attempted += data.correct + data.incorrect;
@@ -193,15 +185,15 @@ export class AnalyticsService {
     }
 
     return Object.fromEntries(
-      Object.entries(accum).map(([diff, s]) => [
-        diff,
+      Object.entries(accum).map(([difficulty, stats]) => [
+        difficulty,
         {
-          correct: s.correct,
-          attempted: s.attempted,
-          total: s.total,
+          correct: stats.correct,
+          attempted: stats.attempted,
+          total: stats.total,
           accuracy:
-            s.attempted > 0
-              ? Math.round((s.correct / s.attempted) * 10000) / 100
+            stats.attempted > 0
+              ? Math.round((stats.correct / stats.attempted) * 10000) / 100
               : 0,
         },
       ]),

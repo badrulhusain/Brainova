@@ -1,20 +1,19 @@
-import path from 'path';
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
 export default defineConfig({
   plugins: [react()],
-  resolve: {
-    alias: {
-      // Route firebase/* imports to compatibility shims.
-      // These let un-migrated pages (TestShell, TestsPage, VerifyEmailPage)
-      // compile and run without source changes.
-      'firebase/functions': path.resolve(__dirname, 'src/lib/firebase/functions-shim.ts'),
-      'firebase/auth': path.resolve(__dirname, 'src/lib/firebase/auth-shim.ts'),
-    },
-  },
   server: {
     port: 4173,
+    watch: {
+      ignored: (filePath: string) =>
+        filePath.includes('/node_modules/') ||
+        filePath.includes('/apps/api/dist/') ||
+        filePath.includes('/apps/api/node_modules/') ||
+        filePath.includes('/.git/') ||
+        filePath.includes('/coverage/') ||
+        filePath.includes('/dist/'),
+    },
   },
   preview: {
     port: 4174,

@@ -1,12 +1,20 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import type { AnswerKey, Prisma, Question } from '@prisma/client';
-import { PrismaService } from '../../database/prisma.service';
+import { InjectConnection, InjectModel } from '@nestjs/mongoose';
+import type { Connection } from 'mongoose';
+import {
+  AnswerKeyModelName,
+  QuestionModelName,
+  serialize,
+  serializeMany,
+  type AnswerKey,
+  type MongoModel,
+  type Question,
+} from '../../database/mongo.schemas';
 import type { CreateQuestionDto } from './dto/create-question.dto';
 import type { UpdateQuestionDto } from './dto/update-question.dto';
 import type { QuestionFilterDto } from './dto/question-filter.dto';
 
-// AnswerKey is never included in public-facing responses
-export type PublicQuestion = Omit<Question, never> & { answerKey?: undefined };
+export type PublicQuestion = Question & { answerKey?: undefined };
 
 export interface QuestionListResult {
   items: PublicQuestion[];
@@ -16,44 +24,46 @@ export interface QuestionListResult {
   totalPages: number;
 }
 
-function toPublicQuestion(q: Question & { answerKey?: AnswerKey | null }): PublicQuestion {
-  // Destructure to strip answerKey regardless of whether Prisma included it
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { answerKey: _ak, ...safe } = q as Question & { answerKey?: unknown };
-  return safe as PublicQuestion;
+function toPublicQuestion(question: Question): PublicQuestion {
+  return question as PublicQuestion;
 }
 
 @Injectable()
 export class QuestionsService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    @InjectModel(QuestionModelName)
+    private readonly questionModel: MongoModel<Question>,
+    @InjectModel(AnswerKeyModelName)
+    private readonly answerKeyModel: MongoModel<AnswerKey>,
+    @InjectConnection()
+    private readonly connection: Connection,
+  ) {}
 
   async findAll(filter: QuestionFilterDto): Promise<QuestionListResult> {
     const { domainId, topicId, subtopicId, difficulty, type, active, search, page, limit } =
       filter;
 
-    const where: Prisma.QuestionWhereInput = {
+    const where: Record<string, unknown> = {
       ...(domainId && { domainId }),
       ...(topicId && { topicId }),
       ...(subtopicId && { subtopicId }),
       ...(difficulty && { difficulty }),
       ...(type && { type }),
       ...(active !== undefined && { active }),
-      ...(search && { text: { contains: search, mode: 'insensitive' as const } }),
+      ...(search && { text: { $regex: search, $options: 'i' } }),
     };
 
-    const [total, rows] = await this.prisma.$transaction([
-      this.prisma.question.count({ where }),
-      this.prisma.question.findMany({
-        where,
-        // Never include answerKey in list responses
-        skip: (page - 1) * limit,
-        take: limit,
-        orderBy: [{ difficulty: 'asc' }, { createdAt: 'desc' }],
-      }),
+    const [total, rows] = await Promise.all([
+      this.questionModel.countDocuments(where),
+      this.questionModel
+        .find(where)
+        .sort({ difficulty: 1, createdAt: -1 })
+        .skip((page - 1) * limit)
+        .limit(limit),
     ]);
 
     return {
-      items: rows.map(toPublicQuestion),
+      items: serializeMany<Question>(rows).map(toPublicQuestion),
       total,
       page,
       limit,
@@ -62,82 +72,84 @@ export class QuestionsService {
   }
 
   async findById(id: string): Promise<PublicQuestion> {
-    const question = await this.prisma.question.findUnique({ where: { id } });
+    const question = await this.questionModel.findById(id);
     if (!question) throw new NotFoundException('Question not found');
-    return toPublicQuestion(question);
+    return toPublicQuestion(serialize<Question>(question));
   }
 
   async create(dto: CreateQuestionDto, userId: string): Promise<PublicQuestion> {
     const { answerKey, ...questionData } = dto;
-
-    const created = await this.prisma.$transaction(async (tx) => {
-      return tx.question.create({
-        data: {
-          ...questionData,
-          createdBy: userId,
-          updatedBy: userId,
-          answerKey: {
-            create: {
+    const session = await this.connection.startSession();
+    try {
+      let created: Question | null = null;
+      await session.withTransaction(async () => {
+        const [question] = await this.questionModel.create(
+          [{ ...questionData, createdBy: userId, updatedBy: userId }],
+          { session },
+        );
+        await this.answerKeyModel.create(
+          [
+            {
+              questionId: String(question._id),
               correctAnswer: answerKey.correctAnswer,
               explanation: answerKey.explanation,
               updatedBy: userId,
             },
-          },
-        },
-        include: { answerKey: true },
+          ],
+          { session },
+        );
+        created = serialize<Question>(question);
       });
-    });
-
-    return toPublicQuestion(created);
+      if (!created) throw new NotFoundException('Question not created');
+      return toPublicQuestion(created);
+    } finally {
+      await session.endSession();
+    }
   }
 
   async update(id: string, dto: UpdateQuestionDto, userId: string): Promise<PublicQuestion> {
-    const existing = await this.prisma.question.findUnique({ where: { id } });
+    const existing = await this.questionModel.findById(id);
     if (!existing) throw new NotFoundException('Question not found');
 
     const { answerKey, ...questionData } = dto;
-
-    const updated = await this.prisma.$transaction(async (tx) => {
-      return tx.question.update({
-        where: { id },
-        data: {
-          ...questionData,
-          updatedBy: userId,
-          ...(answerKey && {
-            answerKey: {
-              upsert: {
-                create: { ...answerKey, updatedBy: userId },
-                update: { ...answerKey, updatedBy: userId },
-              },
-            },
-          }),
-        },
-        include: { answerKey: true },
+    const session = await this.connection.startSession();
+    try {
+      let updated: Question | null = null;
+      await session.withTransaction(async () => {
+        const question = await this.questionModel.findByIdAndUpdate(
+          id,
+          { ...questionData, updatedBy: userId },
+          { new: true, session },
+        );
+        if (!question) throw new NotFoundException('Question not found');
+        if (answerKey) {
+          await this.answerKeyModel.updateOne(
+            { questionId: id },
+            { ...answerKey, updatedBy: userId },
+            { upsert: true, session },
+          );
+        }
+        updated = serialize<Question>(question);
       });
-    });
-
-    return toPublicQuestion(updated);
+      if (!updated) throw new NotFoundException('Question not found');
+      return toPublicQuestion(updated);
+    } finally {
+      await session.endSession();
+    }
   }
 
   async remove(id: string): Promise<void> {
-    const existing = await this.prisma.question.findUnique({ where: { id } });
-    if (!existing) throw new NotFoundException('Question not found');
-    await this.prisma.question.delete({ where: { id } });
+    const question = await this.questionModel.findByIdAndUpdate(id, { active: false });
+    if (!question) throw new NotFoundException('Question not found');
   }
-
-  // ── Admin only ─────────────────────────────────────────────────────────────
 
   async getAnswerKey(id: string): Promise<AnswerKey> {
-    const question = await this.prisma.question.findUnique({
-      where: { id },
-      include: { answerKey: true },
-    });
+    const question = await this.questionModel.exists({ _id: id });
     if (!question) throw new NotFoundException('Question not found');
-    if (!question.answerKey) throw new NotFoundException('Answer key not found');
-    return question.answerKey;
+    const answerKey = await this.answerKeyModel.findOne({ questionId: id });
+    if (!answerKey) throw new NotFoundException('Answer key not found');
+    return serialize<AnswerKey>(answerKey);
   }
-
-  // ── Internal use by sessions.service ──────────────────────────────────────
 
   async findForSession(params: {
     domainId: string;
@@ -145,13 +157,12 @@ export class QuestionsService {
     difficulty: 'EASY' | 'MEDIUM' | 'HARD';
     count: number;
   }): Promise<Question[]> {
-    const where: Prisma.QuestionWhereInput = {
+    const rows = await this.questionModel.find({
       domainId: params.domainId,
       difficulty: params.difficulty,
       active: true,
-      ...(params.topicFilter.length > 0 && { topicId: { in: params.topicFilter } }),
-    };
-
-    return this.prisma.question.findMany({ where });
+      ...(params.topicFilter.length > 0 && { topicId: { $in: params.topicFilter } }),
+    });
+    return serializeMany<Question>(rows);
   }
 }

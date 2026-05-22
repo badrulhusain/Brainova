@@ -8,17 +8,20 @@ interface QuestionReviewItemProps {
 }
 
 export function QuestionReviewItem({ result, index }: QuestionReviewItemProps) {
-  const statusIcon = result.isSkipped ? (
+  const isSkipped = result.status === 'SKIPPED';
+  const isCorrect = result.status === 'CORRECT';
+
+  const statusIcon = isSkipped ? (
     <MinusCircle className="mt-0.5 h-4 w-4 shrink-0 text-slate-400" />
-  ) : result.isCorrect ? (
+  ) : isCorrect ? (
     <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-emerald-600" />
   ) : (
     <XCircle className="mt-0.5 h-4 w-4 shrink-0 text-red-600" />
   );
 
-  const borderColor = result.isSkipped
+  const borderColor = isSkipped
     ? 'border-border'
-    : result.isCorrect
+    : isCorrect
       ? 'border-emerald-200 dark:border-emerald-900'
       : 'border-red-200 dark:border-red-900';
 
@@ -33,9 +36,9 @@ export function QuestionReviewItem({ result, index }: QuestionReviewItemProps) {
             <span
               className={cn(
                 'rounded-full px-2 py-0.5 text-xs font-medium capitalize',
-                result.difficulty === 'easy'
+                result.difficulty === 'EASY'
                   ? 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300'
-                  : result.difficulty === 'medium'
+                  : result.difficulty === 'MEDIUM'
                     ? 'bg-amber-50 text-amber-700 dark:bg-amber-950/60 dark:text-amber-300'
                     : 'bg-red-50 text-red-700 dark:bg-red-950/60 dark:text-red-300',
               )}
@@ -48,23 +51,23 @@ export function QuestionReviewItem({ result, index }: QuestionReviewItemProps) {
             <span
               className={cn(
                 'ml-auto text-xs font-semibold',
-                result.marksEarned > 0
+                result.marks > 0
                   ? 'text-emerald-600'
-                  : result.marksEarned < 0
+                  : result.marks < 0
                     ? 'text-red-600'
                     : 'text-muted',
               )}
             >
-              {result.marksEarned > 0 ? '+' : ''}
-              {result.marksEarned} marks
+              {result.marks > 0 ? '+' : ''}
+              {result.marks} marks
             </span>
           </div>
-          <p className="mt-2 leading-6 text-foreground">{result.questionText}</p>
+          <p className="mt-2 leading-6 text-foreground">{result.text}</p>
         </div>
       </div>
 
       {/* Options for MCQ/true_false */}
-      {(result.type === 'mcq' || result.type === 'true_false') &&
+      {(result.type === 'MCQ' || result.type === 'TRUE_FALSE') &&
         result.options.length > 0 && (
           <div className="mt-3 grid gap-1.5 pl-7">
             {result.options.map((option, idx) => {
@@ -97,24 +100,24 @@ export function QuestionReviewItem({ result, index }: QuestionReviewItemProps) {
         )}
 
       {/* Fill answer */}
-      {result.type === 'fill' && (
+      {result.type === 'FILL' && (
         <div className="mt-3 pl-7 text-sm">
           <p>
             <span className="text-muted">Your answer: </span>
             <span
               className={cn(
                 'font-medium',
-                result.isSkipped
+                isSkipped
                   ? 'text-muted italic'
-                  : result.isCorrect
+                  : isCorrect
                     ? 'text-emerald-700 dark:text-emerald-400'
                     : 'text-red-700 dark:text-red-400',
               )}
             >
-              {result.isSkipped ? 'Not answered' : result.userAnswer}
+              {isSkipped ? 'Not answered' : result.userAnswer}
             </span>
           </p>
-          {!result.isCorrect && (
+          {!isCorrect && (
             <p className="mt-1">
               <span className="text-muted">Correct answer: </span>
               <span className="font-medium text-emerald-700 dark:text-emerald-400">

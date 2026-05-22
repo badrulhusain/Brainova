@@ -1,36 +1,33 @@
 import { z } from 'zod';
 
-export const emailSchema = z.string().trim().email('Enter a valid email address.').max(254);
-
-export const passwordSchema = z
-  .string()
-  .min(8, 'Password must be at least 8 characters.')
-  .max(128, 'Password must be 128 characters or less.')
-  .regex(/[A-Z]/, 'Password must include an uppercase letter.')
-  .regex(/[a-z]/, 'Password must include a lowercase letter.')
-  .regex(/[0-9]/, 'Password must include a number.');
-
-export const loginSchema = z.object({
-  email: emailSchema,
-  password: z.string().min(1, 'Enter your password.').max(128),
+export const studentLoginSchema = z.object({
+  name: z.string().trim().min(1, 'Enter your name.'),
+  admissionNo: z.string().trim().min(1, 'Enter your admission number.'),
 });
 
-export const signupSchema = z
-  .object({
-    displayName: z.string().trim().min(2, 'Enter your name.').max(80, 'Name must be 80 characters or less.'),
-    email: emailSchema,
-    password: passwordSchema,
-    confirmPassword: z.string().min(1, 'Confirm your password.'),
-  })
-  .refine((value) => value.password === value.confirmPassword, {
-    message: 'Passwords do not match.',
-    path: ['confirmPassword'],
-  });
-
-export const resetPasswordSchema = z.object({
-  email: emailSchema,
+export const studentRegisterSchema = z.object({
+  name: z.string().trim().min(2, 'Name must be at least 2 characters.'),
+  admissionNo: z.string().trim().min(1, 'Enter your admission number.'),
+  department: z.string().trim().min(1).max(100).optional().or(z.literal('')),
+  batch: z.string().trim().min(1).max(20).optional().or(z.literal('')),
 });
 
-export type LoginFormValues = z.infer<typeof loginSchema>;
-export type SignupFormValues = z.infer<typeof signupSchema>;
-export type ResetPasswordFormValues = z.infer<typeof resetPasswordSchema>;
+export const adminLoginSchema = z.object({
+  username: z.string().trim().min(1, 'Enter your username.'),
+  password: z.string().min(1, 'Enter your password.'),
+});
+
+export const createAdminSchema = z.object({
+  username: z
+    .string()
+    .trim()
+    .min(3, 'At least 3 characters.')
+    .max(50)
+    .regex(/^[a-zA-Z0-9_]+$/, 'Only letters, numbers, underscores.'),
+  password: z.string().min(8, 'At least 8 characters.'),
+});
+
+export type StudentLoginValues = z.infer<typeof studentLoginSchema>;
+export type StudentRegisterValues = z.infer<typeof studentRegisterSchema>;
+export type AdminLoginValues = z.infer<typeof adminLoginSchema>;
+export type CreateAdminValues = z.infer<typeof createAdminSchema>;

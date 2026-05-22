@@ -38,7 +38,7 @@ export function WeakTopicsPanel({ uid }: WeakTopicsPanelProps) {
               <span className="text-sm font-medium text-foreground">{topic.topicId}</span>
               <div className="flex items-center gap-3">
                 <span className="text-xs text-muted">
-                  {topic.correct}/{topic.total} correct
+                  {topic.correct}/{topic.attempted} correct
                 </span>
                 <span className="rounded-full bg-red-50 px-2.5 py-0.5 text-xs font-semibold text-red-700 dark:bg-red-950/60 dark:text-red-300">
                   {Math.round(topic.accuracy * 100)}%

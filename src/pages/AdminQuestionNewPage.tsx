@@ -1,12 +1,17 @@
 import { useEffect, useMemo, useState, type FormEvent } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
-import { ArrowLeft, Save } from 'lucide-react';
+import { ArrowLeft, Plus, Save } from 'lucide-react';
 import { toast } from 'sonner';
 import { Button } from '../components/ui/button';
 import { Card } from '../components/ui/card';
 import { Input } from '../components/ui/input';
 import { useAdminTaxonomy } from '../features/admin/hooks/useAdminTaxonomy';
-import { createAdminQuestion } from '../features/admin/services/questionAdminService';
+import {
+  createAdminQuestion,
+  createAdminSubtopic,
+  createAdminTopic,
+} from '../features/admin/services/questionAdminService';
 import { useAuth } from '../features/auth/AuthProvider';
 import { adminQuestionSchema, type AdminQuestionInput } from '../lib/validators/adminQuestion';
 
@@ -102,12 +107,17 @@ function FieldError({ message }: { message?: string }) {
 
 export default function AdminQuestionNewPage() {
   const { user } = useAuth();
+  const queryClient = useQueryClient();
   const taxonomyQuery = useAdminTaxonomy();
   const domains = taxonomyQuery.data ?? [];
   const [form, setForm] = useState<FormState>(defaultFormState);
+  const [newTopicName, setNewTopicName] = useState('');
+  const [newSubtopicName, setNewSubtopicName] = useState('');
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
   const [formError, setFormError] = useState<string | null>(null);
   const [isSaving, setIsSaving] = useState(false);
+  const [isCreatingTopic, setIsCreatingTopic] = useState(false);
+  const [isCreatingSubtopic, setIsCreatingSubtopic] = useState(false);
 
   const selectedDomain = domains.find((domain) => domain.id === form.domain) ?? null;
   const selectedTopic = selectedDomain?.topics.find((topic) => topic.id === form.topic) ?? null;
@@ -187,6 +197,74 @@ export default function AdminQuestionNewPage() {
       topic: topicId,
       subtopic: nextSubtopic?.id ?? '',
     }));
+  };
+
+  const refreshTaxonomy = async () => {
+    await queryClient.invalidateQueries({ queryKey: ['admin-taxonomy'] });
+    await taxonomyQuery.refetch();
+  };
+
+  const onCreateTopic = async () => {
+    const name = newTopicName.trim();
+    if (!form.domain || !selectedDomain || !name) {
+      return;
+    }
+
+    setIsCreatingTopic(true);
+    setFormError(null);
+
+    try {
+      const topic = await createAdminTopic({
+        domainId: form.domain,
+        name,
+        order: selectedDomain.topics.length + 1,
+      });
+      setForm((current) => ({
+        ...current,
+        topic: topic.id,
+        subtopic: '',
+      }));
+      setNewTopicName('');
+      setNewSubtopicName('');
+      await refreshTaxonomy();
+      toast.success('Topic added.');
+    } catch (error) {
+      setFormError(error instanceof Error ? error.message : 'Unable to add topic.');
+      toast.error('Unable to add topic.');
+    } finally {
+      setIsCreatingTopic(false);
+    }
+  };
+
+  const onCreateSubtopic = async () => {
+    const name = newSubtopicName.trim();
+    if (!form.domain || !form.topic || !selectedTopic || !name) {
+      return;
+    }
+
+    setIsCreatingSubtopic(true);
+    setFormError(null);
+
+    try {
+      const subtopic = await createAdminSubtopic({
+        domainId: form.domain,
+        topicId: form.topic,
+        name,
+        order: selectedTopic.subtopics.length + 1,
+      });
+      setForm((current) => ({
+        ...current,
+        subtopic: subtopic.id,
+      }));
+      setNewSubtopicName('');
+      await refreshTaxonomy();
+      toast.success('Subtopic added.');
+    } catch (error) {
+      setFormError(error instanceof Error ? error.message : 'Unable to add subtopic.');
+      toast.error('Unable to add subtopic.');
+    } finally {
+      setIsCreatingSubtopic(false);
+    }
   };
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
@@ -284,24 +362,62 @@ export default function AdminQuestionNewPage() {
               <label className="grid gap-2 text-sm font-medium">
                 Topic
                 <select className={fieldClass} value={form.topic} onChange={(event) => onTopicChange(event.target.value)}>
+                  <option value="">Select topic</option>
                   {(selectedDomain?.topics ?? []).map((topic) => (
                     <option key={topic.id} value={topic.id}>
                       {topic.name}
                     </option>
                   ))}
                 </select>
+                <div className="flex gap-2">
+                  <Input
+                    disabled={!form.domain || isCreatingTopic}
+                    placeholder="New topic"
+                    value={newTopicName}
+                    onChange={(event) => setNewTopicName(event.target.value)}
+                  />
+                  <Button
+                    aria-label="Add topic"
+                    className="min-h-11 shrink-0 px-3"
+                    disabled={!form.domain || !newTopicName.trim() || isCreatingTopic}
+                    onClick={onCreateTopic}
+                    type="button"
+                    variant="secondary"
+                  >
+                    <Plus aria-hidden="true" className="h-4 w-4" />
+                  </Button>
+                </div>
                 <FieldError message={fieldErrors.topic} />
               </label>
 
               <label className="grid gap-2 text-sm font-medium">
                 Subtopic
                 <select className={fieldClass} value={form.subtopic} onChange={(event) => updateForm('subtopic', event.target.value)}>
+                  <option value="">Select subtopic</option>
                   {(selectedTopic?.subtopics ?? []).map((subtopic) => (
                     <option key={subtopic.id} value={subtopic.id}>
                       {subtopic.name}
                     </option>
                   ))}
                 </select>
+                <div className="flex gap-2">
+                  <Input
+                    disabled={!form.topic || isCreatingSubtopic}
+                    placeholder="New subtopic"
+                    value={newSubtopicName}
+                    onChange={(event) => setNewSubtopicName(event.target.value)}
+                  />
+                  <Button
+                    aria-label="Add subtopic"
+                    className="min-h-11 shrink-0 px-3"
+                    disabled={!form.topic || !newSubtopicName.trim() || isCreatingSubtopic}
+                    onClick={onCreateSubtopic}
+                    type="button"
+                    variant="secondary"
+                  >
+                    <Plus aria-hidden="true" className="h-4 w-4" />
+                  </Button>
+                </div>
                 <FieldError message={fieldErrors.subtopic} />
               </label>
             </div>

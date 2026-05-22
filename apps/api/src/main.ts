@@ -1,8 +1,7 @@
 import 'reflect-metadata';
 import { NestFactory } from '@nestjs/core';
-import { IoAdapter } from '@nestjs/platform-socket.io';
+import { ConfigService } from '@nestjs/config';
 import helmet from 'helmet';
-import * as cookieParser from 'cookie-parser';
 import { ZodValidationPipe } from 'nestjs-zod';
 import { AppModule } from './app.module';
 import { GlobalExceptionFilter } from './common/filters/global-exception.filter';
@@ -10,8 +9,7 @@ import { ResponseInterceptor } from './common/interceptors/response.interceptor'
 
 async function bootstrap(): Promise<void> {
   const app = await NestFactory.create(AppModule);
-
-  app.use(cookieParser());
+  const configService = app.get(ConfigService);
 
   app.use(
     helmet({
@@ -21,24 +19,18 @@ async function bootstrap(): Promise<void> {
   );
 
   app.enableCors({
-    origin: process.env.FRONTEND_URL ?? 'http://localhost:5173',
+    origin: configService.getOrThrow<string>('FRONTEND_URL'),
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'Cookie'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
   });
 
   app.useGlobalFilters(new GlobalExceptionFilter());
   app.useGlobalInterceptors(new ResponseInterceptor());
   app.useGlobalPipes(new ZodValidationPipe());
+  app.setGlobalPrefix('api');
 
-  app.useWebSocketAdapter(new IoAdapter(app));
-
-  // Global API prefix — auth routes are handled by middleware at /api/auth/*
-  app.setGlobalPrefix('api', {
-    exclude: ['/api/auth/(.*)'],
-  });
-
-  const port = parseInt(process.env.PORT ?? '3000', 10);
+  const port = configService.getOrThrow<number>('PORT');
   await app.listen(port);
   console.log(`API server listening on port ${port}`);
 }

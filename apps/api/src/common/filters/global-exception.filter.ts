@@ -6,8 +6,8 @@ import {
   HttpStatus,
   Logger,
 } from '@nestjs/common';
-import { Prisma } from '@prisma/client';
-import type { Response } from 'express';
+import { MongoServerError } from 'mongodb';
+import type { Request, Response } from 'express';
 
 interface ErrorBody {
   success: false;
@@ -23,9 +23,13 @@ export class GlobalExceptionFilter implements ExceptionFilter {
     if (host.getType() !== 'http') return;
 
     const ctx = host.switchToHttp();
+    const request = ctx.getRequest<Request>();
     const response = ctx.getResponse<Response>();
 
     const body = this.buildErrorBody(exception);
+    if (process.env.NODE_ENV === 'development') {
+      this.logDevelopmentError(exception, request, body.statusCode);
+    }
     response.status(body.statusCode).json(body);
   }
 
@@ -44,19 +48,12 @@ export class GlobalExceptionFilter implements ExceptionFilter {
       return { success: false, message, statusCode: status };
     }
 
-    if (exception instanceof Prisma.PrismaClientKnownRequestError) {
-      if (exception.code === 'P2002') {
+    if (exception instanceof MongoServerError) {
+      if (exception.code === 11000) {
         return {
           success: false,
           message: 'A record with this value already exists',
           statusCode: HttpStatus.CONFLICT,
-        };
-      }
-      if (exception.code === 'P2025') {
-        return {
-          success: false,
-          message: 'Record not found',
-          statusCode: HttpStatus.NOT_FOUND,
         };
       }
       return {
@@ -66,14 +63,23 @@ export class GlobalExceptionFilter implements ExceptionFilter {
       };
     }
 
-    if (exception instanceof Error) {
-      this.logger.error(exception.message, exception.stack);
-    }
-
     return {
       success: false,
       message: 'Internal server error',
       statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
     };
+  }
+
+  private logDevelopmentError(
+    exception: unknown,
+    request: Request,
+    statusCode: number,
+  ): void {
+    const route = `${request.method} ${request.originalUrl}`;
+    if (exception instanceof Error) {
+      this.logger.error(`${statusCode} ${route} - ${exception.message}`, exception.stack);
+      return;
+    }
+    this.logger.error(`${statusCode} ${route} - ${String(exception)}`);
   }
 }

@@ -1,9 +1,8 @@
 import type { ReactNode } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { BarChart3, ClipboardList, LayoutDashboard, LineChart, ShieldCheck } from 'lucide-react';
 import { toast } from 'sonner';
 import { useAuth } from '../../features/auth/AuthProvider';
-import { logout } from '../../features/auth/authService';
 import { appCopy } from '../../lib/constants/copy';
 import { ThemeToggle } from '../ui/theme-toggle';
 
@@ -16,13 +15,15 @@ const navigation = [
 ] as const;
 
 export function PageShell({ children }: { children: ReactNode }) {
-  const { user, profile, isLoading, isAdmin } = useAuth();
+  const { user, profile, isLoading, isAdmin, signOut } = useAuth();
+  const navigate = useNavigate();
   const visibleNavigation = navigation.filter((item) => !item.adminOnly || isAdmin);
 
   const onSignOut = async () => {
     try {
-      await logout();
+      await signOut();
       toast.success('Signed out.');
+      navigate('/login', { replace: true });
     } catch (error) {
       toast.error(error instanceof Error ? error.message : 'Unable to sign out.');
     }
@@ -61,7 +62,7 @@ export function PageShell({ children }: { children: ReactNode }) {
                   to="/dashboard"
                   className="hidden rounded-lg px-3 py-2 text-sm font-medium text-muted transition hover:bg-surfaceSoft hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2 focus-visible:ring-offset-background md:inline-flex"
                 >
-                  {profile?.displayName ?? profile?.email ?? 'Guest'}
+                  {profile?.displayName ?? 'Student'}
                 </Link>
                 <button
                   className="rounded-lg px-3 py-2 text-sm font-semibold text-muted transition hover:bg-surfaceSoft hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
@@ -72,20 +73,12 @@ export function PageShell({ children }: { children: ReactNode }) {
                 </button>
               </>
             ) : (
-              <>
-                <Link
-                  to="/login"
-                  className="hidden rounded-lg px-3 py-2 text-sm font-medium text-muted transition hover:bg-surfaceSoft hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2 focus-visible:ring-offset-background sm:inline-flex"
-                >
-                  {appCopy.nav.login}
-                </Link>
-                <Link
-                  to="/signup"
-                  className="inline-flex min-h-11 items-center rounded-lg bg-brand-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-brand-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-                >
-                  {appCopy.nav.signup}
-                </Link>
-              </>
+              <Link
+                to="/login"
+                className="inline-flex min-h-11 items-center rounded-lg bg-brand-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-brand-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+              >
+                {appCopy.nav.login}
+              </Link>
             )}
             <ThemeToggle />
           </div>

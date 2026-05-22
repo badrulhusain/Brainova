@@ -4,7 +4,7 @@ import axios, { type AxiosError } from 'axios';
 export const SESSION_TOKEN_KEY = 'ba_session_token';
 
 export const apiClient = axios.create({
-  baseURL: import.meta.env.VITE_API_URL ?? 'http://localhost:3000',
+  baseURL: (import.meta.env.VITE_API_URL ?? 'http://localhost:3000') + '/api',
   withCredentials: true, // send cookies for cookie-based sessions
   headers: { 'Content-Type': 'application/json' },
 });
