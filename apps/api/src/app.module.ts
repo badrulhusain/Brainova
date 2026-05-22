@@ -11,6 +11,7 @@ import { ScoringModule } from './modules/scoring/scoring.module';
 import { ResultsModule } from './modules/results/results.module';
 import { AnalyticsModule } from './modules/analytics/analytics.module';
 import { AdminsModule } from './modules/admins/admins.module';
+import { AptitudeModule } from './modules/aptitude/aptitude.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { AdminsModule } from './modules/admins/admins.module';
     SessionsModule,
     ScoringModule,
     ResultsModule,
+    AptitudeModule,
     AnalyticsModule,
   ],
 })

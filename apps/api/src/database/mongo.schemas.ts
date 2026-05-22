@@ -121,7 +121,10 @@ export interface TestSession {
   expiresAt: Date;
   submittedAt?: Date | null;
   lastSavedAt: Date;
-  config?: Pick<TestConfig, 'name' | 'duration' | 'marksPerQuestion' | 'negativeMarksRatio' | 'totalQuestions'>;
+  config?: Pick<
+    TestConfig,
+    'name' | 'duration' | 'marksPerQuestion' | 'negativeMarksRatio' | 'totalQuestions'
+  >;
 }
 
 export interface TestResult {
@@ -159,6 +162,29 @@ export interface TestAttempt {
   date: Date;
   createdAt: Date;
   updatedAt: Date;
+}
+
+export type AptitudeCategory = 'QUANT' | 'VERBAL' | 'LOGICAL' | 'ABSTRACT';
+
+export interface AptitudeQuestion {
+  id: string;
+  category: AptitudeCategory;
+  text: string;
+  options: string[];
+  correctAnswer: string;
+  difficulty: Difficulty;
+  active: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface AptitudeResult {
+  id: string;
+  studentId: string;
+  answers: Record<string, string>;
+  scores: Record<AptitudeCategory, number>;
+  strongestCategory: AptitudeCategory;
+  createdAt: Date;
 }
 
 export type MongoDoc<T> = HydratedDocument<Omit<T, 'id'> & { _id: Types.ObjectId }>;
@@ -206,6 +232,8 @@ export const TestConfigModelName = 'TestConfig';
 export const TestSessionModelName = 'TestSession';
 export const TestResultModelName = 'TestResult';
 export const TestAttemptModelName = 'TestAttempt';
+export const AptitudeQuestionModelName = 'AptitudeQuestion';
+export const AptitudeResultModelName = 'AptitudeResult';
 
 const optionalString = { type: String, default: null };
 const requiredString = { type: String, required: true, trim: true };
@@ -337,7 +365,12 @@ export const TestSessionSchema = withJson(
       studentId: { type: String, required: true, index: true },
       configId: { type: String, required: true, index: true },
       domainId: { type: String, required: true, index: true },
-      status: { type: String, enum: ['IN_PROGRESS', 'SCORING', 'SUBMITTED', 'EXPIRED'], default: 'IN_PROGRESS', index: true },
+      status: {
+        type: String,
+        enum: ['IN_PROGRESS', 'SCORING', 'SUBMITTED', 'EXPIRED'],
+        default: 'IN_PROGRESS',
+        index: true,
+      },
       questionSnapshot: { type: Schema.Types.Mixed, required: true },
       answers: { type: Schema.Types.Mixed, default: {} },
       markedForReview: { type: Schema.Types.Mixed, default: {} },
@@ -393,3 +426,36 @@ export const TestAttemptSchema = withJson(
     { timestamps: true },
   ),
 );
+
+export const AptitudeQuestionSchema = withJson(
+  new Schema(
+    {
+      category: {
+        type: String,
+        enum: ['QUANT', 'VERBAL', 'LOGICAL', 'ABSTRACT'],
+        required: true,
+        index: true,
+      },
+      text: { type: String, required: true },
+      options: { type: [String], required: true },
+      correctAnswer: { type: String, required: true },
+      difficulty: { type: String, enum: ['EASY', 'MEDIUM', 'HARD'], default: 'MEDIUM' },
+      active: { type: Boolean, default: true, index: true },
+    },
+    { timestamps: true },
+  ),
+);
+
+export const AptitudeResultSchema = withJson(
+  new Schema(
+    {
+      studentId: { type: String, required: true, index: true },
+      answers: { type: Schema.Types.Mixed, required: true },
+      scores: { type: Schema.Types.Mixed, required: true },
+      strongestCategory: { type: String, required: true },
+    },
+    { timestamps: { createdAt: true, updatedAt: false } },
+  ),
+);
+
+AptitudeResultSchema.index({ studentId: 1, createdAt: -1 });

@@ -22,6 +22,7 @@ const TestPage = lazy(() => import('../pages/TestPage'));
 const ResultsListPage = lazy(() => import('../pages/ResultsListPage'));
 const ResultPage = lazy(() => import('../pages/ResultPage'));
 const AnalyticsPage = lazy(() => import('../pages/AnalyticsPage'));
+const AptitudePage = lazy(() => import('../pages/AptitudePage'));
 
 export function AppRouter() {
   return (
@@ -80,6 +81,15 @@ export function AppRouter() {
         element={
           <ProtectedRoute>
             <AnalyticsPage />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/aptitude"
+        element={
+          <ProtectedRoute>
+            <AptitudePage />
           </ProtectedRoute>
         }
       />
