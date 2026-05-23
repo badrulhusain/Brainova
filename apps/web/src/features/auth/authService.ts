@@ -57,13 +57,11 @@ function clearToken(): void {
 export async function registerStudent(
   name: string,
   admissionNo: string,
-  department?: string,
   batch?: string,
 ): Promise<AppUser> {
   const res = await apiClient.post<{ token: string }>('/auth/student/register', {
     name,
     admissionNo,
-    ...(department ? { department } : {}),
     ...(batch ? { batch } : {}),
   });
   const { token } = res.data;

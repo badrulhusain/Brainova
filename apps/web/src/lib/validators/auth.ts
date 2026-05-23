@@ -8,7 +8,6 @@ export const studentLoginSchema = z.object({
 export const studentRegisterSchema = z.object({
   name: z.string().trim().min(2, 'Name must be at least 2 characters.'),
   admissionNo: z.string().trim().min(1, 'Enter your admission number.'),
-  department: z.string().trim().min(1).max(100).optional().or(z.literal('')),
   batch: z.string().trim().min(1).max(20).optional().or(z.literal('')),
 });
 

@@ -6,7 +6,7 @@ import {
   LayoutDashboard,
   LineChart,
   ShieldCheck,
-  UserPlus,
+  LogIn,
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { useAuth } from '../../features/auth/AuthProvider';
@@ -82,16 +82,10 @@ export function PageShell({ children }: { children: ReactNode }) {
             ) : (
               <>
                 <Link
-                  to="/signup"
+                  to="/login"
                   className="inline-flex min-h-11 items-center gap-2 rounded-lg bg-brand-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-brand-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
                 >
-                  <UserPlus aria-hidden="true" className="h-4 w-4" />
-                  {appCopy.nav.signup}
-                </Link>
-                <Link
-                  to="/login"
-                  className="hidden min-h-11 items-center rounded-lg px-3 py-2 text-sm font-semibold text-muted transition hover:bg-surfaceSoft hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2 focus-visible:ring-offset-background sm:inline-flex"
-                >
+                  <LogIn aria-hidden="true" className="h-4 w-4" />
                   {appCopy.nav.login}
                 </Link>
               </>
