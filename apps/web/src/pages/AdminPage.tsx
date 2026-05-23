@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Database, FilePlus2, FolderTree, ShieldCheck, Users } from 'lucide-react';
+import { ClipboardCheck, Database, FilePlus2, FolderTree, GraduationCap, ShieldCheck, Users } from 'lucide-react';
 import { Card } from '../components/ui/card';
 import { useAdminTaxonomy } from '../features/admin/hooks/useAdminTaxonomy';
 
@@ -90,6 +90,20 @@ export default function AdminPage() {
             >
               <FolderTree className="h-4 w-4 text-muted" />
               Manage domains &amp; topics
+            </Link>
+            <Link
+              className="flex items-center gap-2 rounded-lg border border-border bg-background px-4 py-4 text-sm font-semibold transition hover:bg-surfaceSoft focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500"
+              to="/admin/students"
+            >
+              <GraduationCap className="h-4 w-4 text-muted" />
+              View students
+            </Link>
+            <Link
+              className="flex items-center gap-2 rounded-lg border border-border bg-background px-4 py-4 text-sm font-semibold transition hover:bg-surfaceSoft focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500"
+              to="/admin/results"
+            >
+              <ClipboardCheck className="h-4 w-4 text-muted" />
+              View student results
             </Link>
             <Link
               className="flex items-center gap-2 rounded-lg border border-border bg-background px-4 py-4 text-sm font-semibold transition hover:bg-surfaceSoft focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500"

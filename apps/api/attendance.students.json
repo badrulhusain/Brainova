@@ -1,0 +1,6026 @@
+[{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f1691d3"
+  },
+  "ADNO": 155,
+  "CLASS": 10,
+  "FULL NAME": "MUHAMMED SHANIF",
+  "Password": 155,
+  "SHORT NAME": "SHANIF",
+  "SL": 1,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T05:48:01.707Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f1691d4"
+  },
+  "ADNO": 128,
+  "CLASS": 10,
+  "FULL NAME": "MUHAMMED NAYEEM",
+  "Password": 128,
+  "SHORT NAME": "NAYEEM",
+  "SL": 2,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": true,
+  "updatedAt": {
+    "$date": "2026-05-23T05:48:01.707Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Absent",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f1691d5"
+  },
+  "ADNO": 137,
+  "CLASS": 10,
+  "FULL NAME": "ANSHIF T",
+  "Password": 137,
+  "SHORT NAME": "ANSHIF T",
+  "SL": 3,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T05:48:01.707Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f1691d7"
+  },
+  "ADNO": 126,
+  "CLASS": 10,
+  "FULL NAME": "SHIHAN",
+  "Password": 126,
+  "SHORT NAME": "SHIHAN",
+  "SL": 5,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T05:48:01.707Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f1691da"
+  },
+  "ADNO": 412,
+  "CLASS": 10,
+  "FULL NAME": "MUHAMMED SHUMAIL",
+  "Password": 412,
+  "SHORT NAME": "SHUMAIL",
+  "SL": 8,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": true,
+  "updatedAt": {
+    "$date": "2026-05-23T05:48:01.707Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Absent",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f1691de"
+  },
+  "ADNO": 134,
+  "CLASS": 10,
+  "FULL NAME": "MOHAMMED MIRSHAD",
+  "Password": 134,
+  "SHORT NAME": "MIRSHAD",
+  "SL": 12,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T06:05:25.100Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Absent",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f1691df"
+  },
+  "ADNO": 130,
+  "CLASS": 10,
+  "FULL NAME": "MUHAMMED BAQIR",
+  "Password": 130,
+  "SHORT NAME": "BAQIR",
+  "SL": 13,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": true,
+  "updatedAt": {
+    "$date": "2026-05-23T05:48:01.707Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Absent",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f1691e0"
+  },
+  "ADNO": 141,
+  "CLASS": 10,
+  "FULL NAME": "MUHAMMED SHADI",
+  "Password": 141,
+  "SHORT NAME": "SHADI",
+  "SL": 14,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T05:48:01.707Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f1691e2"
+  },
+  "ADNO": 160,
+  "CLASS": 10,
+  "FULL NAME": "MUHAMMED MIDLAJ",
+  "Password": 160,
+  "SHORT NAME": "MIDLAJ",
+  "SL": 16,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T05:48:01.707Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f1691e3"
+  },
+  "ADNO": 139,
+  "CLASS": 10,
+  "FULL NAME": "AMJAD",
+  "Password": 139,
+  "SHORT NAME": "AMJAD",
+  "SL": 17,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T05:48:01.707Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f1691e7"
+  },
+  "ADNO": 164,
+  "CLASS": 10,
+  "FULL NAME": "ABDUL BASITH",
+  "Password": 164,
+  "SHORT NAME": "BASITH",
+  "SL": 21,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": true,
+  "updatedAt": {
+    "$date": "2026-05-23T05:48:01.707Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Absent",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f1691eb"
+  },
+  "ADNO": 149,
+  "CLASS": 10,
+  "FULL NAME": "MUHAMMED HANSHID",
+  "Password": 149,
+  "SHORT NAME": "HANSHID",
+  "SL": 25,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": true,
+  "updatedAt": {
+    "$date": "2026-05-23T05:48:01.707Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Absent",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f1691ef"
+  },
+  "ADNO": 150,
+  "CLASS": 10,
+  "FULL NAME": "MUHAMMED HASHIR",
+  "Password": 150,
+  "SHORT NAME": "HASHIR",
+  "SL": 29,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T05:48:01.707Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f1691f1"
+  },
+  "ADNO": 166,
+  "CLASS": 9,
+  "FULL NAME": "MUHAMMED NIHAL K C",
+  "Password": 166,
+  "SHORT NAME": "NIHAL K.C",
+  "SL": 1,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:56:21.812Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f1691f7"
+  },
+  "ADNO": 207,
+  "CLASS": 9,
+  "FULL NAME": "MUHAMMED HASHID",
+  "Password": 207,
+  "SHORT NAME": "HASHID",
+  "SL": 7,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": true,
+  "updatedAt": {
+    "$date": "2026-05-23T02:56:21.812Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Absent",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f1691d8"
+  },
+  "ADNO": 413,
+  "CLASS": 10,
+  "FULL NAME": "MUHAMMED SHAMIL M M",
+  "Password": 413,
+  "SHORT NAME": "SHAMIL",
+  "SL": 6,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T05:48:01.707Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f1691dd"
+  },
+  "ADNO": 135,
+  "CLASS": 10,
+  "FULL NAME": "MUHAMMED SALMANULFARIS",
+  "Password": 135,
+  "SHORT NAME": "SALMAN",
+  "SL": 11,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": true,
+  "updatedAt": {
+    "$date": "2026-05-23T05:48:01.707Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Absent",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f1691e6"
+  },
+  "ADNO": 129,
+  "CLASS": 10,
+  "FULL NAME": "MUHAMMED SHAMEEL",
+  "Password": 129,
+  "SHORT NAME": "SHAMEEL",
+  "SL": 20,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": true,
+  "updatedAt": {
+    "$date": "2026-05-23T05:48:01.707Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Absent",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f1691f3"
+  },
+  "ADNO": 454,
+  "CLASS": 9,
+  "FULL NAME": "MUHAMMED SHAMEEM UP",
+  "Password": 454,
+  "SHORT NAME": "SHAMEEM",
+  "SL": 3,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:56:21.812Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f1691d6"
+  },
+  "ADNO": 415,
+  "CLASS": 10,
+  "FULL NAME": "MUHAMMED AFLAH C",
+  "Password": 415,
+  "SHORT NAME": "AFLAH",
+  "SL": 4,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": true,
+  "updatedAt": {
+    "$date": "2026-05-23T05:48:01.707Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Absent",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f1691d9"
+  },
+  "ADNO": 156,
+  "CLASS": 10,
+  "FULL NAME": "AMAL",
+  "Password": 156,
+  "SHORT NAME": "AMAL",
+  "SL": 7,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T05:48:01.707Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f1691db"
+  },
+  "ADNO": 318,
+  "CLASS": 10,
+  "FULL NAME": "MUHAMMED NABHAN",
+  "Password": 318,
+  "SHORT NAME": "NABHAN",
+  "SL": 9,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T05:48:01.707Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f1691dc"
+  },
+  "ADNO": 101,
+  "CLASS": 10,
+  "FULL NAME": "MUHAMMED JUNAID M T",
+  "Password": 101,
+  "SHORT NAME": "JUNAID. MT",
+  "SL": 10,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": true,
+  "updatedAt": {
+    "$date": "2026-05-23T05:48:01.707Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Absent",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f1691e5"
+  },
+  "ADNO": 154,
+  "CLASS": 10,
+  "FULL NAME": "MUHAMMED HISHAM",
+  "Password": 154,
+  "SHORT NAME": "HISHAM",
+  "SL": 19,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": true,
+  "updatedAt": {
+    "$date": "2026-05-23T06:04:27.852Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Absent",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f1691e9"
+  },
+  "ADNO": 145,
+  "CLASS": 10,
+  "FULL NAME": "MUHAMMED SHIBIN",
+  "Password": 145,
+  "SHORT NAME": "SHIBIN",
+  "SL": 23,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T05:48:01.707Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f1691ea"
+  },
+  "ADNO": 138,
+  "CLASS": 10,
+  "FULL NAME": "MUHAMMED FASIL",
+  "Password": 138,
+  "SHORT NAME": "FADHIL",
+  "SL": 24,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T05:48:01.707Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f1691f0"
+  },
+  "ADNO": 414,
+  "CLASS": 10,
+  "FULL NAME": "HUSSAIN SHIBILY",
+  "Password": 414,
+  "SHORT NAME": "SHIBILY",
+  "SL": 30,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T05:48:01.707Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f1691f2"
+  },
+  "ADNO": 197,
+  "CLASS": 9,
+  "FULL NAME": "MUHAMMED NISHAN M",
+  "Password": 197,
+  "SHORT NAME": "NISHAN. M",
+  "SL": 2,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:56:21.812Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f1691f5"
+  },
+  "ADNO": 180,
+  "CLASS": 9,
+  "FULL NAME": "MUHAMMED SHAMIL K C",
+  "Password": 180,
+  "SHORT NAME": "SHAMIL K.C",
+  "SL": 5,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:56:21.812Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f1691e1"
+  },
+  "ADNO": 157,
+  "CLASS": 10,
+  "FULL NAME": "YASEEN MALIK",
+  "Password": 157,
+  "SHORT NAME": "YASEEN",
+  "SL": 15,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T05:48:01.707Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f1691e4"
+  },
+  "ADNO": 153,
+  "CLASS": 10,
+  "FULL NAME": "MUHAMMED IMTHIYAS",
+  "Password": 153,
+  "SHORT NAME": "IMTHIYAS",
+  "SL": 18,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T05:48:01.707Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f1691e8"
+  },
+  "ADNO": 132,
+  "CLASS": 10,
+  "FULL NAME": "MUHAMMED SHAMMAS",
+  "Password": 132,
+  "SHORT NAME": "SHAMMAS",
+  "SL": 22,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T05:48:01.707Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f1691ec"
+  },
+  "ADNO": 127,
+  "CLASS": 10,
+  "FULL NAME": "MUHAMMED SINAN C",
+  "Password": 127,
+  "SHORT NAME": "SINAN C",
+  "SL": 26,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T05:48:01.707Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f1691ed"
+  },
+  "ADNO": 115,
+  "CLASS": 10,
+  "FULL NAME": "MUHAMMED FARIS",
+  "Password": 115,
+  "SHORT NAME": "FARIS",
+  "SL": 27,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T05:48:01.707Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f1691ee"
+  },
+  "ADNO": 86,
+  "CLASS": 10,
+  "FULL NAME": "AHAMMAD NAJAD K P",
+  "Password": 86,
+  "SHORT NAME": "NAJAD",
+  "SL": 28,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T05:48:01.707Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f1691f4"
+  },
+  "ADNO": 455,
+  "CLASS": 9,
+  "FULL NAME": "ABDUSALAM BINBAZ K",
+  "Password": 455,
+  "SHORT NAME": "BINBAZ",
+  "SL": 4,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:56:21.812Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f1691f6"
+  },
+  "ADNO": 204,
+  "CLASS": 9,
+  "FULL NAME": "AHMAD KABEER",
+  "Password": 204,
+  "SHORT NAME": "KABEER",
+  "SL": 6,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:56:21.812Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f1691f8"
+  },
+  "ADNO": 178,
+  "CLASS": 9,
+  "FULL NAME": "MOHAMMED SHAMIL A P",
+  "Password": 178,
+  "SHORT NAME": "SHAMIL A.P",
+  "SL": 8,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:56:21.812Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f1691f9"
+  },
+  "ADNO": 172,
+  "CLASS": 9,
+  "FULL NAME": "MOHAMMED SHAZIN P",
+  "Password": 172,
+  "SHORT NAME": "SHAZIN.P",
+  "SL": 9,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": true,
+  "updatedAt": {
+    "$date": "2026-05-23T02:56:21.812Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Absent",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f1691fa"
+  },
+  "ADNO": 199,
+  "CLASS": 9,
+  "FULL NAME": "RINSHID",
+  "Password": 199,
+  "SHORT NAME": "RINSHID",
+  "SL": 10,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:56:21.812Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f1691fe"
+  },
+  "ADNO": 185,
+  "CLASS": 9,
+  "FULL NAME": "MUHAMMED FARHAN V",
+  "Password": 185,
+  "SHORT NAME": "FARHAN V",
+  "SL": 14,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:56:21.812Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f1691ff"
+  },
+  "ADNO": 183,
+  "CLASS": 9,
+  "FULL NAME": "MISHAB N",
+  "Password": 183,
+  "SHORT NAME": "MISHAB",
+  "SL": 15,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:56:21.812Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f1691fb"
+  },
+  "ADNO": 182,
+  "CLASS": 9,
+  "FULL NAME": "MUHAMMED ABRAR N T",
+  "Password": 182,
+  "SHORT NAME": "ABRAR.N.T",
+  "SL": 11,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:56:21.812Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f1691fc"
+  },
+  "ADNO": 169,
+  "CLASS": 9,
+  "FULL NAME": "MUHAMMED MIDLAJ O",
+  "Password": 169,
+  "SHORT NAME": "MIDLAJ O",
+  "SL": 12,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:56:21.812Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f1691fd"
+  },
+  "ADNO": 194,
+  "CLASS": 9,
+  "FULL NAME": "MUHAMMED HASHIR K P",
+  "Password": 194,
+  "SHORT NAME": "HASHIR K.P",
+  "SL": 13,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:56:21.812Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f169203"
+  },
+  "ADNO": 177,
+  "CLASS": 9,
+  "FULL NAME": "MUHAMMED AMJITH A P",
+  "Password": 177,
+  "SHORT NAME": "AMJITH.A.P",
+  "SL": 19,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:56:21.812Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f169204"
+  },
+  "ADNO": 170,
+  "CLASS": 9,
+  "FULL NAME": "MUHAMMEDUNIL BAKIR M T",
+  "Password": 170,
+  "SHORT NAME": "BAKIR.M.T",
+  "SL": 20,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:56:21.812Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f169202"
+  },
+  "ADNO": 175,
+  "CLASS": 9,
+  "FULL NAME": "MUHAMMED SAFVAN N K",
+  "Password": 175,
+  "SHORT NAME": "SAFVAN N.K",
+  "SL": 18,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:56:21.812Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f169205"
+  },
+  "ADNO": 206,
+  "CLASS": 9,
+  "FULL NAME": "ABDUL VAHID C",
+  "Password": 206,
+  "SHORT NAME": "VAHID.C",
+  "SL": 21,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": true,
+  "updatedAt": {
+    "$date": "2026-05-23T02:56:21.812Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Absent",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f169200"
+  },
+  "ADNO": 192,
+  "CLASS": 9,
+  "FULL NAME": "MUHAMMED ASHFAQ KHAN P",
+  "Password": 192,
+  "SHORT NAME": "ASHFAQ",
+  "SL": 16,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:56:21.812Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f169206"
+  },
+  "ADNO": 151,
+  "CLASS": 9,
+  "FULL NAME": "MUHAMMED RIDHIN",
+  "Password": 151,
+  "SHORT NAME": "RIDHIN",
+  "SL": 22,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:56:21.812Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f169208"
+  },
+  "ADNO": 191,
+  "CLASS": 9,
+  "FULL NAME": "MUHAMMED JASIL K",
+  "Password": 191,
+  "SHORT NAME": "JASIL.K",
+  "SL": 23,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:56:21.812Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f169209"
+  },
+  "ADNO": 421,
+  "CLASS": 8,
+  "FULL NAME": "SAYYID HASHIR KVS",
+  "Password": 421,
+  "SHORT NAME": "SYD HASHIR",
+  "SL": 1,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:04:02.365Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f16920c"
+  },
+  "ADNO": 233,
+  "CLASS": 8,
+  "FULL NAME": "ABOOBACKER SIDHEEQUE",
+  "Password": 233,
+  "SHORT NAME": "SIDHEEQUE",
+  "SL": 4,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:04:02.365Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f16920a"
+  },
+  "ADNO": 209,
+  "CLASS": 8,
+  "FULL NAME": "JASIR",
+  "Password": 209,
+  "SHORT NAME": "JASIR",
+  "SL": 2,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:04:02.365Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Absent",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f16920b"
+  },
+  "ADNO": 234,
+  "CLASS": 8,
+  "FULL NAME": "MUHAMMED SHIFIN T",
+  "Password": 234,
+  "SHORT NAME": "SHIFIN T",
+  "SL": 3,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:04:02.365Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f16920e"
+  },
+  "ADNO": 212,
+  "CLASS": 8,
+  "FULL NAME": "MISBAHUL IHSAN T P",
+  "Password": 212,
+  "SHORT NAME": "MISBAH",
+  "SL": 6,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:04:02.365Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f16920d"
+  },
+  "ADNO": 211,
+  "CLASS": 8,
+  "FULL NAME": "SHAMEEL C P",
+  "Password": 211,
+  "SHORT NAME": "SHAMEEL C P",
+  "SL": 5,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:04:02.365Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f16920f"
+  },
+  "ADNO": 498,
+  "CLASS": 8,
+  "FULL NAME": "BADRUL HUSAIN. K",
+  "Password": 498,
+  "SHORT NAME": "BADRU",
+  "SL": 7,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:04:02.365Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f169210"
+  },
+  "ADNO": 214,
+  "CLASS": 8,
+  "FULL NAME": "AJAS V P",
+  "Password": 214,
+  "SHORT NAME": "AJAS V P",
+  "SL": 8,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:04:02.365Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f169214"
+  },
+  "ADNO": 223,
+  "CLASS": 8,
+  "FULL NAME": "NISHMAL P.MUSTHAFA",
+  "Password": 223,
+  "SHORT NAME": "NISHMAL P",
+  "SL": 12,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": true,
+  "updatedAt": {
+    "$date": "2026-05-23T02:04:02.365Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Absent",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f169216"
+  },
+  "ADNO": 237,
+  "CLASS": 8,
+  "FULL NAME": "BISHRUL HAFI V",
+  "Password": 237,
+  "SHORT NAME": "BISHRUL HAFI",
+  "SL": 14,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:04:02.365Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Absent",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f169218"
+  },
+  "ADNO": 215,
+  "CLASS": 8,
+  "FULL NAME": "MUHAMMED AAMIR C",
+  "Password": 215,
+  "SHORT NAME": "AAMIR C",
+  "SL": 16,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": true,
+  "updatedAt": {
+    "$date": "2026-05-23T02:04:02.365Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Absent",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f169211"
+  },
+  "ADNO": 210,
+  "CLASS": 8,
+  "FULL NAME": "SADIL MUHAMMED",
+  "Password": 210,
+  "SHORT NAME": "SADIL",
+  "SL": 9,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": true,
+  "updatedAt": {
+    "$date": "2026-05-23T02:04:02.365Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Absent",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f169212"
+  },
+  "ADNO": 221,
+  "CLASS": 8,
+  "FULL NAME": "SHAHAL K",
+  "Password": 221,
+  "SHORT NAME": "SHAHAL. K",
+  "SL": 10,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:04:02.365Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f169217"
+  },
+  "ADNO": 227,
+  "CLASS": 8,
+  "FULL NAME": "MUHAMMED AMAN",
+  "Password": 227,
+  "SHORT NAME": "AMAN",
+  "SL": 15,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:04:02.365Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Absent",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f169213"
+  },
+  "ADNO": 219,
+  "CLASS": 8,
+  "FULL NAME": "MUHAMMED SHABIL",
+  "Password": 219,
+  "SHORT NAME": "SHABIL",
+  "SL": 11,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:04:02.365Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f169215"
+  },
+  "ADNO": 496,
+  "CLASS": 8,
+  "FULL NAME": "ABDUL BARI. CK",
+  "Password": 496,
+  "SHORT NAME": "BARI",
+  "SL": 13,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:04:02.365Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Absent",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f169219"
+  },
+  "ADNO": 235,
+  "CLASS": 8,
+  "FULL NAME": "MUHAMMED SABEEL",
+  "Password": 235,
+  "SHORT NAME": "SABEEL",
+  "SL": 17,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:04:02.365Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f16921a"
+  },
+  "ADNO": 495,
+  "CLASS": 8,
+  "FULL NAME": "MOHAMMED MIKHDAD. N",
+  "Password": 495,
+  "SHORT NAME": "MIKHDAD",
+  "SL": 18,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:04:02.365Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Absent",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f16921b"
+  },
+  "ADNO": 229,
+  "CLASS": 8,
+  "FULL NAME": "ASHBIN . U",
+  "Password": 229,
+  "SHORT NAME": "ASHBIN U",
+  "SL": 19,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:04:02.365Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f16921f"
+  },
+  "ADNO": 222,
+  "CLASS": 8,
+  "FULL NAME": "MUHAMMED SHADIL",
+  "Password": 222,
+  "SHORT NAME": "SHADIL",
+  "SL": 23,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:04:02.365Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f169220"
+  },
+  "ADNO": 226,
+  "CLASS": 8,
+  "FULL NAME": "MUHAMMED MIDLAJ",
+  "Password": 226,
+  "SHORT NAME": "MIDLAJ",
+  "SL": 24,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:04:02.365Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Absent",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f169222"
+  },
+  "ADNO": 225,
+  "CLASS": 8,
+  "FULL NAME": "MUHAMMED SINAN",
+  "Password": 225,
+  "SHORT NAME": "SINAN",
+  "SL": 26,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:04:02.365Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f169223"
+  },
+  "ADNO": 224,
+  "CLASS": 8,
+  "FULL NAME": "SAYYID MUHAMMAD HISHAM P M",
+  "Password": 224,
+  "SHORT NAME": "SYD HISHAM",
+  "SL": 27,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:04:02.365Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f169228"
+  },
+  "ADNO": 245,
+  "CLASS": 7,
+  "FULL NAME": "MUHAMMED SINAN",
+  "Password": 245,
+  "SHORT NAME": "SINAN",
+  "SL": 4,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:02:17.963Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f16922a"
+  },
+  "ADNO": 269,
+  "CLASS": 7,
+  "FULL NAME": "MUHAMMAD ARSHAD",
+  "Password": 269,
+  "SHORT NAME": "ARSHAD",
+  "SL": 6,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:02:17.963Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f16922b"
+  },
+  "ADNO": 249,
+  "CLASS": 7,
+  "FULL NAME": "MUHAMMED HISHAM V.P.",
+  "Password": 249,
+  "SHORT NAME": "HISHAM",
+  "SL": 7,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:02:17.963Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f16923e"
+  },
+  "ADNO": 314,
+  "CLASS": 6,
+  "FULL NAME": "MUHAMMED MUFEED M",
+  "Password": 314,
+  "SHORT NAME": "MUFEED. M",
+  "SL": 4,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-22T13:52:33.529Z"
+  },
+  "Date": "2026-05-22",
+  "Status": "Present",
+  "Time": "Night"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f169243"
+  },
+  "ADNO": 298,
+  "CLASS": 6,
+  "FULL NAME": "MUHAMMED AMEEN P",
+  "Password": 298,
+  "SHORT NAME": "AMEEN P",
+  "SL": 8,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-22T13:52:33.529Z"
+  },
+  "Date": "2026-05-22",
+  "Status": "Present",
+  "Time": "Night"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f169247"
+  },
+  "ADNO": 309,
+  "CLASS": 6,
+  "FULL NAME": "SUFYAN ABDULLA A",
+  "Password": 309,
+  "SHORT NAME": "SUFYAN",
+  "SL": 12,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-22T13:52:33.529Z"
+  },
+  "Date": "2026-05-22",
+  "Status": "Present",
+  "Time": "Night"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f169221"
+  },
+  "ADNO": 148,
+  "CLASS": 8,
+  "FULL NAME": "MUHAMMED SHIDIL",
+  "Password": 148,
+  "SHORT NAME": "SHIDIL",
+  "SL": 25,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:04:02.365Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f16922d"
+  },
+  "ADNO": 272,
+  "CLASS": 7,
+  "FULL NAME": "MINHAJ AHMED P. K.",
+  "Password": 272,
+  "SHORT NAME": "MINHAJ P. K.",
+  "SL": 9,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:02:17.963Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f169235"
+  },
+  "ADNO": 251,
+  "CLASS": 7,
+  "FULL NAME": "MUHAMMED JALAL",
+  "Password": 251,
+  "SHORT NAME": "JALAL",
+  "SL": 16,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:02:17.963Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f16923a"
+  },
+  "ADNO": 260,
+  "CLASS": 7,
+  "FULL NAME": "MUHAMMED IRFAN AP",
+  "Password": 260,
+  "SHORT NAME": "IRFAN AP",
+  "SL": 21,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:02:17.963Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f16923b"
+  },
+  "ADNO": 299,
+  "CLASS": 6,
+  "FULL NAME": "MUHAMMED SWALIH ABRAR",
+  "Password": 299,
+  "SHORT NAME": "SWALIH ABRAR",
+  "SL": 1,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-22T13:52:33.529Z"
+  },
+  "Date": "2026-05-22",
+  "Status": "Present",
+  "Time": "Night"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f16921c"
+  },
+  "ADNO": 497,
+  "CLASS": 8,
+  "FULL NAME": "MUHAMMED SAJID. K",
+  "Password": 497,
+  "SHORT NAME": "SAJID",
+  "SL": 20,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": true,
+  "updatedAt": {
+    "$date": "2026-05-23T02:04:02.365Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Absent",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f16921e"
+  },
+  "ADNO": 243,
+  "CLASS": 8,
+  "FULL NAME": "MUHAMMAD RASHID K",
+  "Password": 243,
+  "SHORT NAME": "RASHID K",
+  "SL": 22,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:04:02.365Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f169225"
+  },
+  "ADNO": 273,
+  "CLASS": 7,
+  "FULL NAME": "MARJAN P A",
+  "Password": 273,
+  "SHORT NAME": "MARJAN",
+  "SL": 1,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:02:17.963Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f169227"
+  },
+  "ADNO": 257,
+  "CLASS": 7,
+  "FULL NAME": "AHAMMED RIFAHI P",
+  "Password": 257,
+  "SHORT NAME": "RIFAHI P",
+  "SL": 3,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:02:17.963Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f16922c"
+  },
+  "ADNO": 248,
+  "CLASS": 7,
+  "FULL NAME": "HADHI FARHAN",
+  "Password": 248,
+  "SHORT NAME": "HADHI",
+  "SL": 8,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:02:17.963Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f169234"
+  },
+  "ADNO": 278,
+  "CLASS": 7,
+  "FULL NAME": "MUHAMMED NAFIH",
+  "Password": 278,
+  "SHORT NAME": "NAFIH",
+  "SL": 15,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:02:17.963Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f169236"
+  },
+  "ADNO": 244,
+  "CLASS": 7,
+  "FULL NAME": "MUHAMMED SWALIH P",
+  "Password": 244,
+  "SHORT NAME": "SWALIH P",
+  "SL": 17,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:02:17.963Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f169238"
+  },
+  "ADNO": 270,
+  "CLASS": 7,
+  "FULL NAME": "MUHAMMED NIHAL.P",
+  "Password": 270,
+  "SHORT NAME": "NIHAL.P",
+  "SL": 19,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:02:17.963Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f169240"
+  },
+  "ADNO": 416,
+  "CLASS": 6,
+  "FULL NAME": "MUHAMMED HAMDAN",
+  "Password": 416,
+  "SHORT NAME": "HAMDAN",
+  "SL": 6,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-22T13:52:33.529Z"
+  },
+  "Date": "2026-05-22",
+  "Status": "Present",
+  "Time": "Night"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f169244"
+  },
+  "ADNO": 310,
+  "CLASS": 6,
+  "FULL NAME": "MUHAMMED HANAN V",
+  "Password": 310,
+  "SHORT NAME": "HANAN V",
+  "SL": 9,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-22T13:52:33.529Z"
+  },
+  "Date": "2026-05-22",
+  "Status": "Present",
+  "Time": "Night"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f169245"
+  },
+  "ADNO": 418,
+  "CLASS": 6,
+  "FULL NAME": "MUHAMMAD ZAIN KT",
+  "Password": 418,
+  "SHORT NAME": "ZAIN KT",
+  "SL": 10,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-22T13:52:33.529Z"
+  },
+  "Date": "2026-05-22",
+  "Status": "Present",
+  "Time": "Night"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f16921d"
+  },
+  "ADNO": 236,
+  "CLASS": 8,
+  "FULL NAME": "MUHAMMED RIZWIN.K",
+  "Password": 236,
+  "SHORT NAME": "RIZWIN.K",
+  "SL": 21,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:04:02.365Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f169224"
+  },
+  "ADNO": 230,
+  "CLASS": 8,
+  "FULL NAME": "MUHAMMED ZIYAD O",
+  "Password": 230,
+  "SHORT NAME": "ZIYAD O",
+  "SL": 28,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:04:02.365Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f169226"
+  },
+  "ADNO": 253,
+  "CLASS": 7,
+  "FULL NAME": "LABEEB. T",
+  "Password": 253,
+  "SHORT NAME": "LABEEB. T",
+  "SL": 2,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:02:17.963Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f16922e"
+  },
+  "ADNO": 265,
+  "CLASS": 7,
+  "FULL NAME": "MUHAMMED ASHRAF ALI",
+  "Password": 265,
+  "SHORT NAME": "ASHRAF ALI",
+  "SL": 10,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:02:17.963Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f16922f"
+  },
+  "ADNO": 252,
+  "CLASS": 7,
+  "FULL NAME": "MUHAMMED NAEEM",
+  "Password": 252,
+  "SHORT NAME": "NAEEM",
+  "SL": 11,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:02:17.963Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f169230"
+  },
+  "ADNO": 258,
+  "CLASS": 7,
+  "FULL NAME": "SABITH",
+  "Password": 258,
+  "SHORT NAME": "SABITH",
+  "SL": 12,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:02:17.963Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f169232"
+  },
+  "ADNO": 276,
+  "CLASS": 7,
+  "FULL NAME": "MUHAMMED SHAMMAS V P",
+  "Password": 276,
+  "SHORT NAME": "SHAMMAS V P",
+  "SL": 13,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:02:17.963Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f169233"
+  },
+  "ADNO": 266,
+  "CLASS": 7,
+  "FULL NAME": "MUHAMMED JASEEM",
+  "Password": 266,
+  "SHORT NAME": "JASEEM",
+  "SL": 14,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:02:17.963Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f169237"
+  },
+  "ADNO": 362,
+  "CLASS": 7,
+  "FULL NAME": "MINHAJ K",
+  "Password": 362,
+  "SHORT NAME": "MINHAJ K",
+  "SL": 18,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:02:17.963Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f169239"
+  },
+  "ADNO": 271,
+  "CLASS": 7,
+  "FULL NAME": "ABDUL VAJID C",
+  "Password": 271,
+  "SHORT NAME": "VAJID C",
+  "SL": 20,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:02:17.963Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f16923c"
+  },
+  "ADNO": 302,
+  "CLASS": 6,
+  "FULL NAME": "MUHAMMED JASEEL KA",
+  "Password": 302,
+  "SHORT NAME": "JASEEL KA",
+  "SL": 2,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-22T13:52:33.529Z"
+  },
+  "Date": "2026-05-22",
+  "Status": "Present",
+  "Time": "Night"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f16923d"
+  },
+  "ADNO": 308,
+  "CLASS": 6,
+  "FULL NAME": "AMEEN SADIQUE K",
+  "Password": 308,
+  "SHORT NAME": "AMEEN SADIQUE",
+  "SL": 3,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-22T13:52:33.529Z"
+  },
+  "Date": "2026-05-22",
+  "Status": "Present",
+  "Time": "Night"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f16923f"
+  },
+  "ADNO": 287,
+  "CLASS": 6,
+  "FULL NAME": "MUHAMMED SHAMIL K",
+  "Password": 287,
+  "SHORT NAME": "SHAMIL K",
+  "SL": 5,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-22T13:52:33.529Z"
+  },
+  "Date": "2026-05-22",
+  "Status": "Present",
+  "Time": "Night"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f169242"
+  },
+  "ADNO": 417,
+  "CLASS": 6,
+  "FULL NAME": "MUHAMMED MINHAJ V",
+  "Password": 417,
+  "SHORT NAME": "MINHAJ V",
+  "SL": 7,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-22T13:52:33.529Z"
+  },
+  "Date": "2026-05-22",
+  "Status": "Present",
+  "Time": "Night"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f169246"
+  },
+  "ADNO": 290,
+  "CLASS": 6,
+  "FULL NAME": "MUBARAK AFNAN PK",
+  "Password": 290,
+  "SHORT NAME": "MUBARAK",
+  "SL": 11,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-22T13:52:33.529Z"
+  },
+  "Date": "2026-05-22",
+  "Status": "Present",
+  "Time": "Night"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f16924a"
+  },
+  "ADNO": 301,
+  "CLASS": 6,
+  "FULL NAME": "MOHAMMED KENZ P",
+  "Password": 301,
+  "SHORT NAME": "KENZ P",
+  "SL": 15,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-22T13:52:33.529Z"
+  },
+  "Date": "2026-05-22",
+  "Status": "Present",
+  "Time": "Night"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f169248"
+  },
+  "ADNO": 293,
+  "CLASS": 6,
+  "FULL NAME": "MUHAMMED IJLAN V P",
+  "Password": 293,
+  "SHORT NAME": "IJLAN V P",
+  "SL": 13,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-22T13:52:33.529Z"
+  },
+  "Date": "2026-05-22",
+  "Status": "Present",
+  "Time": "Night"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f169249"
+  },
+  "ADNO": 311,
+  "CLASS": 6,
+  "FULL NAME": "MUHAMMED SHAMIL V",
+  "Password": 311,
+  "SHORT NAME": "SHAMIL V",
+  "SL": 14,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-22T13:52:33.529Z"
+  },
+  "Date": "2026-05-22",
+  "Status": "Present",
+  "Time": "Night"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f16924c"
+  },
+  "ADNO": 289,
+  "CLASS": 6,
+  "FULL NAME": "MUHAMMED SHAHEEM",
+  "Password": 289,
+  "SHORT NAME": "SHAHEEM",
+  "SL": 16,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-22T13:52:33.529Z"
+  },
+  "Date": "2026-05-22",
+  "Status": "Present",
+  "Time": "Night"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f16924e"
+  },
+  "ADNO": 317,
+  "CLASS": 6,
+  "FULL NAME": "ADIL B",
+  "Password": 317,
+  "SHORT NAME": "ADIL B",
+  "SL": 18,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": true,
+  "updatedAt": {
+    "$date": "2026-05-22T13:52:33.529Z"
+  },
+  "Date": "2026-05-22",
+  "Status": "Absent",
+  "Time": "Night"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f16924d"
+  },
+  "ADNO": 313,
+  "CLASS": 6,
+  "FULL NAME": "RAZAN MOHAMED C H",
+  "Password": 313,
+  "SHORT NAME": "RAZAN C H",
+  "SL": 17,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-22T13:52:33.529Z"
+  },
+  "Date": "2026-05-22",
+  "Status": "Present",
+  "Time": "Night"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f16924f"
+  },
+  "ADNO": 277,
+  "CLASS": 6,
+  "FULL NAME": "NOUFAL K",
+  "Password": 277,
+  "SHORT NAME": "NOUFAL K",
+  "SL": 19,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-22T13:52:33.529Z"
+  },
+  "Date": "2026-05-22",
+  "Status": "Present",
+  "Time": "Night"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f169250"
+  },
+  "ADNO": 296,
+  "CLASS": 6,
+  "FULL NAME": "MOHAMMED ASHMIL K",
+  "Password": 296,
+  "SHORT NAME": "ASHMIL K",
+  "SL": 20,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-22T13:52:33.529Z"
+  },
+  "Date": "2026-05-22",
+  "Status": "Present",
+  "Time": "Night"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f169251"
+  },
+  "ADNO": 343,
+  "CLASS": 5,
+  "FULL NAME": "MUHAMMED JASIM TK",
+  "Password": 343,
+  "SHORT NAME": "JASIM TK",
+  "SL": 1,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:05:25.475Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f169253"
+  },
+  "ADNO": 487,
+  "CLASS": 5,
+  "FULL NAME": "SWALAHUDHEEN AYYOOBI K",
+  "Password": 487,
+  "SHORT NAME": "AYYOOBI",
+  "SL": 3,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:05:25.475Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f169252"
+  },
+  "ADNO": 339,
+  "CLASS": 5,
+  "FULL NAME": "ASHBAL C",
+  "Password": 339,
+  "SHORT NAME": "ASHBAL C",
+  "SL": 2,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:05:25.475Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f169257"
+  },
+  "ADNO": 348,
+  "CLASS": 5,
+  "FULL NAME": "MUHAMMED ANAS P P",
+  "Password": 348,
+  "SHORT NAME": "ANAS P P",
+  "SL": 7,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:05:25.475Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f16925c"
+  },
+  "ADNO": 350,
+  "CLASS": 5,
+  "FULL NAME": "MUHAMMED SINAN P",
+  "Password": 350,
+  "SHORT NAME": "SINAN P",
+  "SL": 12,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:05:25.475Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f169254"
+  },
+  "ADNO": 326,
+  "CLASS": 5,
+  "FULL NAME": "MUHAMMED ASAD K",
+  "Password": 326,
+  "SHORT NAME": "ASAD K",
+  "SL": 4,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:05:25.475Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f169258"
+  },
+  "ADNO": 330,
+  "CLASS": 5,
+  "FULL NAME": "AJSAL V P",
+  "Password": 330,
+  "SHORT NAME": "AJSAL V P",
+  "SL": 8,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:05:25.475Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f16925a"
+  },
+  "ADNO": 332,
+  "CLASS": 5,
+  "FULL NAME": "MUHAMMED AFNAN",
+  "Password": 332,
+  "SHORT NAME": "AFNAN",
+  "SL": 10,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:05:25.475Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f16925b"
+  },
+  "ADNO": 352,
+  "CLASS": 5,
+  "FULL NAME": "MUHAMMED IYAS",
+  "Password": 352,
+  "SHORT NAME": "IYAS",
+  "SL": 11,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:05:25.475Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f169255"
+  },
+  "ADNO": 328,
+  "CLASS": 5,
+  "FULL NAME": "MUHAMMED HANAN I",
+  "Password": 328,
+  "SHORT NAME": "HANAN I",
+  "SL": 5,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:05:25.475Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f169256"
+  },
+  "ADNO": 338,
+  "CLASS": 5,
+  "FULL NAME": "MUHAMMED THOYYIB",
+  "Password": 338,
+  "SHORT NAME": "THOYYIB",
+  "SL": 6,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:05:25.475Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f169259"
+  },
+  "ADNO": 345,
+  "CLASS": 5,
+  "FULL NAME": "MUHAMMED SINAN A",
+  "Password": 345,
+  "SHORT NAME": "SINAN A",
+  "SL": 9,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:05:25.475Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f16925d"
+  },
+  "ADNO": 375,
+  "CLASS": 5,
+  "FULL NAME": "MUHAMMED SAFWAN P",
+  "Password": 375,
+  "SHORT NAME": "SAFWAN P",
+  "SL": 13,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:05:25.475Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f16925e"
+  },
+  "ADNO": 356,
+  "CLASS": 5,
+  "FULL NAME": "MUHAMMED SWAFVAN C",
+  "Password": 356,
+  "SHORT NAME": "SWAFVAN C",
+  "SL": 14,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:05:25.475Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f16925f"
+  },
+  "ADNO": 341,
+  "CLASS": 5,
+  "FULL NAME": "RIMSHID SAJIN N",
+  "Password": 341,
+  "SHORT NAME": "SAJIN N",
+  "SL": 15,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:05:25.475Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f169260"
+  },
+  "ADNO": 351,
+  "CLASS": 5,
+  "FULL NAME": "MOHAMED ANSIL",
+  "Password": 351,
+  "SHORT NAME": "ANSIL",
+  "SL": 16,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:05:25.475Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f169261"
+  },
+  "ADNO": 357,
+  "CLASS": 5,
+  "FULL NAME": "MUHAMMED SHAHIN V",
+  "Password": 357,
+  "SHORT NAME": "SHAHIN V",
+  "SL": 17,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:05:25.475Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f169263"
+  },
+  "ADNO": 347,
+  "CLASS": 5,
+  "FULL NAME": "MUHAMMED SHIHAN P P",
+  "Password": 347,
+  "SHORT NAME": "SHIHAN P P",
+  "SL": 18,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:05:25.475Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f169264"
+  },
+  "ADNO": 325,
+  "CLASS": 5,
+  "FULL NAME": "MUHAMMED SINAN",
+  "Password": 325,
+  "SHORT NAME": "SINAN",
+  "SL": 19,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:05:25.475Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f169265"
+  },
+  "ADNO": 336,
+  "CLASS": 5,
+  "FULL NAME": "ABDUL RAHEEM E K",
+  "Password": 336,
+  "SHORT NAME": "RAHEEM E K",
+  "SL": 20,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:05:25.475Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f169266"
+  },
+  "ADNO": 329,
+  "CLASS": 5,
+  "FULL NAME": "MUHAMMED HAMDAN M",
+  "Password": 329,
+  "SHORT NAME": "HAMDAN M",
+  "SL": 21,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:05:25.475Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f169268"
+  },
+  "ADNO": 297,
+  "CLASS": 5,
+  "FULL NAME": "MUHAMMED SHADI",
+  "Password": 297,
+  "SHORT NAME": "SHADI",
+  "SL": 23,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:05:25.475Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f169267"
+  },
+  "ADNO": 337,
+  "CLASS": 5,
+  "FULL NAME": "MUHAMMED FARHAN.KM",
+  "Password": 337,
+  "SHORT NAME": "FARHAN.KM",
+  "SL": 22,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:05:25.475Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f169269"
+  },
+  "ADNO": 333,
+  "CLASS": 5,
+  "FULL NAME": "MUHAMMED FAYIZ KK",
+  "Password": 333,
+  "SHORT NAME": "FAYIZ KK",
+  "SL": 24,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:05:25.475Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f16926a"
+  },
+  "ADNO": 344,
+  "CLASS": 5,
+  "FULL NAME": "ASHFIN VP",
+  "Password": 344,
+  "SHORT NAME": "ASHFIN VP",
+  "SL": 25,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:05:25.475Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Absent",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f16926b"
+  },
+  "ADNO": 342,
+  "CLASS": 5,
+  "FULL NAME": "MOHAMMAD NOUFAN N",
+  "Password": 342,
+  "SHORT NAME": "NOUFAN N",
+  "SL": 26,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:05:25.475Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f16926c"
+  },
+  "ADNO": 355,
+  "CLASS": 5,
+  "FULL NAME": "MUHAMMED NIHAD P",
+  "Password": 355,
+  "SHORT NAME": "NIHAD P",
+  "SL": 27,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:05:25.475Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f16926d"
+  },
+  "ADNO": 380,
+  "CLASS": 4,
+  "FULL NAME": "ASHMIL SHAN M",
+  "Password": 380,
+  "SHORT NAME": "ASHMIL",
+  "SL": 1,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:14:53.163Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f16926e"
+  },
+  "ADNO": 404,
+  "CLASS": 4,
+  "FULL NAME": "THANSEEM",
+  "Password": 404,
+  "SHORT NAME": "THANSEEM",
+  "SL": 2,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:14:53.163Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f16926f"
+  },
+  "ADNO": 376,
+  "CLASS": 4,
+  "FULL NAME": "MUHAMMED SIDHAN M K",
+  "Password": 376,
+  "SHORT NAME": "SIDHAN M K",
+  "SL": 3,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:14:53.163Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f169270"
+  },
+  "ADNO": 395,
+  "CLASS": 4,
+  "FULL NAME": "AFEEF MUHSIN T",
+  "Password": 395,
+  "SHORT NAME": "AFEEF",
+  "SL": 4,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:14:53.163Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f169271"
+  },
+  "ADNO": 388,
+  "CLASS": 4,
+  "FULL NAME": "MUHAMMED SHAMEEM.M.T",
+  "Password": 388,
+  "SHORT NAME": "SHAMEEM.M.T",
+  "SL": 5,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:14:53.163Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f169272"
+  },
+  "ADNO": 387,
+  "CLASS": 4,
+  "FULL NAME": "MUHAMMED SHAMIL N",
+  "Password": 387,
+  "SHORT NAME": "SHAMIL N",
+  "SL": 6,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:14:53.163Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f169273"
+  },
+  "ADNO": 384,
+  "CLASS": 4,
+  "FULL NAME": "MUHAMMED FAYAS",
+  "Password": 384,
+  "SHORT NAME": "FAYAS",
+  "SL": 7,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:14:53.163Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f169274"
+  },
+  "ADNO": 377,
+  "CLASS": 4,
+  "FULL NAME": "MUHAMMED JAVAD M",
+  "Password": 377,
+  "SHORT NAME": "JAVAD M",
+  "SL": 8,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:14:53.163Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f169275"
+  },
+  "ADNO": 392,
+  "CLASS": 4,
+  "FULL NAME": "MUHAMMED NIHAD",
+  "Password": 392,
+  "SHORT NAME": "NIHAD",
+  "SL": 9,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:14:53.163Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f169276"
+  },
+  "ADNO": 397,
+  "CLASS": 4,
+  "FULL NAME": "ABDUL HADI K",
+  "Password": 397,
+  "SHORT NAME": "HADI K",
+  "SL": 10,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:14:53.163Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f169277"
+  },
+  "ADNO": 407,
+  "CLASS": 4,
+  "FULL NAME": "MUHAMMED SHADIN KC",
+  "Password": 407,
+  "SHORT NAME": "SHADIN KC",
+  "SL": 11,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:14:53.163Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f169278"
+  },
+  "ADNO": 400,
+  "CLASS": 4,
+  "FULL NAME": "MUHAMMED MIDLAJ.V",
+  "Password": 400,
+  "SHORT NAME": "MIDLAJ",
+  "SL": 12,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:14:53.163Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f169279"
+  },
+  "ADNO": 385,
+  "CLASS": 4,
+  "FULL NAME": "MUHAMMED SHABIL P",
+  "Password": 385,
+  "SHORT NAME": "SHABIL P",
+  "SL": 13,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:14:53.163Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f16927a"
+  },
+  "ADNO": 398,
+  "CLASS": 4,
+  "FULL NAME": "MUHAMMED RAYYAN KP",
+  "Password": 398,
+  "SHORT NAME": "RAYYAN KP",
+  "SL": 14,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:14:53.163Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f16927b"
+  },
+  "ADNO": 378,
+  "CLASS": 4,
+  "FULL NAME": "MUHAMMED ISMAYIL",
+  "Password": 378,
+  "SHORT NAME": "ISMAYIL",
+  "SL": 15,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:14:53.163Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f16927c"
+  },
+  "ADNO": 396,
+  "CLASS": 4,
+  "FULL NAME": "MUBASHIR MUHAMMED",
+  "Password": 396,
+  "SHORT NAME": "MUBASHIR",
+  "SL": 16,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:14:53.163Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f16927d"
+  },
+  "ADNO": 408,
+  "CLASS": 4,
+  "FULL NAME": "MOHAMMED ZAYAN K",
+  "Password": 408,
+  "SHORT NAME": "ZAYAN K",
+  "SL": 17,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:14:53.163Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f16927e"
+  },
+  "ADNO": 381,
+  "CLASS": 4,
+  "FULL NAME": "HAFIDH P",
+  "Password": 381,
+  "SHORT NAME": "HAFIDH P",
+  "SL": 18,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:14:53.163Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f16927f"
+  },
+  "ADNO": 420,
+  "CLASS": 4,
+  "FULL NAME": "MUHAMMED SARTHAJ P",
+  "Password": 420,
+  "SHORT NAME": "SARTHAJ P",
+  "SL": 19,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:14:53.163Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f169280"
+  },
+  "ADNO": 393,
+  "CLASS": 4,
+  "FULL NAME": "MUHAMMED SALIF K",
+  "Password": 393,
+  "SHORT NAME": "SALIF K",
+  "SL": 20,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:14:53.163Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f169281"
+  },
+  "ADNO": 402,
+  "CLASS": 4,
+  "FULL NAME": "MUHAMMED NIHAL P S",
+  "Password": 402,
+  "SHORT NAME": "NIHAL P S",
+  "SL": 21,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:14:53.163Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f169282"
+  },
+  "ADNO": 419,
+  "CLASS": 4,
+  "FULL NAME": "SAYYED SHAHEEM",
+  "Password": 419,
+  "SHORT NAME": "SYD SHAHEEM",
+  "SL": 22,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:14:53.163Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f169283"
+  },
+  "ADNO": 389,
+  "CLASS": 4,
+  "FULL NAME": "MUHAMMED HAMDAN",
+  "Password": 389,
+  "SHORT NAME": "HAMDAN",
+  "SL": 23,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:14:53.163Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f169284"
+  },
+  "ADNO": 383,
+  "CLASS": 4,
+  "FULL NAME": "ABDUL RAHMAN KP",
+  "Password": 383,
+  "SHORT NAME": "RAHMAN KP",
+  "SL": 24,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:14:53.163Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f169285"
+  },
+  "ADNO": 353,
+  "CLASS": 4,
+  "FULL NAME": "MUHAMMED SHIFAN",
+  "Password": 353,
+  "SHORT NAME": "SHIFAN C",
+  "SL": 25,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:14:53.163Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f169286"
+  },
+  "ADNO": 422,
+  "CLASS": 3,
+  "FULL NAME": "MOHAMMED MUSTHAFA P",
+  "Password": 422,
+  "SHORT NAME": "MUSTHAFA",
+  "SL": 1,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:25:18.454Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f169287"
+  },
+  "ADNO": 427,
+  "CLASS": 3,
+  "FULL NAME": "MUHAMMED DILSHAD KM",
+  "Password": 427,
+  "SHORT NAME": "DILSHAD",
+  "SL": 2,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:25:18.454Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f169288"
+  },
+  "ADNO": 424,
+  "CLASS": 3,
+  "FULL NAME": "MUHAMMED HANAN P M",
+  "Password": 424,
+  "SHORT NAME": "HANAN",
+  "SL": 3,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:25:18.454Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f169289"
+  },
+  "ADNO": 432,
+  "CLASS": 3,
+  "FULL NAME": "FAHEEM M",
+  "Password": 432,
+  "SHORT NAME": "FAHEEM M",
+  "SL": 4,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:25:18.454Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f16928a"
+  },
+  "ADNO": 433,
+  "CLASS": 3,
+  "FULL NAME": "ASHFAQ RAHMAN CP",
+  "Password": 433,
+  "SHORT NAME": "ASHFAQ",
+  "SL": 5,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:25:18.454Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f16928b"
+  },
+  "ADNO": 386,
+  "CLASS": 3,
+  "FULL NAME": "MUHAMMED HAFIL PK",
+  "Password": 386,
+  "SHORT NAME": "HAFIL",
+  "SL": 6,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:25:18.454Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f16928c"
+  },
+  "ADNO": 446,
+  "CLASS": 3,
+  "FULL NAME": "ABDUL WADOOD T",
+  "Password": 446,
+  "SHORT NAME": "WADOOD T",
+  "SL": 7,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:25:18.454Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f16928d"
+  },
+  "ADNO": 423,
+  "CLASS": 3,
+  "FULL NAME": "MUHAMMAD SANEEH KP",
+  "Password": 423,
+  "SHORT NAME": "SANEEH KP",
+  "SL": 8,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:25:18.454Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f16928e"
+  },
+  "ADNO": 442,
+  "CLASS": 3,
+  "FULL NAME": "MUHAMMED K",
+  "Password": 442,
+  "SHORT NAME": "MUHAMMED K",
+  "SL": 9,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:25:18.454Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f16928f"
+  },
+  "ADNO": 434,
+  "CLASS": 3,
+  "FULL NAME": "MUHAMMED SHIHAN PK",
+  "Password": 434,
+  "SHORT NAME": "SHIHAN",
+  "SL": 10,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:25:18.454Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f169290"
+  },
+  "ADNO": 435,
+  "CLASS": 3,
+  "FULL NAME": "MUHAMMED ASHMAL. M",
+  "Password": 435,
+  "SHORT NAME": "ASHMAL",
+  "SL": 11,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:25:18.454Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f169291"
+  },
+  "ADNO": 382,
+  "CLASS": 3,
+  "FULL NAME": "MOHAMMED FADI .T.K",
+  "Password": 382,
+  "SHORT NAME": "FADI",
+  "SL": 12,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:25:18.454Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f169292"
+  },
+  "ADNO": 429,
+  "CLASS": 3,
+  "FULL NAME": "MUHAMMED",
+  "Password": 429,
+  "SHORT NAME": "MUHAMMED T",
+  "SL": 13,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:25:18.454Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f169293"
+  },
+  "ADNO": 425,
+  "CLASS": 3,
+  "FULL NAME": "MOHAMMED SHAMMAS.K",
+  "Password": 425,
+  "SHORT NAME": "SHAMMAS",
+  "SL": 14,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:25:18.454Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f169294"
+  },
+  "ADNO": 394,
+  "CLASS": 3,
+  "FULL NAME": "MUHAMMED NIJAD V P",
+  "Password": 394,
+  "SHORT NAME": "NIJAD",
+  "SL": 15,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:25:18.454Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f169295"
+  },
+  "ADNO": 379,
+  "CLASS": 3,
+  "FULL NAME": "MUHSIN AHMAD",
+  "Password": 379,
+  "SHORT NAME": "MUHSIN",
+  "SL": 16,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:25:18.454Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f169296"
+  },
+  "ADNO": 426,
+  "CLASS": 3,
+  "FULL NAME": "MUHAMMAD HADI ZAMAN",
+  "Password": 426,
+  "SHORT NAME": "HADI ZAMAN",
+  "SL": 17,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:25:18.454Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f169297"
+  },
+  "ADNO": 443,
+  "CLASS": 3,
+  "FULL NAME": "MUHAMMED N",
+  "Password": 443,
+  "SHORT NAME": "MUHAMMED N",
+  "SL": 18,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:25:18.454Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f169298"
+  },
+  "ADNO": 437,
+  "CLASS": 3,
+  "FULL NAME": "MUHAMMAD SHAHINSHA",
+  "Password": 437,
+  "SHORT NAME": "SHAHINSHA",
+  "SL": 19,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:25:18.454Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f169299"
+  },
+  "ADNO": 436,
+  "CLASS": 3,
+  "FULL NAME": "MUHAMMED AHIYAN T",
+  "Password": 436,
+  "SHORT NAME": "AHIYAN",
+  "SL": 20,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:25:18.454Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f16929a"
+  },
+  "ADNO": 431,
+  "CLASS": 3,
+  "FULL NAME": "MUHAMMED SAHAL",
+  "Password": 431,
+  "SHORT NAME": "SAHAL",
+  "SL": 21,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": true,
+  "updatedAt": {
+    "$date": "2026-05-23T02:25:18.454Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Absent",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f16929b"
+  },
+  "ADNO": 430,
+  "CLASS": 3,
+  "FULL NAME": "MUHAMMED SINAN P",
+  "Password": 430,
+  "SHORT NAME": "SINAN P",
+  "SL": 22,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:25:18.454Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f16929d"
+  },
+  "ADNO": 481,
+  "CLASS": 2,
+  "FULL NAME": "ABDUL BASITH K",
+  "Password": 481,
+  "SHORT NAME": "BASITH",
+  "SL": 1,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:02:42.023Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f16929c"
+  },
+  "ADNO": 441,
+  "CLASS": 3,
+  "FULL NAME": "MUHAMMED SHAHAN P",
+  "Password": 441,
+  "SHORT NAME": "SHAHAN P",
+  "SL": 23,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:25:18.454Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f16929e"
+  },
+  "ADNO": 468,
+  "CLASS": 2,
+  "FULL NAME": "MUHAMMED AFLAH P",
+  "Password": 468,
+  "SHORT NAME": "AFLAH P",
+  "SL": 2,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:02:42.023Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f16929f"
+  },
+  "ADNO": 482,
+  "CLASS": 2,
+  "FULL NAME": "MUHAMMAD AJAS K",
+  "Password": 482,
+  "SHORT NAME": "AJAS",
+  "SL": 3,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": true,
+  "updatedAt": {
+    "$date": "2026-05-23T02:02:42.023Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Absent",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f1692a0"
+  },
+  "ADNO": 491,
+  "CLASS": 2,
+  "FULL NAME": "MUHAMMED MUSTHAFA KK",
+  "Password": 491,
+  "SHORT NAME": "MUSTHAFA",
+  "SL": 4,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:02:42.023Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f1692a1"
+  },
+  "ADNO": 469,
+  "CLASS": 2,
+  "FULL NAME": "MOHAMMED ASEEL K",
+  "Password": 469,
+  "SHORT NAME": "ASEEL",
+  "SL": 5,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:02:42.023Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f1692a2"
+  },
+  "ADNO": 473,
+  "CLASS": 2,
+  "FULL NAME": "ADHILSHA PK",
+  "Password": 473,
+  "SHORT NAME": "ADHILSHA",
+  "SL": 6,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:02:42.023Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f1692a3"
+  },
+  "ADNO": 465,
+  "CLASS": 2,
+  "FULL NAME": "MUHAMMED SHAHEEM CK",
+  "Password": 465,
+  "SHORT NAME": "SHAHEEM",
+  "SL": 7,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:02:42.023Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f1692a4"
+  },
+  "ADNO": 485,
+  "CLASS": 2,
+  "FULL NAME": "MUHAMMED AFLAH M",
+  "Password": 485,
+  "SHORT NAME": "AFLAH M",
+  "SL": 8,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:02:42.023Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f1692a5"
+  },
+  "ADNO": 458,
+  "CLASS": 2,
+  "FULL NAME": "MUHAMMED ASHMIL M T",
+  "Password": 458,
+  "SHORT NAME": "ASHMIL",
+  "SL": 9,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:02:42.023Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f1692a6"
+  },
+  "ADNO": 470,
+  "CLASS": 2,
+  "FULL NAME": "AZIL ALI PN",
+  "Password": 470,
+  "SHORT NAME": "AZIL",
+  "SL": 10,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:02:42.023Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f1692a7"
+  },
+  "ADNO": 479,
+  "CLASS": 2,
+  "FULL NAME": "MUHAMMED MUNSIF PK",
+  "Password": 479,
+  "SHORT NAME": "MUNSIF",
+  "SL": 11,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:02:42.023Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f1692a8"
+  },
+  "ADNO": 480,
+  "CLASS": 2,
+  "FULL NAME": "ASHMIL PK",
+  "Password": 480,
+  "SHORT NAME": "ASHMIL",
+  "SL": 12,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:02:42.023Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f1692a9"
+  },
+  "ADNO": 471,
+  "CLASS": 2,
+  "FULL NAME": "MUHAMMAD AJMAL",
+  "Password": 471,
+  "SHORT NAME": "AJMAL",
+  "SL": 13,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:02:42.023Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f1692aa"
+  },
+  "ADNO": 486,
+  "CLASS": 2,
+  "FULL NAME": "MUHAMMED SUHAIL",
+  "Password": 486,
+  "SHORT NAME": "SUHAIL",
+  "SL": 14,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:02:42.023Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f1692ab"
+  },
+  "ADNO": 461,
+  "CLASS": 2,
+  "FULL NAME": "MOHAMMED ANZIL K",
+  "Password": 461,
+  "SHORT NAME": "ANZIL",
+  "SL": 15,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:02:42.023Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f1692ac"
+  },
+  "ADNO": 464,
+  "CLASS": 2,
+  "FULL NAME": "MUHAMMED SHAREEF C",
+  "Password": 464,
+  "SHORT NAME": "SHAREEF",
+  "SL": 16,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:02:42.023Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f1692ad"
+  },
+  "ADNO": 475,
+  "CLASS": 2,
+  "FULL NAME": "MUHAMMED JASIL K",
+  "Password": 475,
+  "SHORT NAME": "JASIL",
+  "SL": 17,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:02:42.023Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f1692af"
+  },
+  "ADNO": 490,
+  "CLASS": 2,
+  "FULL NAME": "SHAHEEN AHMED C",
+  "Password": 490,
+  "SHORT NAME": "SHAHEEN",
+  "SL": 18,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": true,
+  "updatedAt": {
+    "$date": "2026-05-23T02:02:42.023Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Absent",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f1692b0"
+  },
+  "ADNO": 457,
+  "CLASS": 2,
+  "FULL NAME": "ABDULLA SHAMEEL",
+  "Password": 457,
+  "SHORT NAME": "SHAMEEL",
+  "SL": 19,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:02:42.023Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f1692b1"
+  },
+  "ADNO": 477,
+  "CLASS": 2,
+  "FULL NAME": "FAZHAN MUHAMMED KP",
+  "Password": 477,
+  "SHORT NAME": "FAZHAN",
+  "SL": 20,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:02:42.023Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f1692b2"
+  },
+  "ADNO": 474,
+  "CLASS": 2,
+  "FULL NAME": "AFAN M",
+  "Password": 474,
+  "SHORT NAME": "AFAN",
+  "SL": 21,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:02:42.023Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f1692b3"
+  },
+  "ADNO": 459,
+  "CLASS": 2,
+  "FULL NAME": "MUHAMMED SWALIH T T",
+  "Password": 459,
+  "SHORT NAME": "SWALIH",
+  "SL": 22,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:02:42.023Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f1692b4"
+  },
+  "ADNO": 448,
+  "CLASS": 2,
+  "FULL NAME": "MUHAMMAD NABEEL PM",
+  "Password": 448,
+  "SHORT NAME": "NABEEL",
+  "SL": 23,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:02:42.023Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f1692b5"
+  },
+  "ADNO": 472,
+  "CLASS": 2,
+  "FULL NAME": "MUHAMMED AFTHAH E",
+  "Password": 472,
+  "SHORT NAME": "AFTHAH",
+  "SL": 24,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:02:42.023Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f1692b6"
+  },
+  "ADNO": 483,
+  "CLASS": 2,
+  "FULL NAME": "MUHAMMED AFLAH E",
+  "Password": 483,
+  "SHORT NAME": "AFLAH E",
+  "SL": 25,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:02:42.023Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f1692b7"
+  },
+  "ADNO": 439,
+  "CLASS": 2,
+  "FULL NAME": "MUHAMMAD ZISHAN",
+  "Password": 439,
+  "SHORT NAME": "ZISHAN",
+  "SL": 26,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:02:42.023Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f1692b8"
+  },
+  "ADNO": 451,
+  "CLASS": 2,
+  "FULL NAME": "MUHAMMED SAHAD",
+  "Password": 451,
+  "SHORT NAME": "SAHAD K",
+  "SL": 27,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:02:42.023Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f1692b9"
+  },
+  "ADNO": 428,
+  "CLASS": 2,
+  "FULL NAME": "ADNAN",
+  "Password": 428,
+  "SHORT NAME": "ADNAN",
+  "SL": 28,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:02:42.023Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69d317ec1367e764775db579"
+  },
+  "FULL NAME": "AHMAD HUDAIF K",
+  "SHORT NAME": "HUDAIF K",
+  "SL": 30,
+  "ADNO": 449,
+  "CLASS": 2,
+  "Password": 449,
+  "onLeave": false,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-06T02:18:20.031Z"
+  },
+  "updatedAt": {
+    "$date": "2026-05-23T02:02:42.023Z"
+  },
+  "__v": 0,
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69d318201367e764775db57b"
+  },
+  "FULL NAME": "HASHIM ABDULLATHEEF",
+  "SHORT NAME": "HASHIM",
+  "SL": 29,
+  "ADNO": 163,
+  "CLASS": 8,
+  "Password": 163,
+  "onLeave": false,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-06T02:19:12.878Z"
+  },
+  "updatedAt": {
+    "$date": "2026-05-23T02:04:02.365Z"
+  },
+  "__v": 0,
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69ce2bc4f445ec277f169229"
+  },
+  "ADNO": 267,
+  "CLASS": 7,
+  "FULL NAME": "MUHAMMED RIZWAN",
+  "Password": 267,
+  "SHORT NAME": "RIZWAN",
+  "SL": 5,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-02T08:41:39.753Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:02:17.963Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69db5c7fec06f1968cc26105"
+  },
+  "FULL NAME": "HANAN MAHMOOD T",
+  "SHORT NAME": "HANAN T",
+  "SL": 21,
+  "ADNO": 291,
+  "CLASS": 6,
+  "Password": 291,
+  "onLeave": false,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-12T08:49:03.940Z"
+  },
+  "updatedAt": {
+    "$date": "2026-05-22T13:52:33.529Z"
+  },
+  "__v": 0,
+  "Date": "2026-05-22",
+  "Status": "Present",
+  "Time": "Night"
+},
+{
+  "_id": {
+    "$oid": "69db5ca7ec06f1968cc26107"
+  },
+  "FULL NAME": "HADI A",
+  "SHORT NAME": "HADI A",
+  "SL": 29,
+  "ADNO": 499,
+  "CLASS": 2,
+  "Password": 499,
+  "onLeave": false,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-12T08:49:43.854Z"
+  },
+  "updatedAt": {
+    "$date": "2026-05-23T02:02:42.023Z"
+  },
+  "__v": 0,
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69e077935e68183246215482"
+  },
+  "FULL NAME": "THOUFEEQUE RAHMAN. MK",
+  "SHORT NAME": "THOUFEEQUE",
+  "SL": 31,
+  "ADNO": 84,
+  "CLASS": 10,
+  "Password": 84,
+  "onLeave": true,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-16T05:45:55.677Z"
+  },
+  "updatedAt": {
+    "$date": "2026-05-23T05:48:01.707Z"
+  },
+  "__v": 0,
+  "Date": "2026-05-23",
+  "Status": "Absent",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69e07ae0efb63ffa98984852"
+  },
+  "FULL NAME": "HASHIR P.P PEEDIKA PARAMBAN",
+  "SHORT NAME": "HASHIR PP",
+  "SL": 17,
+  "ADNO": 179,
+  "CLASS": 9,
+  "Password": 173,
+  "onLeave": false,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-16T06:00:00.368Z"
+  },
+  "updatedAt": {
+    "$date": "2026-05-23T02:56:21.812Z"
+  },
+  "__v": 0,
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69e32c042bfa9662ec6d00b3"
+  },
+  "ADNO": 462,
+  "CLASS": 1,
+  "FULL NAME": "MUHAMMED JALAL PV",
+  "Password": 462,
+  "SHORT NAME": "JALAL PV",
+  "SL": 1,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-18T07:00:20.515Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:06:34.655Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69e32c042bfa9662ec6d00b4"
+  },
+  "ADNO": 492,
+  "CLASS": 1,
+  "FULL NAME": "MUHAMMED SHAMMAS",
+  "Password": 492,
+  "SHORT NAME": "SHAMMAS",
+  "SL": 2,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-18T07:00:20.515Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:06:34.655Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69e32c042bfa9662ec6d00b5"
+  },
+  "ADNO": 500,
+  "CLASS": 1,
+  "FULL NAME": "AHMED NAEEM NT",
+  "Password": 500,
+  "SHORT NAME": "NAEEM NT",
+  "SL": 3,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-18T07:00:20.515Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:06:34.655Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69e32c042bfa9662ec6d00b6"
+  },
+  "ADNO": 501,
+  "CLASS": 1,
+  "FULL NAME": "MUHAMMED FAYIZ M",
+  "Password": 501,
+  "SHORT NAME": "FAYIZ M",
+  "SL": 4,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-18T07:00:20.515Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:06:34.655Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69e32c042bfa9662ec6d00b7"
+  },
+  "ADNO": 502,
+  "CLASS": 1,
+  "FULL NAME": "MUHAMMED SHAHEEM P",
+  "Password": 502,
+  "SHORT NAME": "SHAHEEM P",
+  "SL": 5,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-18T07:00:20.515Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:06:34.655Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69e32c042bfa9662ec6d00b8"
+  },
+  "ADNO": 503,
+  "CLASS": 1,
+  "FULL NAME": "MUHAMMED RABEEH. N",
+  "Password": 503,
+  "SHORT NAME": "RABEEH N",
+  "SL": 6,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-18T07:00:20.515Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:06:34.655Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69e32c042bfa9662ec6d00b9"
+  },
+  "ADNO": 504,
+  "CLASS": 1,
+  "FULL NAME": "MUHAMMED MUSTHAFA M",
+  "Password": 504,
+  "SHORT NAME": "MUSTHAFA M",
+  "SL": 7,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-18T07:00:20.515Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:06:34.655Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69e32c042bfa9662ec6d00ba"
+  },
+  "ADNO": 505,
+  "CLASS": 1,
+  "FULL NAME": "MUHAMMED SHAHEEM K",
+  "Password": 505,
+  "SHORT NAME": "SHAHEEM K",
+  "SL": 8,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-18T07:00:20.515Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:06:34.655Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69e32c042bfa9662ec6d00bb"
+  },
+  "ADNO": 506,
+  "CLASS": 1,
+  "FULL NAME": "MUHAMMED SHAN V P",
+  "Password": 506,
+  "SHORT NAME": "SHAN V P",
+  "SL": 9,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-18T07:00:20.515Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:06:34.655Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69e32c042bfa9662ec6d00bc"
+  },
+  "ADNO": 507,
+  "CLASS": 1,
+  "FULL NAME": "MUHAMMED RAYYAN.K",
+  "Password": 507,
+  "SHORT NAME": "RAYYAN K",
+  "SL": 10,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-18T07:00:20.515Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:06:34.655Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69e32c042bfa9662ec6d00bd"
+  },
+  "ADNO": 508,
+  "CLASS": 1,
+  "FULL NAME": "FARHAN A",
+  "Password": 508,
+  "SHORT NAME": "FARHAN A",
+  "SL": 11,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-18T07:00:20.515Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:06:34.655Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69e32c042bfa9662ec6d00be"
+  },
+  "ADNO": 509,
+  "CLASS": 1,
+  "FULL NAME": "MUHAMMED ASHFIN. TK",
+  "Password": 509,
+  "SHORT NAME": "ASHFIN TK",
+  "SL": 12,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-18T07:00:20.515Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:06:34.655Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69e32c042bfa9662ec6d00bf"
+  },
+  "ADNO": 510,
+  "CLASS": 1,
+  "FULL NAME": "MOHAMMED ANFAN O",
+  "Password": 510,
+  "SHORT NAME": "ANFAN O",
+  "SL": 13,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-18T07:00:20.515Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:06:34.655Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69e32c042bfa9662ec6d00c0"
+  },
+  "ADNO": 511,
+  "CLASS": 1,
+  "FULL NAME": "MUHAMMED RABEEH K",
+  "Password": 511,
+  "SHORT NAME": "RABEEH K",
+  "SL": 14,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-18T07:00:20.515Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:06:34.655Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69e32c042bfa9662ec6d00c1"
+  },
+  "ADNO": 512,
+  "CLASS": 1,
+  "FULL NAME": "SHAIH MUHAMMAD RAZEE",
+  "Password": 512,
+  "SHORT NAME": "RAZEE",
+  "SL": 15,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-18T07:00:20.515Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:06:34.655Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69e32c042bfa9662ec6d00c2"
+  },
+  "ADNO": 513,
+  "CLASS": 1,
+  "FULL NAME": "HADI ABDULLA MC",
+  "Password": 513,
+  "SHORT NAME": "HADI ABDULLA MC",
+  "SL": 16,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-18T07:00:20.515Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:06:34.655Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Absent",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69e32c042bfa9662ec6d00c3"
+  },
+  "ADNO": 514,
+  "CLASS": 1,
+  "FULL NAME": "MUHAMMAD FARHAN K",
+  "Password": 514,
+  "SHORT NAME": "FARHAN K",
+  "SL": 17,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-18T07:00:20.515Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:06:34.655Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69e32c042bfa9662ec6d00c4"
+  },
+  "ADNO": 515,
+  "CLASS": 1,
+  "FULL NAME": "MUHAMMED IHSAN VK",
+  "Password": 515,
+  "SHORT NAME": "IHSAN VK",
+  "SL": 18,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-18T07:00:20.515Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:06:34.655Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69e32c042bfa9662ec6d00c5"
+  },
+  "ADNO": 516,
+  "CLASS": 1,
+  "FULL NAME": "MUHAMMED IJLAN C",
+  "Password": 516,
+  "SHORT NAME": "IJLAN C",
+  "SL": 19,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-18T07:00:20.515Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:06:34.655Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69e32c042bfa9662ec6d00c6"
+  },
+  "ADNO": 517,
+  "CLASS": 1,
+  "FULL NAME": "MUHAMMAD AMEEN KC",
+  "Password": 517,
+  "SHORT NAME": "AMEEN KC",
+  "SL": 20,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-18T07:00:20.515Z"
+  },
+  "onLeave": true,
+  "updatedAt": {
+    "$date": "2026-05-23T02:26:20.703Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Absent",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69e32c042bfa9662ec6d00c7"
+  },
+  "ADNO": 518,
+  "CLASS": 1,
+  "FULL NAME": "MUHAMMED SHADHIN E",
+  "Password": 518,
+  "SHORT NAME": "SHADHIN E",
+  "SL": 21,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-18T07:00:20.515Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:06:34.656Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69e32c042bfa9662ec6d00c8"
+  },
+  "ADNO": 519,
+  "CLASS": 1,
+  "FULL NAME": "SHAMIL MUHAMMED.K",
+  "Password": 519,
+  "SHORT NAME": "SHAMIL K",
+  "SL": 22,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-18T07:00:20.515Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:06:34.656Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69e32c042bfa9662ec6d00c9"
+  },
+  "ADNO": 520,
+  "CLASS": 1,
+  "FULL NAME": "MUHAMMED NIHAL K",
+  "Password": 520,
+  "SHORT NAME": "NIHAL K",
+  "SL": 23,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-18T07:00:20.515Z"
+  },
+  "onLeave": true,
+  "updatedAt": {
+    "$date": "2026-05-23T02:25:53.788Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Absent",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69e32c042bfa9662ec6d00ca"
+  },
+  "ADNO": 521,
+  "CLASS": 1,
+  "FULL NAME": "MUHAMMED AJLAN.M",
+  "Password": 521,
+  "SHORT NAME": "AJLAN M",
+  "SL": 24,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-18T07:00:20.515Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:06:34.656Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Absent",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69e32c042bfa9662ec6d00cb"
+  },
+  "ADNO": 522,
+  "CLASS": 1,
+  "FULL NAME": "MUHAMMED AJWAD K",
+  "Password": 522,
+  "SHORT NAME": "AJWAD K",
+  "SL": 25,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-18T07:00:20.515Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:06:34.656Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69e32c042bfa9662ec6d00cc"
+  },
+  "ADNO": 523,
+  "CLASS": 1,
+  "FULL NAME": "RAZIN AHMAD. NV",
+  "Password": 523,
+  "SHORT NAME": "RAZIN NV",
+  "SL": 26,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-18T07:00:20.515Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:06:34.656Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69e32c042bfa9662ec6d00cd"
+  },
+  "ADNO": 524,
+  "CLASS": 1,
+  "FULL NAME": "MUHAMMED SWALIH V P",
+  "Password": 524,
+  "SHORT NAME": "SWALIH V P",
+  "SL": 27,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-18T07:00:20.515Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:06:34.656Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69e32c042bfa9662ec6d00ce"
+  },
+  "ADNO": 525,
+  "CLASS": 1,
+  "FULL NAME": "ADINSHAN. KK",
+  "Password": 525,
+  "SHORT NAME": "ADINSHAN KK",
+  "SL": 28,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-18T07:00:20.515Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:06:34.656Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69e32c042bfa9662ec6d00cf"
+  },
+  "ADNO": 526,
+  "CLASS": 1,
+  "FULL NAME": "MUHAMMED ASHMIL M",
+  "Password": 526,
+  "SHORT NAME": "ASHMIL M",
+  "SL": 29,
+  "__v": 0,
+  "active": false,
+  "createdAt": {
+    "$date": "2026-04-18T07:00:20.515Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-08T15:06:01.265Z"
+  },
+  "Date": "2026-05-08",
+  "Status": "Absent",
+  "Time": "Night"
+},
+{
+  "_id": {
+    "$oid": "69e32c042bfa9662ec6d00d0"
+  },
+  "ADNO": 527,
+  "CLASS": 1,
+  "FULL NAME": "JAZLAN ET",
+  "Password": 527,
+  "SHORT NAME": "JAZLAN ET",
+  "SL": 30,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-18T07:00:20.515Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:06:34.656Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69e32c042bfa9662ec6d00d1"
+  },
+  "ADNO": 528,
+  "CLASS": 1,
+  "FULL NAME": "MOHAMED ADHIL SHAN",
+  "Password": 528,
+  "SHORT NAME": "ADHIL SHAN",
+  "SL": 31,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-18T07:00:20.515Z"
+  },
+  "onLeave": true,
+  "updatedAt": {
+    "$date": "2026-05-23T02:06:34.656Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Absent",
+  "Time": "Morning"
+},
+{
+  "_id": {
+    "$oid": "69e32c042bfa9662ec6d00d2"
+  },
+  "ADNO": 529,
+  "CLASS": 1,
+  "FULL NAME": "HADI KAMAL",
+  "Password": 529,
+  "SHORT NAME": "HADI KAMAL",
+  "SL": 32,
+  "__v": 0,
+  "active": true,
+  "createdAt": {
+    "$date": "2026-04-18T07:00:20.515Z"
+  },
+  "onLeave": false,
+  "updatedAt": {
+    "$date": "2026-05-23T02:06:34.656Z"
+  },
+  "Date": "2026-05-23",
+  "Status": "Present",
+  "Time": "Morning"
+}]

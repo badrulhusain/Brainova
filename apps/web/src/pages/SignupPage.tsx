@@ -15,7 +15,7 @@ export default function SignupPage() {
 
   const form = useForm<StudentRegisterValues>({
     resolver: zodResolver(studentRegisterSchema),
-    defaultValues: { name: '', admissionNo: '', department: '', batch: '' },
+    defaultValues: { name: '', admissionNo: '', batch: '' },
   });
 
   const onSubmit = form.handleSubmit(async (values) => {
@@ -23,7 +23,6 @@ export default function SignupPage() {
       const user = await registerStudent(
         values.name,
         values.admissionNo,
-        values.department || undefined,
         values.batch || undefined,
       );
       login(user);
@@ -80,18 +79,6 @@ export default function SignupPage() {
                   {form.formState.errors.admissionNo.message}
                 </p>
               )}
-            </div>
-
-            {/* Department (optional) */}
-            <div className="space-y-1.5">
-              <label className="text-sm font-medium" htmlFor="department">
-                Department <span className="text-xs text-muted">(optional)</span>
-              </label>
-              <Input
-                id="department"
-                placeholder="e.g. Computer Science"
-                {...form.register('department')}
-              />
             </div>
 
             {/* Batch (optional) */}

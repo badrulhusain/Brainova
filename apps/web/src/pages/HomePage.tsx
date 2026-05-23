@@ -46,19 +46,12 @@ export default function HomePage() {
               </p>
             </div>
             <div className="flex flex-col gap-3 sm:flex-row">
-              <Link to={user ? '/dashboard' : '/signup'}>
+              <Link to={user ? '/dashboard' : '/login'}>
                 <Button className="w-full gap-2 sm:w-auto">
-                  {user ? 'Open dashboard' : 'Sign up'}
+                  {user ? 'Open dashboard' : 'Enter details'}
                   <ArrowRight aria-hidden="true" className="h-4 w-4" />
                 </Button>
               </Link>
-              {!user && (
-                <Link to="/login">
-                  <Button variant="secondary" className="w-full sm:w-auto">
-                    Sign in
-                  </Button>
-                </Link>
-              )}
             </div>
           </div>
 
