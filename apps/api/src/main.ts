@@ -19,7 +19,13 @@ function isAllowedOrigin(origin: string, allowedOrigins: string[]): boolean {
 
   try {
     const url = new URL(origin);
-    return url.protocol === 'http:' && ['localhost', '127.0.0.1'].includes(url.hostname);
+    const isLocalhost =
+      url.protocol === 'http:' && ['localhost', '127.0.0.1'].includes(url.hostname);
+    const isNetlifyApp =
+      url.protocol === 'https:' &&
+      (url.hostname === 'netlify.app' || url.hostname.endsWith('.netlify.app'));
+
+    return isLocalhost || isNetlifyApp;
   } catch {
     return false;
   }
