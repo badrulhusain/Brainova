@@ -3,10 +3,15 @@ dist
 .env
 .env.*
 !.env.example
+!apps/web/.env.example
 .DS_Store
 .vscode
 coverage
 /build
+
+# Frontend
+apps/web/dist
+apps/web/node_modules
 
 # Backend
 apps/api/dist
