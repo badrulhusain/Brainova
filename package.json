@@ -14,6 +14,7 @@
     "lint": "eslint . --ext .ts,.tsx",
     "format": "prettier --write .",
     "seed": "tsx scripts/seed.ts",
+    "seed:aptitude": "npm --prefix apps/api run seed:aptitude",
     "admin:grant": "tsx scripts/grant-admin.ts",
     "test": "vitest",
     "test:watch": "vitest --watch"

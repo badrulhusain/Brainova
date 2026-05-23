@@ -9,9 +9,8 @@
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/src/main",
     "seed": "ts-node -r tsconfig-paths/register scripts/seed.ts",
-    
-  "seed:career": "ts-node -r tsconfig-paths/register scripts/seed-career-questions.ts"
-
+    "seed:career": "ts-node -r tsconfig-paths/register scripts/seed-career-questions.ts",
+    "seed:aptitude": "ts-node -r tsconfig-paths/register scripts/seed-aptitude-questions.ts"
   },
   "dependencies": {
     "@nestjs/common": "^10.3.0",
