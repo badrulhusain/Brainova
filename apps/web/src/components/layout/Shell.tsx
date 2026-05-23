@@ -8,23 +8,27 @@ import {
   ShieldCheck,
   LogIn,
 } from 'lucide-react';
+
 import { toast } from 'sonner';
 import { useAuth } from '../../features/auth/AuthProvider';
 import { appCopy } from '../../lib/constants/copy';
 import { ThemeToggle } from '../ui/theme-toggle';
 
-const navigation = [
-  { label: appCopy.nav.dashboard, to: '/', icon: LayoutDashboard, adminOnly: false },
-  { label: 'Aptitude', to: '/aptitude', icon: BrainCircuit, adminOnly: false },
-  { label: appCopy.nav.results, to: '/results', icon: BarChart3, adminOnly: false },
-  { label: 'Analytics', to: '/analytics', icon: LineChart, adminOnly: false },
-  { label: appCopy.nav.admin, to: '/admin', icon: ShieldCheck, adminOnly: true },
+const studentNavigation = [
+  { label: appCopy.nav.dashboard, to: '/dashboard', icon: LayoutDashboard },
+  { label: 'Aptitude', to: '/aptitude', icon: BrainCircuit },
+  { label: appCopy.nav.results, to: '/results', icon: BarChart3 },
+  { label: 'Analytics', to: '/analytics', icon: LineChart },
+] as const;
+
+const adminNavigation = [
+  { label: appCopy.nav.admin, to: '/admin', icon: ShieldCheck },
 ] as const;
 
 export function PageShell({ children }: { children: ReactNode }) {
   const { user, profile, isLoading, isAdmin, signOut } = useAuth();
   const navigate = useNavigate();
-  const visibleNavigation = navigation.filter((item) => !item.adminOnly || isAdmin);
+  const visibleNavigation = isAdmin ? adminNavigation : studentNavigation;
 
   const onSignOut = async () => {
     try {
@@ -41,7 +45,7 @@ export function PageShell({ children }: { children: ReactNode }) {
       <header className="sticky top-0 z-20 border-b border-border bg-background/95 backdrop-blur">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-4 sm:px-6">
           <Link
-            to="/"
+            to={isAdmin ? '/admin' : '/'}
             className="rounded-lg text-lg font-semibold tracking-tight text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
           >
             {appCopy.productName}
@@ -65,12 +69,18 @@ export function PageShell({ children }: { children: ReactNode }) {
           <div className="flex items-center gap-2">
             {!isLoading && user ? (
               <>
-                <Link
-                  to="/dashboard"
-                  className="hidden rounded-lg px-3 py-2 text-sm font-medium text-muted transition hover:bg-surfaceSoft hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2 focus-visible:ring-offset-background md:inline-flex"
-                >
-                  {profile?.displayName ?? 'Student'}
-                </Link>
+                {isAdmin ? (
+                  <span className="hidden rounded-lg px-3 py-2 text-sm font-medium text-muted md:inline-flex">
+                    {profile?.displayName ?? 'Administrator'}
+                  </span>
+                ) : (
+                  <Link
+                    to="/dashboard"
+                    className="hidden rounded-lg px-3 py-2 text-sm font-medium text-muted transition hover:bg-surfaceSoft hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2 focus-visible:ring-offset-background md:inline-flex"
+                  >
+                    {profile?.displayName ?? 'Student'}
+                  </Link>
+                )}
                 <button
                   className="rounded-lg px-3 py-2 text-sm font-semibold text-muted transition hover:bg-surfaceSoft hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
                   onClick={onSignOut}

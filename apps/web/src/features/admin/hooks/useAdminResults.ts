@@ -23,6 +23,5 @@ export function useAdminTestResult(resultId: string) {
       return res.data;
     },
     enabled: Boolean(resultId),
-    staleTime: Infinity,
   });
 }

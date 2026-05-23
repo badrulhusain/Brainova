@@ -5,6 +5,7 @@ import {
   AnswerKeyModelName,
   serialize,
   serializeMany,
+  StudentModelName,
   TestAttemptModelName,
   TestConfigModelName,
   TestResultModelName,
@@ -12,6 +13,7 @@ import {
   type AnswerKey,
   type MongoModel,
   type Question,
+  type Student,
   type TestAttempt,
   type TestConfig,
   type TestResult,
@@ -60,6 +62,8 @@ export class ScoringService {
     private readonly resultModel: MongoModel<TestResult>,
     @InjectModel(TestAttemptModelName)
     private readonly attemptModel: MongoModel<TestAttempt>,
+    @InjectModel(StudentModelName)
+    private readonly studentModel: MongoModel<Student>,
     @InjectConnection()
     private readonly connection: Connection,
   ) {}
@@ -103,6 +107,9 @@ export class ScoringService {
   ): Promise<{ resultId: string }> {
     const config = serialize<TestConfig>(await this.configModel.findById(session.configId));
     if (!config) throw new NotFoundException('Test configuration not found');
+
+    const studentDoc = await this.studentModel.findById(session.studentId).select('name admissionNo');
+    const student = studentDoc ? serialize<Student>(studentDoc) : null;
 
     const snapshot = session.questionSnapshot as Question[];
     const userAnswers = session.answers ?? {};
@@ -207,6 +214,8 @@ export class ScoringService {
             {
               sessionId,
               studentId: session.studentId,
+              studentName: student?.name ?? null,
+              studentAdmissionNo: student?.admissionNo ?? null,
               domainId: session.domainId,
               configId: session.configId,
               scoredMarks,

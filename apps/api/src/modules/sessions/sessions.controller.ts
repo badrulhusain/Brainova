@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
-import { AnyUserGuard } from '../../common/guards/any-user.guard';
+import { StudentGuard } from '../../common/guards/student.guard';
 import { SessionOwnerGuard } from '../../common/guards/session-owner.guard';
 import { CurrentUser, type AuthUser } from '../../common/decorators/current-user.decorator';
 import { ZodValidationPipe } from '../../common/pipes/zod-validation.pipe';
@@ -8,7 +8,7 @@ import { CreateSessionSchema, type CreateSessionDto } from './dto/create-session
 import { SaveAnswersSchema, type SaveAnswersDto } from './dto/save-answer.dto';
 
 @Controller('sessions')
-@UseGuards(AnyUserGuard)
+@UseGuards(StudentGuard)
 export class SessionsController {
   constructor(private readonly sessionsService: SessionsService) {}
 

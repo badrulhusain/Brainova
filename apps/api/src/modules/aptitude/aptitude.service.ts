@@ -63,8 +63,9 @@ export class AptitudeService {
       }));
   }
 
-  async submit(studentId: string, dto: SubmitAptitudeDto): Promise<AptitudeResult> {
-    const answers = dto.answers;
+  private async computeScores(
+    answers: Record<string, string>,
+  ): Promise<{ scores: AptitudeScores; strongestCategory: AptitudeCategory }> {
     const questionIds = Object.keys(answers).filter((id) => Types.ObjectId.isValid(id));
     const questions = serializeMany<AptitudeQuestion>(
       await this.questionModel.find({ _id: { $in: questionIds } }),
@@ -72,17 +73,11 @@ export class AptitudeService {
 
     const byId = new Map(questions.map((question) => [question.id, question]));
     const totals = APTITUDE_CATEGORIES.reduce<Record<AptitudeCategory, number>>(
-      (acc, category) => {
-        acc[category] = 0;
-        return acc;
-      },
+      (acc, category) => { acc[category] = 0; return acc; },
       {} as Record<AptitudeCategory, number>,
     );
     const correct = APTITUDE_CATEGORIES.reduce<Record<AptitudeCategory, number>>(
-      (acc, category) => {
-        acc[category] = 0;
-        return acc;
-      },
+      (acc, category) => { acc[category] = 0; return acc; },
       {} as Record<AptitudeCategory, number>,
     );
 
@@ -106,14 +101,26 @@ export class AptitudeService {
       APTITUDE_CATEGORIES[0],
     );
 
+    return { scores, strongestCategory };
+  }
+
+  async submit(studentId: string, dto: SubmitAptitudeDto): Promise<AptitudeResult> {
+    const { scores, strongestCategory } = await this.computeScores(dto.answers);
+
     return serialize<AptitudeResult>(
       await this.resultModel.create({
         studentId,
-        answers,
+        answers: dto.answers,
         scores,
         strongestCategory,
       }),
     );
+  }
+
+  async previewScore(
+    answers: Record<string, string>,
+  ): Promise<{ scores: AptitudeScores; strongestCategory: AptitudeCategory }> {
+    return this.computeScores(answers);
   }
 
   async getLatestResult(studentId: string): Promise<AptitudeResult | null> {

@@ -1,12 +1,10 @@
 import { PolarAngleAxis, PolarGrid, Radar, RadarChart, ResponsiveContainer } from 'recharts';
-import { Button } from '../../../components/ui/button';
 import { Card } from '../../../components/ui/card';
 import { cn } from '../../../lib/utils/cn';
 import { APTITUDE_LABELS, type AptitudeCategory, type AptitudeResult } from '../types';
 
 interface AptitudeResultCardProps {
   result: AptitudeResult;
-  onRetake: () => void;
 }
 
 const CATEGORY_ORDER: AptitudeCategory[] = [
@@ -42,7 +40,7 @@ function scoreBadgeClass(score: number): string {
   return 'bg-red-100 text-red-700 dark:bg-red-950/60 dark:text-red-300';
 }
 
-export function AptitudeResultCard({ result, onRetake }: AptitudeResultCardProps) {
+export function AptitudeResultCard({ result }: AptitudeResultCardProps) {
   const chartData = CATEGORY_ORDER.map((category) => ({
     subject: APTITUDE_LABELS[category],
     score: result.scores[category],
@@ -110,9 +108,6 @@ export function AptitudeResultCard({ result, onRetake }: AptitudeResultCardProps
           </div>
         </section>
 
-        <Button className="self-start" onClick={onRetake} type="button" variant="ghost">
-          Retake Assessment
-        </Button>
       </div>
     </Card>
   );

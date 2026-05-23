@@ -1,6 +1,6 @@
 import { Controller, Get, Param, Query, UseGuards } from '@nestjs/common';
 import { z } from 'zod';
-import { AnyUserGuard } from '../../common/guards/any-user.guard';
+import { StudentGuard } from '../../common/guards/student.guard';
 import { AdminGuard } from '../../common/guards/admin.guard';
 import { CurrentUser, type AuthUser } from '../../common/decorators/current-user.decorator';
 import { ZodValidationPipe } from '../../common/pipes/zod-validation.pipe';
@@ -32,13 +32,13 @@ export class ResultsController {
   }
 
   @Get(':id')
-  @UseGuards(AnyUserGuard)
+  @UseGuards(StudentGuard)
   findOne(@Param('id') id: string, @CurrentUser() user: AuthUser) {
     return this.resultsService.findById(id, user.id);
   }
 
   @Get(':id/summary')
-  @UseGuards(AnyUserGuard)
+  @UseGuards(StudentGuard)
   summary(@Param('id') id: string, @CurrentUser() user: AuthUser) {
     return this.resultsService.findSummary(id, user.id);
   }

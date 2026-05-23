@@ -131,6 +131,8 @@ export interface TestResult {
   id: string;
   sessionId: string;
   studentId: string;
+  studentName?: string | null;
+  studentAdmissionNo?: string | null;
   domainId: string;
   configId: string;
   scoredMarks: number;
@@ -401,6 +403,8 @@ export const TestResultSchema = withJson(
     {
       sessionId: { type: String, required: true, unique: true, index: true },
       studentId: { type: String, required: true, index: true },
+      studentName: { type: String, default: null },
+      studentAdmissionNo: { type: String, default: null },
       domainId: { type: String, required: true, index: true },
       configId: { type: String, required: true, index: true },
       scoredMarks: { type: Number, required: true },
