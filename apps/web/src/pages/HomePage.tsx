@@ -38,16 +38,17 @@ export default function HomePage() {
             <div className="max-w-3xl">
               <p className="text-sm font-semibold uppercase text-brand-700 dark:text-brand-300">Brainova</p>
               <h1 className="mt-3 text-4xl font-semibold tracking-tight sm:text-5xl">
-                Aptitude testing platform
+                Career aptitude platform
               </h1>
               <p className="mt-4 max-w-2xl text-base leading-7 text-muted">
-                Take timed aptitude tests, get instant scores, and track your progress with detailed analytics.
+                Take a focused career aptitude assessment and discover which master career category
+                best matches your strengths.
               </p>
             </div>
             <div className="flex flex-col gap-3 sm:flex-row">
               <Link to={user ? '/dashboard' : '/signup'}>
                 <Button className="w-full gap-2 sm:w-auto">
-                  {user ? 'Open dashboard' : 'Get started'}
+                  {user ? 'Open dashboard' : 'Sign up'}
                   <ArrowRight aria-hidden="true" className="h-4 w-4" />
                 </Button>
               </Link>

@@ -13,7 +13,18 @@ import {
 } from '../../database/mongo.schemas';
 import type { SubmitAptitudeDto } from './dto/submit-aptitude.dto';
 
-const APTITUDE_CATEGORIES: AptitudeCategory[] = ['QUANT', 'VERBAL', 'LOGICAL', 'ABSTRACT'];
+const APTITUDE_CATEGORIES: AptitudeCategory[] = [
+  'GOVERNANCE',
+  'VISUAL_MEDIA',
+  'FINE_ARTS',
+  'COMMUNICATIONS',
+  'TECH_DATA',
+  'HR_MANAGEMENT',
+  'BUSINESS_FINANCE',
+  'HEALTHCARE',
+  'PURE_SCIENCES',
+  'HOSPITALITY_EVENTS',
+];
 
 type PublicAptitudeQuestion = Pick<AptitudeQuestion, 'id' | 'text' | 'options' | 'category'>;
 type AptitudeScores = Record<AptitudeCategory, number>;
@@ -37,13 +48,13 @@ export class AptitudeService {
       APTITUDE_CATEGORIES.map((category) =>
         this.questionModel.aggregate<AptitudeQuestionDocument>([
           { $match: { active: true, category } },
-          { $sample: { size: 5 } },
+          { $sample: { size: 3 } },
         ]),
       ),
     );
 
     return shuffle(questionGroups.flat())
-      .slice(0, 20)
+      .slice(0, 30)
       .map((question) => ({
         id: String(question._id),
         text: question.text,
@@ -85,7 +96,8 @@ export class AptitudeService {
     }
 
     const scores = APTITUDE_CATEGORIES.reduce<AptitudeScores>((acc, category) => {
-      acc[category] = totals[category] > 0 ? Math.round((correct[category] / 5) * 100) : 0;
+      acc[category] =
+        totals[category] > 0 ? Math.round((correct[category] / totals[category]) * 100) : 0;
       return acc;
     }, {} as AptitudeScores);
 

@@ -20,12 +20,12 @@ export default function DashboardPage() {
           </p>
           <h1 className="mt-3 text-4xl font-semibold tracking-tight">Welcome, {displayName}</h1>
           <p className="mt-4 max-w-2xl text-base leading-7 text-muted">
-            Your authentication session is active. Tests, history, and analytics unlock as the next
-            milestones land.
+            Your authentication session is active. Start the career aptitude assessment, then review
+            your profile and recommendations.
           </p>
           <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-            <Link to="/tests">
-              <Button className="w-full sm:w-auto">View tests</Button>
+            <Link to="/aptitude">
+              <Button className="w-full sm:w-auto">Start aptitude</Button>
             </Link>
             <Link to="/analytics">
               <Button className="w-full sm:w-auto" variant="secondary">
@@ -58,7 +58,7 @@ export default function DashboardPage() {
             <div>
               <h2 className="text-xl font-semibold text-foreground">Discover Your Aptitude</h2>
               <p className="mt-2 text-sm text-muted">
-                Take a 20-question assessment to find your strongest areas.
+                Take a 30-question assessment across ten master career categories.
               </p>
             </div>
             <span

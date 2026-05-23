@@ -68,9 +68,9 @@ export function AttemptHistoryTable({ uid }: AttemptHistoryTableProps) {
   if (attempts.length === 0) {
     return (
       <p className="py-8 text-center text-sm text-muted">
-        No completed tests yet.{' '}
-        <Link className="text-brand-600 underline" to="/tests">
-          Take your first test.
+        No completed assessments yet.{' '}
+        <Link className="text-brand-600 underline" to="/aptitude">
+          Take your first assessment.
         </Link>
       </p>
     );

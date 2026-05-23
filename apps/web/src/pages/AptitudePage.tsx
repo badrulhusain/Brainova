@@ -61,9 +61,9 @@ export default function AptitudePage() {
           <Card className="mx-auto max-w-2xl p-8 text-center">
             <h1 className="text-3xl font-semibold tracking-tight">Discover Your Aptitude</h1>
             <p className="mt-4 text-base leading-7 text-muted">
-              Take one focused 20-question assessment across quantitative, verbal, logical, and
-              abstract reasoning. Your result highlights your strongest aptitude and gives you a
-              clear profile across all four areas.
+              Take one focused 30-question assessment across ten master career categories. Your
+              result highlights the track that best matches your aptitude, interests, and working
+              style.
             </p>
             <Button className="mt-6" onClick={startAssessment} type="button">
               Start Assessment

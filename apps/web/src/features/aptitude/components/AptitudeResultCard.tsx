@@ -9,13 +9,30 @@ interface AptitudeResultCardProps {
   onRetake: () => void;
 }
 
-const CATEGORY_ORDER: AptitudeCategory[] = ['QUANT', 'VERBAL', 'LOGICAL', 'ABSTRACT'];
+const CATEGORY_ORDER: AptitudeCategory[] = [
+  'GOVERNANCE',
+  'VISUAL_MEDIA',
+  'FINE_ARTS',
+  'COMMUNICATIONS',
+  'TECH_DATA',
+  'HR_MANAGEMENT',
+  'BUSINESS_FINANCE',
+  'HEALTHCARE',
+  'PURE_SCIENCES',
+  'HOSPITALITY_EVENTS',
+];
 
 const RECOMMENDATIONS: Record<AptitudeCategory, string[]> = {
-  QUANT: ['Quantitative Reasoning'],
-  VERBAL: ['Verbal Ability'],
-  LOGICAL: ['Logical Reasoning'],
-  ABSTRACT: ['Abstract Reasoning'],
+  GOVERNANCE: ['IAS/Civil Service Track', 'Law', 'Public Policy', 'Judiciary'],
+  VISUAL_MEDIA: ['Graphic Expert Track', 'UI/UX Design', 'Animation', 'Advertisement'],
+  FINE_ARTS: ['Artist Track', 'Painting', 'Photography', 'Fashion Design'],
+  COMMUNICATIONS: ['Language Expert Track', 'Journalism', 'Translation', 'Public Relations'],
+  TECH_DATA: ['Tech Expert Track', 'Software Development', 'AI/ML', 'Cybersecurity'],
+  HR_MANAGEMENT: ['HR/Management Track', 'Talent Acquisition', 'Operations', 'Leadership'],
+  BUSINESS_FINANCE: ['Chartered Accountancy', 'Investment Banking', 'Entrepreneurship'],
+  HEALTHCARE: ['Medicine', 'Biotechnology', 'Psychology', 'Veterinary Sciences'],
+  PURE_SCIENCES: ['Physics', 'Chemistry', 'Mathematics', 'Academic Research'],
+  HOSPITALITY_EVENTS: ['Hotel Management', 'Culinary Arts', 'Travel Consulting', 'Event Management'],
 };
 
 function scoreBadgeClass(score: number): string {
@@ -61,7 +78,7 @@ export function AptitudeResultCard({ result, onRetake }: AptitudeResultCardProps
           </ResponsiveContainer>
         </div>
 
-        <div className="grid gap-3 sm:grid-cols-4">
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
           {CATEGORY_ORDER.map((category) => {
             const score = result.scores[category];
             return (
