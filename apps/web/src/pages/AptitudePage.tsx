@@ -86,7 +86,7 @@ export default function AptitudePage() {
         )}
 
         {mode === 'result' && result && (
-          <AptitudeResultCard result={result} onRetake={startAssessment} />
+          <AptitudeResultCard result={result} />
         )}
       </div>
     </main>

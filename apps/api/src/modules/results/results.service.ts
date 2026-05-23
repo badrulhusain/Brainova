@@ -89,11 +89,24 @@ export class ResultsService {
       items: items.map((result) => {
         const session = sessionMap.get(result.sessionId);
         const config = session ? configMap.get(session.configId) : null;
+        const liveStudent = studentMap.get(result.studentId) ?? null;
+        const student = liveStudent ?? (result.studentName
+          ? {
+              id: result.studentId,
+              name: result.studentName,
+              admissionNo: result.studentAdmissionNo ?? result.studentId,
+              department: null,
+              batch: null,
+              active: true,
+              createdAt: result.createdAt as unknown as string,
+              updatedAt: result.createdAt as unknown as string,
+            }
+          : null);
 
         return {
           id: result.id,
           studentId: result.studentId,
-          student: studentMap.get(result.studentId) ?? null,
+          student,
           domainId: result.domainId,
           domain: domainMap.get(result.domainId) ?? null,
           configId: result.configId,

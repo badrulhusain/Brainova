@@ -1,6 +1,6 @@
 import { lazy } from 'react';
 import { Route, Routes } from 'react-router-dom';
-import { AdminRoute, ProtectedRoute } from '../features/auth/ProtectedRoute';
+import { AdminRoute, StudentRoute } from '../features/auth/ProtectedRoute';
 
 const HomePage = lazy(() => import('../pages/HomePage'));
 const LoginPage = lazy(() => import('../pages/LoginPage'));
@@ -17,6 +17,8 @@ const AdminTestConfigNewPage = lazy(() => import('../pages/admin/AdminTestConfig
 const AdminsPage = lazy(() => import('../pages/admin/AdminsPage'));
 const AdminStudentsPage = lazy(() => import('../pages/admin/AdminStudentsPage'));
 const AdminTaxonomyPage = lazy(() => import('../pages/admin/AdminTaxonomyPage'));
+const AdminPreviewPage = lazy(() => import('../pages/admin/AdminPreviewPage'));
+const AdminAptitudePage = lazy(() => import('../pages/admin/AdminAptitudePage'));
 
 // Tests + results + analytics
 const ResultsListPage = lazy(() => import('../pages/ResultsListPage'));
@@ -33,26 +35,26 @@ export function AppRouter() {
       <Route
         path="/dashboard"
         element={
-          <ProtectedRoute>
+          <StudentRoute>
             <DashboardPage />
-          </ProtectedRoute>
+          </StudentRoute>
         }
       />
       {/* Results */}
       <Route
         path="/results"
         element={
-          <ProtectedRoute>
+          <StudentRoute>
             <ResultsListPage />
-          </ProtectedRoute>
+          </StudentRoute>
         }
       />
       <Route
         path="/results/:resultId"
         element={
-          <ProtectedRoute>
+          <StudentRoute>
             <ResultPage />
-          </ProtectedRoute>
+          </StudentRoute>
         }
       />
 
@@ -60,18 +62,18 @@ export function AppRouter() {
       <Route
         path="/analytics"
         element={
-          <ProtectedRoute>
+          <StudentRoute>
             <AnalyticsPage />
-          </ProtectedRoute>
+          </StudentRoute>
         }
       />
 
       <Route
         path="/aptitude"
         element={
-          <ProtectedRoute>
+          <StudentRoute>
             <AptitudePage />
-          </ProtectedRoute>
+          </StudentRoute>
         }
       />
 
@@ -145,6 +147,22 @@ export function AppRouter() {
         element={
           <AdminRoute>
             <AdminTaxonomyPage />
+          </AdminRoute>
+        }
+      />
+      <Route
+        path="/admin/preview/:configId"
+        element={
+          <AdminRoute>
+            <AdminPreviewPage />
+          </AdminRoute>
+        }
+      />
+      <Route
+        path="/admin/aptitude"
+        element={
+          <AdminRoute>
+            <AdminAptitudePage />
           </AdminRoute>
         }
       />

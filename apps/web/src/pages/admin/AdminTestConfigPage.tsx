@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { FilePlus2, ToggleLeft, ToggleRight } from 'lucide-react';
+import { FilePlus2, FlaskConical, ToggleLeft, ToggleRight } from 'lucide-react';
 import { toast } from 'sonner';
 import { Button } from '../../components/ui/button';
 import { Card } from '../../components/ui/card';
@@ -82,6 +82,7 @@ export default function AdminTestConfigPage() {
                   <th className="px-4 py-3 text-right font-medium text-muted">Duration</th>
                   <th className="px-4 py-3 text-right font-medium text-muted">Marks/Q</th>
                   <th className="px-4 py-3 text-center font-medium text-muted">Active</th>
+                  <th className="px-4 py-3 text-right font-medium text-muted">Preview</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-border bg-surface">
@@ -111,6 +112,15 @@ export default function AdminTestConfigPage() {
                           <ToggleLeft className="h-5 w-5 text-muted" />
                         )}
                       </button>
+                    </td>
+                    <td className="px-4 py-3 text-right">
+                      <Link
+                        to={`/admin/preview/${config.id}`}
+                        className="inline-flex items-center gap-1 text-xs font-semibold text-brand-600 transition hover:text-brand-700"
+                      >
+                        <FlaskConical className="h-3.5 w-3.5" />
+                        Test
+                      </Link>
                     </td>
                   </tr>
                 ))}

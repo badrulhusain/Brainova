@@ -11,6 +11,7 @@ import {
   Req,
   UseGuards,
 } from '@nestjs/common';
+import { z } from 'zod';
 import type { Request } from 'express';
 import { AdminGuard } from '../../common/guards/admin.guard';
 import { ZodValidationPipe } from '../../common/pipes/zod-validation.pipe';
@@ -23,6 +24,13 @@ import {
   UpdateTestConfigSchema,
   type UpdateTestConfigDto,
 } from './dto/update-test-config.dto';
+
+const PreviewScoreSchema = z.object({
+  questionIds: z.array(z.string()),
+  answers: z.record(z.string(), z.string()),
+  marksPerQuestion: z.number().positive(),
+  negativeMarksRatio: z.number().min(0),
+});
 
 @Controller('test-configs')
 export class TestConfigsController {
@@ -61,5 +69,28 @@ export class TestConfigsController {
   @HttpCode(HttpStatus.NO_CONTENT)
   remove(@Param('id') id: string): Promise<void> {
     return this.testConfigsService.remove(id);
+  }
+
+  @Get(':id/preview')
+  @UseGuards(AdminGuard)
+  previewQuestions(@Param('id') id: string) {
+    return this.testConfigsService.previewQuestions(id);
+  }
+
+  @Post(':id/preview/score')
+  @UseGuards(AdminGuard)
+  @HttpCode(HttpStatus.OK)
+  previewScore(
+    @Param('id') id: string,
+    @Body(new ZodValidationPipe(PreviewScoreSchema))
+    dto: { questionIds: string[]; answers: Record<string, string>; marksPerQuestion: number; negativeMarksRatio: number },
+  ) {
+    void id;
+    return this.testConfigsService.previewScore(
+      dto.questionIds,
+      dto.answers,
+      dto.marksPerQuestion,
+      dto.negativeMarksRatio,
+    );
   }
 }

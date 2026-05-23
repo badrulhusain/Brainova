@@ -30,6 +30,25 @@ export function ProtectedRoute({ children }: { children: ReactNode }) {
   return <>{children}</>;
 }
 
+export function StudentRoute({ children }: { children: ReactNode }) {
+  const { user, isAdmin, isLoading } = useAuth();
+  const location = useLocation();
+
+  if (isLoading) {
+    return <RouteLoader />;
+  }
+
+  if (!user) {
+    return <Navigate to="/login" replace state={{ from: location }} />;
+  }
+
+  if (isAdmin) {
+    return <Navigate to="/admin" replace />;
+  }
+
+  return <>{children}</>;
+}
+
 export function AdminRoute({ children }: { children: ReactNode }) {
   const { user, isAdmin, isLoading } = useAuth();
   const location = useLocation();
