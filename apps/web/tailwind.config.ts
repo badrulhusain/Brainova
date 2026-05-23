@@ -1,8 +1,12 @@
 import type { Config } from 'tailwindcss';
+import { dirname, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const webRoot = dirname(fileURLToPath(import.meta.url));
 
 export default {
   darkMode: 'class',
-  content: ['./index.html', './src/**/*.{ts,tsx}'],
+  content: [resolve(webRoot, 'index.html'), resolve(webRoot, 'src/**/*.{ts,tsx}')],
   theme: {
     extend: {
       colors: {

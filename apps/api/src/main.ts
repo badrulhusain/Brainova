@@ -7,9 +7,19 @@ import { AppModule } from './app.module';
 import { GlobalExceptionFilter } from './common/filters/global-exception.filter';
 import { ResponseInterceptor } from './common/interceptors/response.interceptor';
 
+function getAllowedOrigins(frontendUrl: string): string[] {
+  return frontendUrl
+    .split(',')
+    .map((origin) => origin.trim())
+    .filter(Boolean);
+}
+
 async function bootstrap(): Promise<void> {
   const app = await NestFactory.create(AppModule);
   const configService = app.get(ConfigService);
+  const allowedOrigins = getAllowedOrigins(
+    configService.getOrThrow<string>('FRONTEND_URL'),
+  );
 
   app.use(
     helmet({
@@ -19,7 +29,7 @@ async function bootstrap(): Promise<void> {
   );
 
   app.enableCors({
-    origin: configService.getOrThrow<string>('FRONTEND_URL'),
+    origin: allowedOrigins,
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],

@@ -1,6 +1,13 @@
 import type { ReactNode } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { BarChart3, ClipboardList, LayoutDashboard, LineChart, ShieldCheck } from 'lucide-react';
+import {
+  BarChart3,
+  BrainCircuit,
+  LayoutDashboard,
+  LineChart,
+  ShieldCheck,
+  UserPlus,
+} from 'lucide-react';
 import { toast } from 'sonner';
 import { useAuth } from '../../features/auth/AuthProvider';
 import { appCopy } from '../../lib/constants/copy';
@@ -8,7 +15,7 @@ import { ThemeToggle } from '../ui/theme-toggle';
 
 const navigation = [
   { label: appCopy.nav.dashboard, to: '/', icon: LayoutDashboard, adminOnly: false },
-  { label: appCopy.nav.tests, to: '/tests', icon: ClipboardList, adminOnly: false },
+  { label: 'Aptitude', to: '/aptitude', icon: BrainCircuit, adminOnly: false },
   { label: appCopy.nav.results, to: '/results', icon: BarChart3, adminOnly: false },
   { label: 'Analytics', to: '/analytics', icon: LineChart, adminOnly: false },
   { label: appCopy.nav.admin, to: '/admin', icon: ShieldCheck, adminOnly: true },
@@ -73,12 +80,21 @@ export function PageShell({ children }: { children: ReactNode }) {
                 </button>
               </>
             ) : (
-              <Link
-                to="/login"
-                className="inline-flex min-h-11 items-center rounded-lg bg-brand-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-brand-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-              >
-                {appCopy.nav.login}
-              </Link>
+              <>
+                <Link
+                  to="/signup"
+                  className="inline-flex min-h-11 items-center gap-2 rounded-lg bg-brand-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-brand-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                >
+                  <UserPlus aria-hidden="true" className="h-4 w-4" />
+                  {appCopy.nav.signup}
+                </Link>
+                <Link
+                  to="/login"
+                  className="hidden min-h-11 items-center rounded-lg px-3 py-2 text-sm font-semibold text-muted transition hover:bg-surfaceSoft hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2 focus-visible:ring-offset-background sm:inline-flex"
+                >
+                  {appCopy.nav.login}
+                </Link>
+              </>
             )}
             <ThemeToggle />
           </div>

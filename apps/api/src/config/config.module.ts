@@ -2,13 +2,23 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { z } from 'zod';
 
+const frontendUrlSchema = z.string().refine(
+  (value) =>
+    value
+      .split(',')
+      .map((origin) => origin.trim())
+      .filter(Boolean)
+      .every((origin) => z.string().url().safeParse(origin).success),
+  'Must be one or more valid URLs separated by commas',
+);
+
 const envSchema = z.object({
   MONGODB_URI: z.string().min(1),
   JWT_SECRET: z.string().min(1),
   JWT_EXPIRES_IN: z.string().default('7d'),
   ADMIN_USERNAME: z.string().min(1),
   ADMIN_PASSWORD: z.string().min(1),
-  FRONTEND_URL: z.string().url(),
+  FRONTEND_URL: frontendUrlSchema,
   NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
   PORT: z.coerce.number().int().positive().default(3000),
 });

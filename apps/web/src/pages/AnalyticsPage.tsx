@@ -29,9 +29,9 @@ export default function AnalyticsPage() {
       <div className="mx-auto w-full max-w-5xl">
         <h1 className="text-3xl font-semibold tracking-tight">My analytics</h1>
         <p className="mt-2 text-muted">
-          Track your performance trends across all test attempts.{' '}
-          <Link className="text-brand-600 underline" to="/tests">
-            Take a test
+          Track your performance trends across all aptitude activity.{' '}
+          <Link className="text-brand-600 underline" to="/aptitude">
+            Take the aptitude assessment
           </Link>
         </p>
 

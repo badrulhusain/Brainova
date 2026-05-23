@@ -17,11 +17,10 @@ const AdminsPage = lazy(() => import('../pages/admin/AdminsPage'));
 const AdminTaxonomyPage = lazy(() => import('../pages/admin/AdminTaxonomyPage'));
 
 // Tests + results + analytics
-const TestsPage = lazy(() => import('../pages/TestsPage'));
-const TestPage = lazy(() => import('../pages/TestPage'));
 const ResultsListPage = lazy(() => import('../pages/ResultsListPage'));
 const ResultPage = lazy(() => import('../pages/ResultPage'));
 const AnalyticsPage = lazy(() => import('../pages/AnalyticsPage'));
+const AptitudePage = lazy(() => import('../pages/AptitudePage'));
 
 export function AppRouter() {
   return (
@@ -38,24 +37,6 @@ export function AppRouter() {
           </ProtectedRoute>
         }
       />
-      {/* Tests */}
-      <Route
-        path="/tests"
-        element={
-          <ProtectedRoute>
-            <TestsPage />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/tests/:sessionId"
-        element={
-          <ProtectedRoute>
-            <TestPage />
-          </ProtectedRoute>
-        }
-      />
-
       {/* Results */}
       <Route
         path="/results"
@@ -80,6 +61,15 @@ export function AppRouter() {
         element={
           <ProtectedRoute>
             <AnalyticsPage />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/aptitude"
+        element={
+          <ProtectedRoute>
+            <AptitudePage />
           </ProtectedRoute>
         }
       />
