@@ -1,10 +1,8 @@
 import type { ReactNode } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import {
-  BarChart3,
   BrainCircuit,
   LayoutDashboard,
-  LineChart,
   ShieldCheck,
   LogIn,
 } from 'lucide-react';
@@ -17,8 +15,6 @@ import { ThemeToggle } from '../ui/theme-toggle';
 const studentNavigation = [
   { label: appCopy.nav.dashboard, to: '/dashboard', icon: LayoutDashboard },
   { label: 'Aptitude', to: '/aptitude', icon: BrainCircuit },
-  { label: appCopy.nav.results, to: '/results', icon: BarChart3 },
-  { label: 'Analytics', to: '/analytics', icon: LineChart },
 ] as const;
 
 const adminNavigation = [

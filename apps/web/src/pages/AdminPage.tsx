@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { BrainCircuit, ClipboardCheck, FlaskConical, GraduationCap, Users } from 'lucide-react';
+import { BrainCircuit, ClipboardCheck, GraduationCap, Users } from 'lucide-react';
 import { Card } from '../components/ui/card';
 
 export default function AdminPage() {
@@ -37,13 +37,6 @@ export default function AdminPage() {
             >
               <Users className="h-4 w-4 text-muted" />
               Manage admin accounts
-            </Link>
-            <Link
-              className="flex items-center gap-2 rounded-lg border border-border bg-background px-4 py-4 text-sm font-semibold transition hover:bg-surfaceSoft focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500"
-              to="/admin/test-configs"
-            >
-              <FlaskConical className="h-4 w-4 text-muted" />
-              Test configurations
             </Link>
             <Link
               className="flex items-center gap-2 rounded-lg border border-border bg-background px-4 py-4 text-sm font-semibold transition hover:bg-surfaceSoft focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500"

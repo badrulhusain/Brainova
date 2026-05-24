@@ -5,5 +5,6 @@ export function useLatestAptitudeResult() {
   return useQuery({
     queryKey: ['aptitude-result-latest'],
     queryFn: getLatestResult,
+    staleTime: 0,
   });
 }

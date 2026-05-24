@@ -48,6 +48,12 @@ export class AptitudeController {
     return this.aptitudeService.getQuestions();
   }
 
+  @Get('admin/all-questions')
+  @UseGuards(AdminGuard)
+  adminGetAllQuestions() {
+    return this.aptitudeService.getAllQuestionsAdmin();
+  }
+
   @Post('admin/score')
   @UseGuards(AdminGuard)
   @HttpCode(HttpStatus.OK)
