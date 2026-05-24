@@ -167,16 +167,16 @@ export interface TestAttempt {
 }
 
 export type AptitudeCategory =
-  | 'GOVERNANCE'
-  | 'VISUAL_MEDIA'
+  | 'HUMANITIES'
   | 'FINE_ARTS'
   | 'COMMUNICATIONS'
-  | 'TECH_DATA'
-  | 'HR_MANAGEMENT'
-  | 'BUSINESS_FINANCE'
-  | 'HEALTHCARE'
-  | 'PURE_SCIENCES'
-  | 'HOSPITALITY_EVENTS';
+  | 'VISUAL_DESIGN'
+  | 'TECHNOLOGY'
+  | 'MANAGEMENT'
+  | 'COMMERCE'
+  | 'CHEMICAL_SCIENCES'
+  | 'PHYSICAL_SCIENCES'
+  | 'LOGICAL_ANALYTICAL';
 
 export interface AptitudeQuestion {
   id: string;
@@ -447,16 +447,16 @@ export const AptitudeQuestionSchema = withJson(
       category: {
         type: String,
         enum: [
-          'GOVERNANCE',
-          'VISUAL_MEDIA',
+          'HUMANITIES',
           'FINE_ARTS',
           'COMMUNICATIONS',
-          'TECH_DATA',
-          'HR_MANAGEMENT',
-          'BUSINESS_FINANCE',
-          'HEALTHCARE',
-          'PURE_SCIENCES',
-          'HOSPITALITY_EVENTS',
+          'VISUAL_DESIGN',
+          'TECHNOLOGY',
+          'MANAGEMENT',
+          'COMMERCE',
+          'CHEMICAL_SCIENCES',
+          'PHYSICAL_SCIENCES',
+          'LOGICAL_ANALYTICAL',
         ],
         required: true,
         index: true,

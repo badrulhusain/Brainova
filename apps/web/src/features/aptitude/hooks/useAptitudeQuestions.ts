@@ -6,5 +6,6 @@ export function useAptitudeQuestions() {
     queryKey: ['aptitude-questions'],
     queryFn: getAptitudeQuestions,
     enabled: false,
+    staleTime: 0,
   });
 }

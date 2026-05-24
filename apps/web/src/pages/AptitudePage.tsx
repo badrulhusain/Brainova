@@ -9,8 +9,13 @@ import { useAptitudeQuestions } from '../features/aptitude/hooks/useAptitudeQues
 import { useLatestAptitudeResult } from '../features/aptitude/hooks/useLatestAptitudeResult';
 import { useSubmitAptitude } from '../features/aptitude/hooks/useSubmitAptitude';
 import type { AptitudeResult } from '../features/aptitude/types';
+import { APTITUDE_LABELS } from '../features/aptitude/types';
 
 type AptitudeMode = 'intro' | 'test' | 'result';
+
+function isCurrentResult(result: AptitudeResult): boolean {
+  return result.strongestCategory in APTITUDE_LABELS;
+}
 
 export default function AptitudePage() {
   const [mode, setMode] = useState<AptitudeMode>('intro');
@@ -21,8 +26,11 @@ export default function AptitudePage() {
 
   useEffect(() => {
     if (mode === 'intro' && latestResultQuery.data) {
-      setLocalResult(latestResultQuery.data);
-      setMode('result');
+      if (isCurrentResult(latestResultQuery.data)) {
+        setLocalResult(latestResultQuery.data);
+        setMode('result');
+      }
+      // Old-category result from a previous schema — stay in intro so user retakes fresh
     }
   }, [latestResultQuery.data, mode]);
 
@@ -61,9 +69,8 @@ export default function AptitudePage() {
           <Card className="mx-auto max-w-2xl p-8 text-center">
             <h1 className="text-3xl font-semibold tracking-tight">Discover Your Aptitude</h1>
             <p className="mt-4 text-base leading-7 text-muted">
-              Take one focused 30-question assessment across ten master career categories. Your
-              result highlights the track that best matches your aptitude, interests, and working
-              style.
+              Take one focused 30-question assessment across ten academic domains. Your result
+              highlights the track that best matches your aptitude and strengths.
             </p>
             <Button className="mt-6" onClick={startAssessment} type="button">
               Start Assessment
@@ -86,7 +93,14 @@ export default function AptitudePage() {
         )}
 
         {mode === 'result' && result && (
-          <AptitudeResultCard result={result} />
+          <div className="flex flex-col gap-6">
+            <AptitudeResultCard result={result} />
+            <div className="flex justify-center">
+              <Button onClick={startAssessment} type="button" variant="secondary">
+                Retake Assessment
+              </Button>
+            </div>
+          </div>
         )}
       </div>
     </main>

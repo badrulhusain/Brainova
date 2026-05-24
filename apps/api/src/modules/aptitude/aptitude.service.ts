@@ -14,16 +14,16 @@ import {
 import type { SubmitAptitudeDto } from './dto/submit-aptitude.dto';
 
 const APTITUDE_CATEGORIES: AptitudeCategory[] = [
-  'GOVERNANCE',
-  'VISUAL_MEDIA',
+  'HUMANITIES',
   'FINE_ARTS',
   'COMMUNICATIONS',
-  'TECH_DATA',
-  'HR_MANAGEMENT',
-  'BUSINESS_FINANCE',
-  'HEALTHCARE',
-  'PURE_SCIENCES',
-  'HOSPITALITY_EVENTS',
+  'VISUAL_DESIGN',
+  'TECHNOLOGY',
+  'MANAGEMENT',
+  'COMMERCE',
+  'CHEMICAL_SCIENCES',
+  'PHYSICAL_SCIENCES',
+  'LOGICAL_ANALYTICAL',
 ];
 
 type PublicAptitudeQuestion = Pick<AptitudeQuestion, 'id' | 'text' | 'options' | 'category'>;
@@ -121,6 +121,12 @@ export class AptitudeService {
     answers: Record<string, string>,
   ): Promise<{ scores: AptitudeScores; strongestCategory: AptitudeCategory }> {
     return this.computeScores(answers);
+  }
+
+  async getAllQuestionsAdmin(): Promise<AptitudeQuestion[]> {
+    return serializeMany<AptitudeQuestion>(
+      await this.questionModel.find({ active: true }).sort({ category: 1, createdAt: 1 }),
+    );
   }
 
   async getLatestResult(studentId: string): Promise<AptitudeResult | null> {

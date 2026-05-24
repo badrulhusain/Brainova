@@ -8,29 +8,29 @@ interface AptitudeResultCardProps {
 }
 
 const CATEGORY_ORDER: AptitudeCategory[] = [
-  'GOVERNANCE',
-  'VISUAL_MEDIA',
+  'HUMANITIES',
   'FINE_ARTS',
   'COMMUNICATIONS',
-  'TECH_DATA',
-  'HR_MANAGEMENT',
-  'BUSINESS_FINANCE',
-  'HEALTHCARE',
-  'PURE_SCIENCES',
-  'HOSPITALITY_EVENTS',
+  'VISUAL_DESIGN',
+  'TECHNOLOGY',
+  'MANAGEMENT',
+  'COMMERCE',
+  'CHEMICAL_SCIENCES',
+  'PHYSICAL_SCIENCES',
+  'LOGICAL_ANALYTICAL',
 ];
 
 const RECOMMENDATIONS: Record<AptitudeCategory, string[]> = {
-  GOVERNANCE: ['IAS/Civil Service Track', 'Law', 'Public Policy', 'Judiciary'],
-  VISUAL_MEDIA: ['Graphic Expert Track', 'UI/UX Design', 'Animation', 'Advertisement'],
-  FINE_ARTS: ['Artist Track', 'Painting', 'Photography', 'Fashion Design'],
-  COMMUNICATIONS: ['Language Expert Track', 'Journalism', 'Translation', 'Public Relations'],
-  TECH_DATA: ['Tech Expert Track', 'Software Development', 'AI/ML', 'Cybersecurity'],
-  HR_MANAGEMENT: ['HR/Management Track', 'Talent Acquisition', 'Operations', 'Leadership'],
-  BUSINESS_FINANCE: ['Chartered Accountancy', 'Investment Banking', 'Entrepreneurship'],
-  HEALTHCARE: ['Medicine', 'Biotechnology', 'Psychology', 'Veterinary Sciences'],
-  PURE_SCIENCES: ['Physics', 'Chemistry', 'Mathematics', 'Academic Research'],
-  HOSPITALITY_EVENTS: ['Hotel Management', 'Culinary Arts', 'Travel Consulting', 'Event Management'],
+  HUMANITIES: ['Political Science', 'Law & Judiciary', 'History', 'Public Policy', 'Philosophy'],
+  FINE_ARTS: ['Fine Arts', 'Painting & Sculpture', 'Music & Performing Arts', 'Photography', 'Fashion Design'],
+  COMMUNICATIONS: ['Journalism', 'Content Writing', 'Translation & Interpretation', 'Public Relations', 'Media Studies'],
+  VISUAL_DESIGN: ['UI/UX Design', 'Graphic Design', 'Animation & Motion Graphics', 'Brand Communication', 'Digital Media'],
+  TECHNOLOGY: ['Software Engineering', 'Artificial Intelligence', 'Cybersecurity', 'Data Science', 'Electronics & Embedded Systems'],
+  MANAGEMENT: ['Human Resources', 'Operations Management', 'Entrepreneurship', 'Corporate Leadership', 'Organisational Behaviour'],
+  COMMERCE: ['Chartered Accountancy', 'Economics', 'Business Administration', 'Finance & Taxation', 'Commerce Research'],
+  CHEMICAL_SCIENCES: ['Chemistry', 'Biochemistry', 'Materials Science', 'Environmental Science', 'Pharmacy'],
+  PHYSICAL_SCIENCES: ['Physics', 'Mathematics', 'Astronomy & Space Science', 'Engineering Sciences', 'Academic Research'],
+  LOGICAL_ANALYTICAL: ['Statistics', 'Data Analytics', 'Actuarial Science', 'Research Methodology', 'Applied Mathematics'],
 };
 
 function scoreBadgeClass(score: number): string {
@@ -43,7 +43,7 @@ function scoreBadgeClass(score: number): string {
 export function AptitudeResultCard({ result }: AptitudeResultCardProps) {
   const chartData = CATEGORY_ORDER.map((category) => ({
     subject: APTITUDE_LABELS[category],
-    score: result.scores[category],
+    score: result.scores[category] ?? 0,
   }));
 
   return (
@@ -78,7 +78,7 @@ export function AptitudeResultCard({ result }: AptitudeResultCardProps) {
 
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
           {CATEGORY_ORDER.map((category) => {
-            const score = result.scores[category];
+            const score = result.scores[category] ?? 0;
             return (
               <div
                 key={category}
@@ -95,9 +95,9 @@ export function AptitudeResultCard({ result }: AptitudeResultCardProps) {
         </div>
 
         <section className="rounded-lg border border-border bg-surfaceSoft p-4">
-          <h2 className="text-sm font-semibold text-foreground">Explore these test domains:</h2>
+          <h2 className="text-sm font-semibold text-foreground">Explore these academic tracks:</h2>
           <div className="mt-3 flex flex-wrap gap-2">
-            {RECOMMENDATIONS[result.strongestCategory].map((name) => (
+            {(RECOMMENDATIONS[result.strongestCategory] ?? []).map((name) => (
               <span
                 key={name}
                 className="rounded-full bg-surface px-3 py-1 text-sm font-medium text-foreground"
@@ -107,7 +107,6 @@ export function AptitudeResultCard({ result }: AptitudeResultCardProps) {
             ))}
           </div>
         </section>
-
       </div>
     </Card>
   );

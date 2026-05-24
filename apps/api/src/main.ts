@@ -24,8 +24,11 @@ function isAllowedOrigin(origin: string, allowedOrigins: string[]): boolean {
     const isNetlifyApp =
       url.protocol === 'https:' &&
       (url.hostname === 'netlify.app' || url.hostname.endsWith('.netlify.app'));
+    const isVercelApp =
+      url.protocol === 'https:' &&
+      (url.hostname === 'vercel.app' || url.hostname.endsWith('.vercel.app'));
 
-    return isLocalhost || isNetlifyApp;
+    return isLocalhost || isNetlifyApp || isVercelApp;
   } catch {
     return false;
   }
