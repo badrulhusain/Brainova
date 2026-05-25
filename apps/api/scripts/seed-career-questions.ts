@@ -1,989 +1,544 @@
-import { config as loadEnv } from 'dotenv';
-import { join } from 'path';
+import 'dotenv/config';
 import mongoose from 'mongoose';
 import {
-  DomainModelName,
-  DomainSchema,
-  TopicModelName,
-  TopicSchema,
-  SubtopicModelName,
-  SubtopicSchema,
-  QuestionModelName,
-  QuestionSchema,
-  AnswerKeyModelName,
-  AnswerKeySchema,
+  AptitudeQuestionModelName,
+  AptitudeQuestionSchema,
+  type AptitudeCategory,
   type Difficulty,
-  type QuestionType,
 } from '../src/database/mongo.schemas';
 
-loadEnv({ path: join(process.cwd(), '.env.local') });
-loadEnv({ path: join(process.cwd(), '.env') });
+/**
+ * APTITUDE QUESTION DESIGN RATIONALE
+ * ─────────────────────────────────────────────────────────────────────────────
+ * Institution : Darul Huda Islamic University
+ * Student range: 6th standard (≈ age 11–12) → Degree level (≈ age 18–22)
+ *
+ * DIFFICULTY MAPPING
+ *   EASY   → 6th – 8th standard  (basic recall, single-step reasoning)
+ *   MEDIUM → 9th – 12th standard (two-step reasoning, moderate vocabulary)
+ *   HARD   → Degree level         (multi-step logic, abstract concepts)
+ *
+ * CATEGORY PHILOSOPHY
+ *   Questions test APTITUDE (reasoning ability, pattern recognition,
+ *   verbal understanding, numerical sense) NOT rote subject knowledge.
+ *   Each question should reveal HOW a student thinks, not what they memorised.
+ *
+ * TOTAL: 30 questions — 10 categories × 3 each
+ * Difficulty: 10 EASY + 15 MEDIUM + 5 HARD
+ * Hard categories: HUMANITIES, COMMUNICATIONS, TECHNOLOGY,
+ *                  COMMERCE, LOGICAL_ANALYTICAL
+ * ─────────────────────────────────────────────────────────────────────────────
+ */
 
-const DomainModel = mongoose.model(DomainModelName, DomainSchema);
-const TopicModel = mongoose.model(TopicModelName, TopicSchema);
-const SubtopicModel = mongoose.model(SubtopicModelName, SubtopicSchema);
-const QuestionModel = mongoose.model(QuestionModelName, QuestionSchema);
-const AnswerKeyModel = mongoose.model(AnswerKeyModelName, AnswerKeySchema);
-
-// ─── Types ────────────────────────────────────────────────────────────────────
-
-interface QuestionSeed {
-  type: QuestionType;
-  difficulty: Difficulty;
+interface AptitudeQuestionSeed {
+  category: AptitudeCategory;
   text: string;
-  options: string[];
+  options: [string, string, string, string];
   correctAnswer: string;
-  explanation: string;
-  tags: string[];
+  difficulty: Difficulty;
 }
 
-interface SubtopicSeed {
-  name: string;
-  description: string;
-  questions: QuestionSeed[];
-}
+const questions: AptitudeQuestionSeed[] = [
 
-interface TopicSeed {
-  name: string;
-  description: string;
-  subtopics: SubtopicSeed[];
-}
+  // ═══════════════════════════════════════════════════════════════════════════
+  // HUMANITIES  (1 EASY · 1 MEDIUM · 1 HARD)
+  // ═══════════════════════════════════════════════════════════════════════════
 
-// ─── Career Discovery Domain ──────────────────────────────────────────────────
-// One domain, 10 topics (one per career track), subtopics group question sets.
-
-const CAREER_DOMAIN = {
-  name: 'Career Discovery',
-  icon: 'compass',
-  description: 'Aptitude and interest questions to identify ideal career paths for students.',
-};
-
-// ─── Topics = Career Tracks ───────────────────────────────────────────────────
-
-const CAREER_TOPICS: TopicSeed[] = [
-
-  // ── 1. Public Administration & Governance ─────────────────────────────────
   {
-    name: 'Public Administration & Governance',
-    description: 'IAS/Civil Service Track — law, public policy, judiciary, community development.',
-    subtopics: [
-      {
-        name: 'Civic Reasoning',
-        description: 'Questions on law, governance, and social systems.',
-        questions: [
-          {
-            type: 'MCQ', difficulty: 'EASY',
-            text: 'A local government wants to build a road through farmland. What is the BEST first step?',
-            options: [
-              'Start construction immediately',
-              'Consult affected farmers and assess impact',
-              'Pass the law without discussion',
-              'Abandon the project',
-            ],
-            correctAnswer: 'Consult affected farmers and assess impact',
-            explanation: 'Good governance requires stakeholder consultation before decisions that affect communities.',
-            tags: ['governance', 'policy', 'civics'],
-          },
-          {
-            type: 'MCQ', difficulty: 'EASY',
-            text: 'Which branch of government is responsible for making laws?',
-            options: ['Executive', 'Judiciary', 'Legislature', 'Bureaucracy'],
-            correctAnswer: 'Legislature',
-            explanation: 'The legislature (parliament/assembly) is the branch responsible for enacting laws.',
-            tags: ['law', 'governance'],
-          },
-          {
-            type: 'MCQ', difficulty: 'MEDIUM',
-            text: 'A policy reduces unemployment but increases inflation. This is an example of:',
-            options: [
-              'A perfect policy outcome',
-              'A policy trade-off',
-              'Policy failure',
-              'Legislative overreach',
-            ],
-            correctAnswer: 'A policy trade-off',
-            explanation: 'Public policy often involves trade-offs where solving one problem can worsen another.',
-            tags: ['policy', 'economics', 'governance'],
-          },
-          {
-            type: 'MCQ', difficulty: 'MEDIUM',
-            text: 'International disputes between countries are typically resolved through:',
-            options: ['Military force', 'Diplomacy and international law', 'Ignoring the dispute', 'Media pressure'],
-            correctAnswer: 'Diplomacy and international law',
-            explanation: 'Diplomacy backed by international law is the standard method for resolving inter-state disputes.',
-            tags: ['international-relations', 'diplomacy'],
-          },
-          {
-            type: 'MCQ', difficulty: 'HARD',
-            text: 'Which principle holds that government power must be exercised within legal boundaries?',
-            options: ['Separation of powers', 'Rule of law', 'Federalism', 'Parliamentary sovereignty'],
-            correctAnswer: 'Rule of law',
-            explanation: 'The rule of law means that no person or government is above the law.',
-            tags: ['law', 'governance', 'civics'],
-          },
-          {
-            type: 'MCQ', difficulty: 'HARD',
-            text: 'A civil servant receives a bribe to approve a permit faster. This violates:',
-            options: ['Free market principles', 'Public trust and ethical duty', 'Competition law', 'Tax regulations'],
-            correctAnswer: 'Public trust and ethical duty',
-            explanation: 'Civil servants hold a position of public trust; accepting bribes is a fundamental ethical breach.',
-            tags: ['ethics', 'civil-service'],
-          },
-        ],
-      },
-      {
-        name: 'Leadership & Social Impact',
-        description: 'Questions measuring leadership orientation and social awareness.',
-        questions: [
-          {
-            type: 'MCQ', difficulty: 'EASY',
-            text: 'A community leader faces a problem affecting only 20% of residents but severely. What should they do?',
-            options: [
-              'Ignore it since the majority is unaffected',
-              'Address the issue because leadership protects all members',
-              'Take a vote and only act if 51% agree',
-              'Transfer responsibility to another department',
-            ],
-            correctAnswer: 'Address the issue because leadership protects all members',
-            explanation: 'Effective leadership ensures that even minority concerns receive attention and protection.',
-            tags: ['leadership', 'social-impact'],
-          },
-          {
-            type: 'MCQ', difficulty: 'MEDIUM',
-            text: 'Which skill is MOST critical for a civil services officer?',
-            options: [
-              'Speed reading',
-              'Decision-making under incomplete information',
-              'Computer programming',
-              'Physical fitness',
-            ],
-            correctAnswer: 'Decision-making under incomplete information',
-            explanation: 'Civil servants routinely make consequential decisions without perfect data.',
-            tags: ['civil-service', 'decision-making'],
-          },
-        ],
-      },
+    // 6th–8th std: Simple civic concept every student encounters
+    category: 'HUMANITIES',
+    text: 'A rule that everyone in a country must follow and is made by the government is called a:',
+    options: ['Story', 'Law', 'Poem', 'Map'],
+    correctAnswer: 'Law',
+    difficulty: 'EASY',
+  },
+  {
+    // 9th–12th std: Understanding purpose of governance
+    category: 'HUMANITIES',
+    text: 'A government makes decisions for millions of people it has never met.'
+      + ' Which quality is MOST important for that government to have?',
+    options: [
+      'Speed — decisions must be made as fast as possible',
+      'Fairness — rules should treat all citizens equally',
+      'Secrecy — plans work better when kept hidden from citizens',
+      'Size — a larger government always serves people better',
     ],
+    correctAnswer: 'Fairness — rules should treat all citizens equally',
+    difficulty: 'MEDIUM',
+  },
+  {
+    // Degree: Abstract reasoning about political philosophy
+    category: 'HUMANITIES',
+    text: 'A leader argues: "My country follows a single set of religious laws,'
+      + ' so there is no need for a written constitution."\n'
+      + 'What is the strongest counter-argument to this position?',
+    options: [
+      'Religious law and constitutional law have always agreed with each other throughout history',
+      'A written constitution protects individuals from the arbitrary exercise of power'
+        + ' even when religious authority is respected',
+      'Constitutions are only useful in non-religious states',
+      'The size of a country determines whether it needs a constitution',
+    ],
+    correctAnswer:
+      'A written constitution protects individuals from the arbitrary exercise of power'
+      + ' even when religious authority is respected',
+    difficulty: 'HARD',
   },
 
-  // ── 2. Visual Branding & Creative Media ────────────────────────────────────
+  // ═══════════════════════════════════════════════════════════════════════════
+  // FINE_ARTS  (1 EASY · 2 MEDIUM)
+  // ═══════════════════════════════════════════════════════════════════════════
+
   {
-    name: 'Visual Branding & Creative Media',
-    description: 'Graphic Expert Track — digital design, UI/UX, animation, video editing.',
-    subtopics: [
-      {
-        name: 'Design Thinking',
-        description: 'Aptitude for visual problem solving and aesthetics.',
-        questions: [
-          {
-            type: 'MCQ', difficulty: 'EASY',
-            text: 'A company logo should primarily be:',
-            options: [
-              'Complex and detailed to show effort',
-              'Simple, memorable, and recognisable at small sizes',
-              'Colourful with as many shades as possible',
-              'Changed every month to stay fresh',
-            ],
-            correctAnswer: 'Simple, memorable, and recognisable at small sizes',
-            explanation: 'Effective logos are simple and scalable — think Nike, Apple, or McDonald\'s.',
-            tags: ['design', 'branding', 'visual'],
-          },
-          {
-            type: 'MCQ', difficulty: 'EASY',
-            text: 'Which colour combination creates the highest visual contrast?',
-            options: ['Blue and green', 'Black and white', 'Red and orange', 'Yellow and cream'],
-            correctAnswer: 'Black and white',
-            explanation: 'Black on white (or vice versa) provides the maximum contrast ratio for readability.',
-            tags: ['colour-theory', 'design'],
-          },
-          {
-            type: 'MCQ', difficulty: 'MEDIUM',
-            text: 'In UI/UX design, "user flow" refers to:',
-            options: [
-              'The speed of an app',
-              'The path a user takes to complete a task',
-              'The colour scheme of an interface',
-              'The number of users online',
-            ],
-            correctAnswer: 'The path a user takes to complete a task',
-            explanation: 'User flow maps the sequence of screens and decisions a user experiences.',
-            tags: ['ui-ux', 'design'],
-          },
-          {
-            type: 'MCQ', difficulty: 'MEDIUM',
-            text: 'Which principle ensures that important elements on a design page draw the eye first?',
-            options: ['Proximity', 'Visual hierarchy', 'Alignment', 'Repetition'],
-            correctAnswer: 'Visual hierarchy',
-            explanation: 'Visual hierarchy uses size, colour, and placement to guide the viewer\'s eye in a deliberate order.',
-            tags: ['design', 'visual-hierarchy'],
-          },
-          {
-            type: 'MCQ', difficulty: 'HARD',
-            text: 'A brand\'s "visual identity" includes all of the following EXCEPT:',
-            options: ['Logo', 'Typography', 'Mission statement', 'Colour palette'],
-            correctAnswer: 'Mission statement',
-            explanation: 'A mission statement is part of brand strategy/messaging, not visual identity.',
-            tags: ['branding', 'visual-identity'],
-          },
-          {
-            type: 'MCQ', difficulty: 'HARD',
-            text: 'Typography "kerning" refers to:',
-            options: [
-              'The height of capital letters',
-              'The spacing between individual character pairs',
-              'The thickness of a font',
-              'The line spacing between paragraphs',
-            ],
-            correctAnswer: 'The spacing between individual character pairs',
-            explanation: 'Kerning is the adjustment of space between two specific characters for visual balance.',
-            tags: ['typography', 'design'],
-          },
-        ],
-      },
+    // 6th–8th std: Simple colour observation
+    category: 'FINE_ARTS',
+    text: 'You mix red paint and yellow paint together. What colour do you get?',
+    options: ['Green', 'Orange', 'Purple', 'Brown'],
+    correctAnswer: 'Orange',
+    difficulty: 'EASY',
+  },
+  {
+    // 9th–12th std: Understanding artistic purpose
+    category: 'FINE_ARTS',
+    text: 'An artist paints a mother\'s face half in warm sunlight and half in cold shadow.'
+      + ' What is the artist MOST likely trying to show?',
+    options: [
+      'The time of day when the portrait was painted',
+      'The mother\'s mixed feelings or dual nature — joy and sorrow coexisting',
+      'That the artist ran out of one colour of paint',
+      'The geographical location of the painting',
     ],
+    correctAnswer: 'The mother\'s mixed feelings or dual nature — joy and sorrow coexisting',
+    difficulty: 'MEDIUM',
+  },
+  {
+    // 9th–12th std: Applying concept of rhythm to art
+    category: 'FINE_ARTS',
+    text: 'A designer repeats the same arch shape at regular intervals across a building facade.'
+      + ' In design terms, this technique creates:',
+    options: [
+      'Contrast — making each arch look different from the last',
+      'Rhythm — the repeated pattern guides the viewer\'s eye smoothly across the surface',
+      'Isolation — each arch stands completely apart from the others',
+      'Hierarchy — one arch is made more important than the rest',
+    ],
+    correctAnswer: 'Rhythm — the repeated pattern guides the viewer\'s eye smoothly across the surface',
+    difficulty: 'MEDIUM',
   },
 
-  // ── 3. Fine Arts & Creative Expression ─────────────────────────────────────
+  // ═══════════════════════════════════════════════════════════════════════════
+  // COMMUNICATIONS  (1 EASY · 1 MEDIUM · 1 HARD)
+  // ═══════════════════════════════════════════════════════════════════════════
+
   {
-    name: 'Fine Arts & Creative Expression',
-    description: 'Artist Track — painting, sculpture, photography, fashion, interior design.',
-    subtopics: [
-      {
-        name: 'Art Fundamentals',
-        description: 'Core artistic knowledge and spatial reasoning.',
-        questions: [
-          {
-            type: 'MCQ', difficulty: 'EASY',
-            text: 'Mixing red and blue paint produces which colour?',
-            options: ['Green', 'Orange', 'Purple', 'Brown'],
-            correctAnswer: 'Purple',
-            explanation: 'Red + blue = purple in traditional subtractive (pigment) colour mixing.',
-            tags: ['colour', 'art-basics'],
-          },
-          {
-            type: 'MCQ', difficulty: 'EASY',
-            text: 'Which art technique involves applying thick paint to create a textured surface?',
-            options: ['Watercolour wash', 'Impasto', 'Stippling', 'Cross-hatching'],
-            correctAnswer: 'Impasto',
-            explanation: 'Impasto is a technique where paint is applied thickly, often with a palette knife.',
-            tags: ['painting', 'technique'],
-          },
-          {
-            type: 'MCQ', difficulty: 'MEDIUM',
-            text: 'In photography, "depth of field" refers to:',
-            options: [
-              'How close the camera is to the subject',
-              'The range of distance that appears acceptably sharp',
-              'The brightness of the image',
-              'The resolution of the photograph',
-            ],
-            correctAnswer: 'The range of distance that appears acceptably sharp',
-            explanation: 'A shallow depth of field blurs the background; a deep depth of field keeps more in focus.',
-            tags: ['photography', 'technique'],
-          },
-          {
-            type: 'MCQ', difficulty: 'MEDIUM',
-            text: 'Which element of art refers to the lightness or darkness of a colour?',
-            options: ['Hue', 'Saturation', 'Value', 'Texture'],
-            correctAnswer: 'Value',
-            explanation: 'Value in art refers to how light or dark a colour is, independent of hue.',
-            tags: ['art-elements', 'colour-theory'],
-          },
-          {
-            type: 'MCQ', difficulty: 'HARD',
-            text: 'An interior designer uses "negative space" primarily to:',
-            options: [
-              'Fill rooms with as much furniture as possible',
-              'Create visual breathing room and emphasise key elements',
-              'Indicate walls that need repainting',
-              'Mark unusable floor area',
-            ],
-            correctAnswer: 'Create visual breathing room and emphasise key elements',
-            explanation: 'Negative space — empty areas — is a design tool to highlight what matters and avoid visual clutter.',
-            tags: ['interior-design', 'spatial-design'],
-          },
-          {
-            type: 'MCQ', difficulty: 'HARD',
-            text: 'Which sculptor is known for "The Thinker"?',
-            options: ['Michelangelo', 'Auguste Rodin', 'Donatello', 'Bernini'],
-            correctAnswer: 'Auguste Rodin',
-            explanation: '"The Thinker" (1902) is one of the most recognised sculptures by French artist Auguste Rodin.',
-            tags: ['art-history', 'sculpture'],
-          },
-        ],
-      },
+    // 6th–8th std: Basic reading comprehension skill
+    category: 'COMMUNICATIONS',
+    text: 'Your friend sends you this message: "The match starts at 4 pm — DON\'T be late!"\n'
+      + 'What is the MAIN purpose of this message?',
+    options: [
+      'To describe what a football match looks like',
+      'To give your friend information about themselves',
+      'To inform you of a time and warn you to be punctual',
+      'To ask for your opinion about football',
     ],
+    correctAnswer: 'To inform you of a time and warn you to be punctual',
+    difficulty: 'EASY',
+  },
+  {
+    // 9th–12th std: Identifying logical fallacy in argument
+    category: 'COMMUNICATIONS',
+    text: 'Read this argument: "You should not listen to his advice on healthy eating —'
+      + ' he is overweight himself."\n'
+      + 'What is WRONG with this argument?',
+    options: [
+      'It correctly identifies that only healthy people can give health advice',
+      'It attacks the person rather than addressing whether the advice itself is correct',
+      'It uses too many complicated words for the audience',
+      'It provides too much evidence to support its point',
+    ],
+    correctAnswer: 'It attacks the person rather than addressing whether the advice itself is correct',
+    difficulty: 'MEDIUM',
+  },
+  {
+    // Degree: Evaluating source reliability and media literacy
+    category: 'COMMUNICATIONS',
+    text: 'A social-media post claims a new study "proves" a common food causes illness.'
+      + ' It provides no link to the study and is shared widely.\n'
+      + 'A critical reader\'s FIRST step should be to:',
+    options: [
+      'Share the post immediately so others can be warned',
+      'Accept it as true because many people have shared it',
+      'Locate the original study, check who conducted it, and assess its methodology',
+      'Dismiss it entirely because social media is never reliable',
+    ],
+    correctAnswer: 'Locate the original study, check who conducted it, and assess its methodology',
+    difficulty: 'HARD',
   },
 
-  // ── 4. Linguistics, Media & Communications ─────────────────────────────────
+  // ═══════════════════════════════════════════════════════════════════════════
+  // VISUAL_DESIGN  (1 EASY · 2 MEDIUM)
+  // ═══════════════════════════════════════════════════════════════════════════
+
   {
-    name: 'Linguistics, Media & Communications',
-    description: 'Language Expert Track — journalism, content writing, translation, PR.',
-    subtopics: [
-      {
-        name: 'Language & Communication Skills',
-        description: 'Verbal reasoning, grammar, and communication aptitude.',
-        questions: [
-          {
-            type: 'MCQ', difficulty: 'EASY',
-            text: 'A journalist\'s primary responsibility is to:',
-            options: [
-              'Promote the views of the newspaper\'s owner',
-              'Report facts accurately and fairly',
-              'Write the most entertaining story possible',
-              'Avoid covering controversial topics',
-            ],
-            correctAnswer: 'Report facts accurately and fairly',
-            explanation: 'Journalistic ethics demand accuracy, fairness, and independence from bias.',
-            tags: ['journalism', 'ethics'],
-          },
-          {
-            type: 'MCQ', difficulty: 'EASY',
-            text: 'What is the purpose of a "lede" in news writing?',
-            options: [
-              'The closing paragraph summarising the story',
-              'The opening sentence that captures the key facts',
-              'A byline showing the author\'s name',
-              'A subheading within the article',
-            ],
-            correctAnswer: 'The opening sentence that captures the key facts',
-            explanation: 'The lede (or lead) is the opening sentence of a news article, answering the who, what, where, when.',
-            tags: ['journalism', 'writing'],
-          },
-          {
-            type: 'MCQ', difficulty: 'MEDIUM',
-            text: 'In translation, "false friends" are:',
-            options: [
-              'Inaccurate dictionaries',
-              'Words in two languages that look similar but have different meanings',
-              'Phrases that cannot be translated',
-              'Grammatical errors in the source text',
-            ],
-            correctAnswer: 'Words in two languages that look similar but have different meanings',
-            explanation: 'E.g., "embarrassed" in English ≠ "embarazada" (pregnant) in Spanish — a classic false friend.',
-            tags: ['translation', 'linguistics'],
-          },
-          {
-            type: 'MCQ', difficulty: 'MEDIUM',
-            text: 'PR (Public Relations) differs from advertising because PR:',
-            options: [
-              'Costs more',
-              'Earns media coverage rather than paying for it',
-              'Uses only social media',
-              'Is only for large corporations',
-            ],
-            correctAnswer: 'Earns media coverage rather than paying for it',
-            explanation: 'PR builds credibility through earned media; advertising is paid placement.',
-            tags: ['pr', 'media', 'communications'],
-          },
-          {
-            type: 'MCQ', difficulty: 'HARD',
-            text: 'Chomsky\'s theory of "Universal Grammar" suggests that:',
-            options: [
-              'All languages share the same vocabulary',
-              'Humans are born with an innate capacity for language acquisition',
-              'Grammar rules are the same in every language',
-              'Children learn language purely by imitation',
-            ],
-            correctAnswer: 'Humans are born with an innate capacity for language acquisition',
-            explanation: 'Chomsky proposed that the brain has a built-in "language acquisition device" common to all humans.',
-            tags: ['linguistics', 'grammar', 'theory'],
-          },
-          {
-            type: 'MCQ', difficulty: 'HARD',
-            text: 'A content strategist creating a B2B article should prioritise:',
-            options: [
-              'Short sentences and memes',
-              'Industry data, case studies, and professional tone',
-              'Pop-culture references to seem relatable',
-              'Emotional storytelling with minimal facts',
-            ],
-            correctAnswer: 'Industry data, case studies, and professional tone',
-            explanation: 'B2B content targets business decision-makers who value evidence and ROI over entertainment.',
-            tags: ['content-writing', 'strategy'],
-          },
-        ],
-      },
+    // 6th–8th std: Basic visual observation
+    category: 'VISUAL_DESIGN',
+    text: 'A poster has a very large title at the top and small text at the bottom.'
+      + ' Where will a reader\'s eye go FIRST?',
+    options: [
+      'The bottom right corner',
+      'The large title at the top',
+      'Exactly in the middle of the poster',
+      'To the back of the poster',
     ],
+    correctAnswer: 'The large title at the top',
+    difficulty: 'EASY',
+  },
+  {
+    // 9th–12th std: Applying contrast principle
+    category: 'VISUAL_DESIGN',
+    text: 'A student designs a school notice using white text on a light-yellow background.'
+      + ' Their teacher says it is hard to read. Why?',
+    options: [
+      'The notice uses too many different fonts',
+      'White and light yellow are too similar in brightness, so there is not enough contrast',
+      'Notices should never use colour — only black and white',
+      'The text size is too large for the background',
+    ],
+    correctAnswer: 'White and light yellow are too similar in brightness, so there is not enough contrast',
+    difficulty: 'MEDIUM',
+  },
+  {
+    // 9th–12th std: Layout and user navigation
+    category: 'VISUAL_DESIGN',
+    text: 'On a school website, students cannot find the exam timetable even though it exists.'
+      + ' Which design problem does this MOST likely indicate?',
+    options: [
+      'The website has too many photographs',
+      'The timetable is written in the wrong language',
+      'The navigation structure is poorly organised, making important content hard to locate',
+      'The website loads too slowly',
+    ],
+    correctAnswer: 'The navigation structure is poorly organised, making important content hard to locate',
+    difficulty: 'MEDIUM',
   },
 
-  // ── 5. Technology, Engineering & Data ──────────────────────────────────────
+  // ═══════════════════════════════════════════════════════════════════════════
+  // TECHNOLOGY  (1 EASY · 1 MEDIUM · 1 HARD)
+  // ═══════════════════════════════════════════════════════════════════════════
+
   {
-    name: 'Technology, Engineering & Data',
-    description: 'Tech Expert Track — software dev, AI/ML, data science, cybersecurity.',
-    subtopics: [
-      {
-        name: 'Computational Thinking',
-        description: 'Logic, algorithms, and technology fundamentals.',
-        questions: [
-          {
-            type: 'MCQ', difficulty: 'EASY',
-            text: 'What does an algorithm do?',
-            options: [
-              'Stores data permanently',
-              'Provides a step-by-step procedure to solve a problem',
-              'Connects two computers',
-              'Measures computer speed',
-            ],
-            correctAnswer: 'Provides a step-by-step procedure to solve a problem',
-            explanation: 'An algorithm is a finite sequence of instructions designed to solve a specific problem.',
-            tags: ['algorithms', 'programming', 'logic'],
-          },
-          {
-            type: 'MCQ', difficulty: 'EASY',
-            text: 'In binary, what is the decimal value of "1010"?',
-            options: ['8', '10', '12', '14'],
-            correctAnswer: '10',
-            explanation: '1×8 + 0×4 + 1×2 + 0×1 = 10.',
-            tags: ['binary', 'maths', 'computing'],
-          },
-          {
-            type: 'MCQ', difficulty: 'MEDIUM',
-            text: 'Which data structure operates on a "first in, first out" (FIFO) basis?',
-            options: ['Stack', 'Queue', 'Tree', 'Hash table'],
-            correctAnswer: 'Queue',
-            explanation: 'A queue processes the element inserted first, like a real-world checkout line.',
-            tags: ['data-structures', 'programming'],
-          },
-          {
-            type: 'MCQ', difficulty: 'MEDIUM',
-            text: 'In machine learning, "overfitting" means:',
-            options: [
-              'The model is too simple to learn patterns',
-              'The model has memorised training data and performs poorly on new data',
-              'The training data is too large',
-              'The model takes too long to train',
-            ],
-            correctAnswer: 'The model has memorised training data and performs poorly on new data',
-            explanation: 'Overfitting is when a model learns noise in training data and fails to generalise.',
-            tags: ['machine-learning', 'ai', 'data-science'],
-          },
-          {
-            type: 'MCQ', difficulty: 'HARD',
-            text: 'A "SQL injection" attack exploits:',
-            options: [
-              'Weak Wi-Fi passwords',
-              'Unsanitised user input in database queries',
-              'Slow server response times',
-              'Outdated operating systems',
-            ],
-            correctAnswer: 'Unsanitised user input in database queries',
-            explanation: 'SQL injection inserts malicious SQL through input fields when queries are not properly sanitised.',
-            tags: ['cybersecurity', 'databases'],
-          },
-          {
-            type: 'MCQ', difficulty: 'HARD',
-            text: 'Big O notation O(n log n) is typical for which type of algorithm?',
-            options: ['Linear search', 'Bubble sort', 'Merge sort', 'Binary search'],
-            correctAnswer: 'Merge sort',
-            explanation: 'Merge sort has O(n log n) time complexity and is one of the most efficient comparison sorts.',
-            tags: ['algorithms', 'complexity', 'sorting'],
-          },
-        ],
-      },
+    // 6th–8th std: Basic digital literacy
+    category: 'TECHNOLOGY',
+    text: 'You are writing an assignment on a computer and the power cuts out suddenly.'
+      + ' Your work disappears. What should you do differently next time?',
+    options: [
+      'Write the assignment faster so it finishes before the power cuts',
+      'Save your work regularly so it is not lost if something goes wrong',
+      'Use a pen and paper instead of a computer',
+      'Leave the computer running all night so it does not switch off',
     ],
+    correctAnswer: 'Save your work regularly so it is not lost if something goes wrong',
+    difficulty: 'EASY',
+  },
+  {
+    // 9th–12th std: Logical understanding of algorithm steps
+    category: 'TECHNOLOGY',
+    text: 'A computer program sorts a list of 1,000 names alphabetically.'
+      + ' If the list grows to 10,000 names, what generally happens to the time needed?',
+    options: [
+      'It stays exactly the same — computers work at a fixed speed',
+      'It decreases — more names give the computer more practice',
+      'It increases — a larger list requires more comparisons and operations',
+      'It becomes zero — modern computers sort instantly regardless of size',
+    ],
+    correctAnswer: 'It increases — a larger list requires more comparisons and operations',
+    difficulty: 'MEDIUM',
+  },
+  {
+    // Degree: Security reasoning
+    category: 'TECHNOLOGY',
+    text: 'A university stores student passwords as plain text in its database.'
+      + ' The database is stolen by a hacker.\n'
+      + 'Which practice would have BEST protected the students?',
+    options: [
+      'Storing passwords in a different folder on the same server',
+      'Hashing passwords with a strong algorithm so stolen hashes cannot easily reveal original passwords',
+      'Making all passwords exactly eight characters long',
+      'Emailing each student a copy of their password for safekeeping',
+    ],
+    correctAnswer:
+      'Hashing passwords with a strong algorithm so stolen hashes cannot easily reveal original passwords',
+    difficulty: 'HARD',
   },
 
-  // ── 6. Human Resources & Corporate Management ──────────────────────────────
+  // ═══════════════════════════════════════════════════════════════════════════
+  // MANAGEMENT  (1 EASY · 2 MEDIUM)
+  // ═══════════════════════════════════════════════════════════════════════════
+
   {
-    name: 'Human Resources & Corporate Management',
-    description: 'HR/Management Track — talent, org psychology, operations, leadership.',
-    subtopics: [
-      {
-        name: 'Organisational Behaviour',
-        description: 'People management, conflict resolution, and team dynamics.',
-        questions: [
-          {
-            type: 'MCQ', difficulty: 'EASY',
-            text: 'Two team members have a conflict over deadlines. The best HR response is:',
-            options: [
-              'Fire the more difficult employee',
-              'Ignore it and hope it resolves itself',
-              'Facilitate a structured conversation to understand both perspectives',
-              'Immediately escalate to the CEO',
-            ],
-            correctAnswer: 'Facilitate a structured conversation to understand both perspectives',
-            explanation: 'Effective conflict resolution starts with understanding all sides before making decisions.',
-            tags: ['conflict-resolution', 'hr'],
-          },
-          {
-            type: 'MCQ', difficulty: 'EASY',
-            text: 'What does "talent acquisition" mean in HR?',
-            options: [
-              'Purchasing new office equipment',
-              'The process of finding and hiring skilled employees',
-              'Training existing staff',
-              'Performance reviews',
-            ],
-            correctAnswer: 'The process of finding and hiring skilled employees',
-            explanation: 'Talent acquisition covers the entire recruitment lifecycle from sourcing to onboarding.',
-            tags: ['recruitment', 'hr'],
-          },
-          {
-            type: 'MCQ', difficulty: 'MEDIUM',
-            text: 'Maslow\'s hierarchy of needs suggests employees perform best when:',
-            options: [
-              'They earn the highest salary in their field',
-              'Basic needs are met AND they feel valued and have growth opportunities',
-              'They fear losing their jobs',
-              'They work the longest hours',
-            ],
-            correctAnswer: 'Basic needs are met AND they feel valued and have growth opportunities',
-            explanation: 'Maslow\'s pyramid shows that motivation requires meeting lower needs (safety, income) before higher ones (esteem, self-actualisation).',
-            tags: ['psychology', 'motivation', 'hr'],
-          },
-          {
-            type: 'MCQ', difficulty: 'MEDIUM',
-            text: 'A 360-degree feedback process collects input from:',
-            options: [
-              'Only the direct manager',
-              'Peers, subordinates, managers, and sometimes customers',
-              'The HR department only',
-              'An external auditor',
-            ],
-            correctAnswer: 'Peers, subordinates, managers, and sometimes customers',
-            explanation: '360-degree feedback provides a well-rounded view of an employee from multiple directions.',
-            tags: ['performance-management', 'hr'],
-          },
-          {
-            type: 'MCQ', difficulty: 'HARD',
-            text: 'Which leadership style is most effective during an organisational crisis?',
-            options: [
-              'Laissez-faire — give employees complete freedom',
-              'Transformational — inspire through vision',
-              'Directive — provide clear, immediate instructions',
-              'Democratic — take a vote on every decision',
-            ],
-            correctAnswer: 'Directive — provide clear, immediate instructions',
-            explanation: 'In crisis situations, clarity and speed matter most; directive leadership reduces ambiguity.',
-            tags: ['leadership', 'management'],
-          },
-          {
-            type: 'MCQ', difficulty: 'HARD',
-            text: 'An employee consistently arrives late despite verbal warnings. The correct HR process is:',
-            options: [
-              'Immediate termination',
-              'Progressive discipline: verbal → written warning → final warning → termination',
-              'Reassign their duties to another employee',
-              'Publicly announce the issue at a team meeting',
-            ],
-            correctAnswer: 'Progressive discipline: verbal → written warning → final warning → termination',
-            explanation: 'Progressive discipline ensures fairness, documentation, and legal compliance.',
-            tags: ['hr', 'discipline', 'compliance'],
-          },
-        ],
-      },
+    // 6th–8th std: Basic planning concept
+    category: 'MANAGEMENT',
+    text: 'You have an exam in three weeks. You decide to study a little every day'
+      + ' instead of cramming the night before. This is an example of:',
+    options: [
+      'Wasting time on small tasks',
+      'Poor time management',
+      'Planning ahead to reach a goal steadily',
+      'Ignoring the importance of rest',
     ],
+    correctAnswer: 'Planning ahead to reach a goal steadily',
+    difficulty: 'EASY',
+  },
+  {
+    // 9th–12th std: Prioritisation skill
+    category: 'MANAGEMENT',
+    text: 'A class president has four tasks: (A) reply to messages, (B) prepare a speech'
+      + ' due tomorrow, (C) reorganise old files, (D) plan next month\'s event.\n'
+      + 'Which task should be done FIRST?',
+    options: [
+      'A — replying to messages is always most important',
+      'B — it has an immediate deadline and high consequence if missed',
+      'C — organising files will make all other tasks easier',
+      'D — planning ahead prevents future stress',
+    ],
+    correctAnswer: 'B — it has an immediate deadline and high consequence if missed',
+    difficulty: 'MEDIUM',
+  },
+  {
+    // 9th–12th std: Understanding delegation
+    category: 'MANAGEMENT',
+    text: 'A department head notices that doing every small task personally leaves no time'
+      + ' for important decisions. The BEST solution is to:',
+    options: [
+      'Work longer hours to fit in every task',
+      'Assign smaller tasks to capable team members so attention can focus on key decisions',
+      'Stop making important decisions until all small tasks are finished',
+      'Hire more staff but continue doing all tasks personally',
+    ],
+    correctAnswer:
+      'Assign smaller tasks to capable team members so attention can focus on key decisions',
+    difficulty: 'MEDIUM',
   },
 
-  // ── 7. Business, Finance & Economics ───────────────────────────────────────
+  // ═══════════════════════════════════════════════════════════════════════════
+  // COMMERCE  (1 EASY · 1 MEDIUM · 1 HARD)
+  // ═══════════════════════════════════════════════════════════════════════════
+
   {
-    name: 'Business, Finance & Economics',
-    description: 'Finance Track — CA, investment banking, entrepreneurship, marketing strategy.',
-    subtopics: [
-      {
-        name: 'Financial & Business Reasoning',
-        description: 'Quantitative reasoning for business and finance aptitude.',
-        questions: [
-          {
-            type: 'MCQ', difficulty: 'EASY',
-            text: 'A business spends ₹50,000 and earns ₹80,000 in a month. The profit is:',
-            options: ['₹20,000', '₹30,000', '₹50,000', '₹1,30,000'],
-            correctAnswer: '₹30,000',
-            explanation: 'Profit = Revenue − Cost = 80,000 − 50,000 = ₹30,000.',
-            tags: ['profit-loss', 'business-math'],
-          },
-          {
-            type: 'MCQ', difficulty: 'EASY',
-            text: 'The "demand curve" in economics typically slopes:',
-            options: ['Upward to the right', 'Downward to the right', 'Horizontally', 'Vertically'],
-            correctAnswer: 'Downward to the right',
-            explanation: 'As price rises, quantity demanded falls — this inverse relationship creates a downward slope.',
-            tags: ['economics', 'demand'],
-          },
-          {
-            type: 'MCQ', difficulty: 'MEDIUM',
-            text: 'An investor buys shares at ₹200 and sells at ₹250. The return on investment is:',
-            options: ['20%', '25%', '50%', '10%'],
-            correctAnswer: '25%',
-            explanation: 'ROI = (250 − 200) / 200 × 100 = 25%.',
-            tags: ['investment', 'roi', 'finance'],
-          },
-          {
-            type: 'MCQ', difficulty: 'MEDIUM',
-            text: 'A "balance sheet" shows a company\'s:',
-            options: [
-              'Monthly revenue and expenses',
-              'Assets, liabilities, and equity at a point in time',
-              'Number of employees and salaries',
-              'Cash flow over a year',
-            ],
-            correctAnswer: 'Assets, liabilities, and equity at a point in time',
-            explanation: 'The balance sheet is a financial snapshot: Assets = Liabilities + Equity.',
-            tags: ['accounting', 'finance', 'ca'],
-          },
-          {
-            type: 'MCQ', difficulty: 'HARD',
-            text: 'In stock markets, a "bull market" means:',
-            options: [
-              'Prices are falling consistently',
-              'Prices are rising consistently and investor confidence is high',
-              'Trading volume is very low',
-              'The market is closed for trading',
-            ],
-            correctAnswer: 'Prices are rising consistently and investor confidence is high',
-            explanation: 'A bull market is characterised by rising prices (20%+ gain) and optimistic sentiment.',
-            tags: ['stock-market', 'investment', 'finance'],
-          },
-          {
-            type: 'MCQ', difficulty: 'HARD',
-            text: 'Working capital is calculated as:',
-            options: [
-              'Total assets − total liabilities',
-              'Current assets − current liabilities',
-              'Revenue − expenses',
-              'Equity − debt',
-            ],
-            correctAnswer: 'Current assets − current liabilities',
-            explanation: 'Working capital measures short-term liquidity: Current Assets − Current Liabilities.',
-            tags: ['accounting', 'finance', 'ca'],
-          },
-        ],
-      },
+    // 6th–8th std: Basic money concept
+    category: 'COMMERCE',
+    text: 'Ahmed earns ₹500 per week and spends ₹350. How much does he save each week?',
+    options: ['₹100', '₹150', '₹200', '₹250'],
+    correctAnswer: '₹150',
+    difficulty: 'EASY',
+  },
+  {
+    // 9th–12th std: Supply-and-demand reasoning
+    category: 'COMMERCE',
+    text: 'During exam season, the price of notebooks in the college stationery shop rises.'
+      + ' Which explanation fits BEST?',
+    options: [
+      'The shop owner dislikes students and raises prices to annoy them',
+      'Higher demand during exam season, with limited supply, pushes prices up',
+      'The government orders shops to raise prices every semester',
+      'Notebooks become more expensive to produce only during exams',
     ],
+    correctAnswer: 'Higher demand during exam season, with limited supply, pushes prices up',
+    difficulty: 'MEDIUM',
+  },
+  {
+    // Degree: Interpreting a simple financial scenario
+    category: 'COMMERCE',
+    text: 'A business earns ₹80,000 in revenue. Its costs are ₹95,000.\n'
+      + 'An investor says, "You are growing fast — I want to invest!"\n'
+      + 'What should the investor reconsider?',
+    options: [
+      'Revenue alone is impressive; costs are unimportant for growth businesses',
+      'The business is spending more than it earns (a net loss of ₹15,000),'
+        + ' which is unsustainable without a clear path to profitability',
+      'Growth rate is the only metric that matters for investment decisions',
+      'High costs always mean a business is investing wisely in its future',
+    ],
+    correctAnswer:
+      'The business is spending more than it earns (a net loss of ₹15,000),'
+      + ' which is unsustainable without a clear path to profitability',
+    difficulty: 'HARD',
   },
 
-  // ── 8. Healthcare, Medical & Life Sciences ─────────────────────────────────
+  // ═══════════════════════════════════════════════════════════════════════════
+  // CHEMICAL_SCIENCES  (1 EASY · 2 MEDIUM)
+  // ═══════════════════════════════════════════════════════════════════════════
+
   {
-    name: 'Healthcare, Medical & Life Sciences',
-    description: 'Medical Track — medicine, nursing, biotech, pharmacology, psychology.',
-    subtopics: [
-      {
-        name: 'Life Sciences Fundamentals',
-        description: 'Biology and health science aptitude questions.',
-        questions: [
-          {
-            type: 'MCQ', difficulty: 'EASY',
-            text: 'Which organ pumps blood throughout the body?',
-            options: ['Liver', 'Lungs', 'Heart', 'Kidney'],
-            correctAnswer: 'Heart',
-            explanation: 'The heart is the muscular organ that pumps blood through the circulatory system.',
-            tags: ['biology', 'anatomy', 'medicine'],
-          },
-          {
-            type: 'MCQ', difficulty: 'EASY',
-            text: 'What is the function of white blood cells?',
-            options: [
-              'Carry oxygen',
-              'Clot blood after injury',
-              'Fight infections and pathogens',
-              'Transport nutrients',
-            ],
-            correctAnswer: 'Fight infections and pathogens',
-            explanation: 'White blood cells (leukocytes) are the immune system\'s primary defence against infection.',
-            tags: ['biology', 'immunology'],
-          },
-          {
-            type: 'MCQ', difficulty: 'MEDIUM',
-            text: 'DNA replication occurs in which phase of the cell cycle?',
-            options: ['G1 phase', 'S phase', 'G2 phase', 'M phase'],
-            correctAnswer: 'S phase',
-            explanation: 'DNA synthesis (replication) occurs during the S (Synthesis) phase of interphase.',
-            tags: ['genetics', 'cell-biology'],
-          },
-          {
-            type: 'MCQ', difficulty: 'MEDIUM',
-            text: 'A patient\'s blood pressure is 140/90 mmHg. This is classified as:',
-            options: ['Normal', 'Hypotension', 'Hypertension', 'Optimal'],
-            correctAnswer: 'Hypertension',
-            explanation: 'Blood pressure ≥ 130/80 mmHg is classified as hypertension (high blood pressure).',
-            tags: ['medicine', 'clinical', 'health'],
-          },
-          {
-            type: 'MCQ', difficulty: 'HARD',
-            text: 'CRISPR-Cas9 is a biotechnology tool used for:',
-            options: [
-              'Measuring blood glucose',
-              'Editing specific sequences in DNA',
-              'Producing antibiotics',
-              'Cloning entire organisms',
-            ],
-            correctAnswer: 'Editing specific sequences in DNA',
-            explanation: 'CRISPR-Cas9 acts as molecular scissors that cut and edit specific DNA sequences.',
-            tags: ['genetics', 'biotech', 'research'],
-          },
-          {
-            type: 'MCQ', difficulty: 'HARD',
-            text: 'Which psychological disorder is characterised by persistent, intrusive thoughts and repetitive behaviours?',
-            options: ['Major Depressive Disorder', 'Bipolar Disorder', 'OCD', 'Schizophrenia'],
-            correctAnswer: 'OCD',
-            explanation: 'Obsessive-Compulsive Disorder (OCD) involves unwanted intrusive thoughts and compulsive rituals.',
-            tags: ['psychology', 'mental-health', 'clinical'],
-          },
-        ],
-      },
+    // 6th–8th std: Everyday chemistry observation
+    category: 'CHEMICAL_SCIENCES',
+    text: 'When you add sugar to a glass of water and stir, the sugar disappears.'
+      + ' The water now tastes sweet. What has happened?',
+    options: [
+      'The sugar was destroyed by the water',
+      'The sugar dissolved and mixed evenly throughout the water',
+      'The water turned into sugar',
+      'The sugar floated to the top of the glass invisibly',
     ],
+    correctAnswer: 'The sugar dissolved and mixed evenly throughout the water',
+    difficulty: 'EASY',
+  },
+  {
+    // 9th–12th std: Reasoning about chemical change vs physical change
+    category: 'CHEMICAL_SCIENCES',
+    text: 'Which of the following is a CHEMICAL change (a new substance is formed)?',
+    options: [
+      'Cutting paper into small pieces',
+      'Melting ice into water',
+      'Burning wood and producing ash and smoke',
+      'Dissolving salt in water',
+    ],
+    correctAnswer: 'Burning wood and producing ash and smoke',
+    difficulty: 'MEDIUM',
+  },
+  {
+    // 9th–12th std: Applying particle model thinking
+    category: 'CHEMICAL_SCIENCES',
+    text: 'A perfume bottle is opened at one end of a room.'
+      + ' After a few minutes, people at the other end can smell it.'
+      + ' Which property of gases BEST explains this?',
+    options: [
+      'Gases are very heavy and fall to the ground quickly',
+      'Gas particles move randomly and spread out to fill available space (diffusion)',
+      'The perfume reacted chemically with the air to create a new gas',
+      'Air currents in the room carried the liquid perfume across',
+    ],
+    correctAnswer: 'Gas particles move randomly and spread out to fill available space (diffusion)',
+    difficulty: 'MEDIUM',
   },
 
-  // ── 9. Pure Sciences & Academic Research ───────────────────────────────────
+  // ═══════════════════════════════════════════════════════════════════════════
+  // PHYSICAL_SCIENCES  (1 EASY · 2 MEDIUM)
+  // ═══════════════════════════════════════════════════════════════════════════
+
   {
-    name: 'Pure Sciences & Academic Research',
-    description: 'Research Track — physics, chemistry, maths, space sciences, environmental research.',
-    subtopics: [
-      {
-        name: 'Scientific Reasoning',
-        description: 'Analytical and experimental science aptitude.',
-        questions: [
-          {
-            type: 'MCQ', difficulty: 'EASY',
-            text: 'Newton\'s second law states that Force =',
-            options: ['mass × velocity', 'mass × acceleration', 'mass ÷ acceleration', 'velocity ÷ time'],
-            correctAnswer: 'mass × acceleration',
-            explanation: 'F = ma is Newton\'s second law of motion.',
-            tags: ['physics', 'mechanics'],
-          },
-          {
-            type: 'MCQ', difficulty: 'EASY',
-            text: 'The chemical formula for water is:',
-            options: ['HO', 'H₂O', 'H₂O₂', 'OH'],
-            correctAnswer: 'H₂O',
-            explanation: 'Water is composed of two hydrogen atoms and one oxygen atom: H₂O.',
-            tags: ['chemistry', 'basics'],
-          },
-          {
-            type: 'MCQ', difficulty: 'MEDIUM',
-            text: 'In scientific research, a "control group" is used to:',
-            options: [
-              'Receive the experimental treatment',
-              'Provide a baseline for comparison without the variable being tested',
-              'Control the speed of the experiment',
-              'Represent the worst-case scenario',
-            ],
-            correctAnswer: 'Provide a baseline for comparison without the variable being tested',
-            explanation: 'A control group is identical to the experimental group except it lacks the variable under study.',
-            tags: ['research-methodology', 'science'],
-          },
-          {
-            type: 'MCQ', difficulty: 'MEDIUM',
-            text: 'Which mathematical concept describes the rate of change of a function?',
-            options: ['Integration', 'Differentiation', 'Probability', 'Matrix multiplication'],
-            correctAnswer: 'Differentiation',
-            explanation: 'Differentiation (derivative) measures how a function changes as its input changes.',
-            tags: ['mathematics', 'calculus'],
-          },
-          {
-            type: 'MCQ', difficulty: 'HARD',
-            text: 'The Hubble constant is used to measure:',
-            options: [
-              'The age of atoms',
-              'The rate of expansion of the universe',
-              'The distance between electrons',
-              'The mass of black holes',
-            ],
-            correctAnswer: 'The rate of expansion of the universe',
-            explanation: 'The Hubble constant (H₀) quantifies how fast the universe is expanding per unit distance.',
-            tags: ['astrophysics', 'cosmology', 'space'],
-          },
-          {
-            type: 'MCQ', difficulty: 'HARD',
-            text: 'Peer review in academic publishing ensures:',
-            options: [
-              'Research is published quickly',
-              'Findings are evaluated by independent experts before publication',
-              'Authors receive payment for their work',
-              'Research is freely available to everyone',
-            ],
-            correctAnswer: 'Findings are evaluated by independent experts before publication',
-            explanation: 'Peer review is the quality-control mechanism of academic publishing.',
-            tags: ['research', 'academia', 'methodology'],
-          },
-        ],
-      },
+    // 6th–8th std: Everyday physics intuition
+    category: 'PHYSICAL_SCIENCES',
+    text: 'You push a heavy box across the floor. It is much harder to start moving'
+      + ' than to keep it moving. What force makes it hard to start moving?',
+    options: ['Gravity', 'Magnetism', 'Friction', 'Air resistance'],
+    correctAnswer: 'Friction',
+    difficulty: 'EASY',
+  },
+  {
+    // 9th–12th std: Applying energy conservation reasoning
+    category: 'PHYSICAL_SCIENCES',
+    text: 'A ball is dropped from the top of a building. Just before it hits the ground,'
+      + ' which statement about its energy is correct?',
+    options: [
+      'Its potential energy is at its highest and kinetic energy is zero',
+      'Both potential energy and kinetic energy are zero',
+      'Its potential energy is nearly zero and kinetic energy is at its highest',
+      'Kinetic energy and potential energy remain equal throughout the fall',
     ],
+    correctAnswer: 'Its potential energy is nearly zero and kinetic energy is at its highest',
+    difficulty: 'MEDIUM',
+  },
+  {
+    // 9th–12th std: Circuit reasoning
+    category: 'PHYSICAL_SCIENCES',
+    text: 'In a circuit, three bulbs are connected in series. One bulb blows out.'
+      + ' What happens to the other two bulbs?',
+    options: [
+      'They glow brighter because more electricity reaches them',
+      'They are unaffected and continue to glow normally',
+      'They also go out because the circuit is broken',
+      'One goes out but the other continues to glow',
+    ],
+    correctAnswer: 'They also go out because the circuit is broken',
+    difficulty: 'MEDIUM',
   },
 
-  // ── 10. Hospitality, Tourism & Event Management ────────────────────────────
+  // ═══════════════════════════════════════════════════════════════════════════
+  // LOGICAL_ANALYTICAL  (1 EASY · 1 MEDIUM · 1 HARD)
+  // ═══════════════════════════════════════════════════════════════════════════
+
   {
-    name: 'Hospitality, Tourism & Event Management',
-    description: 'Hospitality Track — hotel management, culinary arts, travel, event execution.',
-    subtopics: [
-      {
-        name: 'Hospitality & Service Excellence',
-        description: 'Customer service, logistics, and event management aptitude.',
-        questions: [
-          {
-            type: 'MCQ', difficulty: 'EASY',
-            text: 'A hotel guest complains that their room is noisy. The BEST immediate response is:',
-            options: [
-              'Tell them to use earplugs',
-              'Apologise and offer to move them to a quieter room',
-              'Explain that noise is normal in hotels',
-              'Ask them to wait until morning',
-            ],
-            correctAnswer: 'Apologise and offer to move them to a quieter room',
-            explanation: 'Service recovery requires empathy and an immediate practical solution.',
-            tags: ['hospitality', 'customer-service'],
-          },
-          {
-            type: 'MCQ', difficulty: 'EASY',
-            text: 'What does "RevPAR" measure in hotel management?',
-            options: [
-              'Revenue per available room',
-              'Restaurant revenue per customer',
-              'Room price after discount',
-              'Total annual profit',
-            ],
-            correctAnswer: 'Revenue per available room',
-            explanation: 'RevPAR (Revenue Per Available Room) is the primary KPI for hotel financial performance.',
-            tags: ['hotel-management', 'finance', 'kpi'],
-          },
-          {
-            type: 'MCQ', difficulty: 'MEDIUM',
-            text: 'An event planner discovers the booked venue has flooded 48 hours before a 500-person conference. What should they do FIRST?',
-            options: [
-              'Cancel the event and refund everyone',
-              'Contact the client and simultaneously source alternative venues',
-              'Wait to see if the venue dries out',
-              'Announce the cancellation on social media',
-            ],
-            correctAnswer: 'Contact the client and simultaneously source alternative venues',
-            explanation: 'Crisis management requires immediate communication and parallel problem-solving.',
-            tags: ['event-management', 'crisis', 'logistics'],
-          },
-          {
-            type: 'MCQ', difficulty: 'MEDIUM',
-            text: 'The "mise en place" concept in culinary arts means:',
-            options: [
-              'A French dessert recipe',
-              'Everything in its place — having all ingredients prepped before cooking',
-              'Plating food attractively',
-              'A kitchen safety inspection',
-            ],
-            correctAnswer: 'Everything in its place — having all ingredients prepped before cooking',
-            explanation: '"Mise en place" is the chef\'s discipline of preparing and organising all components before service.',
-            tags: ['culinary', 'hospitality', 'kitchen'],
-          },
-          {
-            type: 'MCQ', difficulty: 'HARD',
-            text: 'A travel agency\'s yield management strategy aims to:',
-            options: [
-              'Sell all seats at the same price',
-              'Maximise revenue by varying prices based on demand and timing',
-              'Offer the lowest price in the market at all times',
-              'Avoid overbooking at all costs',
-            ],
-            correctAnswer: 'Maximise revenue by varying prices based on demand and timing',
-            explanation: 'Yield management adjusts prices dynamically — airlines and hotels charge more at peak times.',
-            tags: ['tourism', 'revenue-management', 'strategy'],
-          },
-          {
-            type: 'MCQ', difficulty: 'HARD',
-            text: 'Which international certification is most recognised for sustainable tourism practices?',
-            options: ['ISO 9001', 'LEED', 'Green Globe', 'Six Sigma'],
-            correctAnswer: 'Green Globe',
-            explanation: 'Green Globe is the global certification standard specifically for sustainable travel and tourism businesses.',
-            tags: ['tourism', 'sustainability', 'certification'],
-          },
-        ],
-      },
-    ],
+    // 6th–8th std: Simple sequence pattern
+    category: 'LOGICAL_ANALYTICAL',
+    text: 'What comes next in this sequence?\n  2, 4, 6, 8, ___',
+    options: ['9', '10', '11', '12'],
+    correctAnswer: '10',
+    difficulty: 'EASY',
+  },
+  {
+    // 9th–12th std: Word analogy reasoning
+    category: 'LOGICAL_ANALYTICAL',
+    text: 'Doctor is to Patient as Teacher is to ___?',
+    options: ['Hospital', 'Classroom', 'Student', 'Textbook'],
+    correctAnswer: 'Student',
+    difficulty: 'MEDIUM',
+  },
+  {
+    // Degree: Multi-step set logic
+    category: 'LOGICAL_ANALYTICAL',
+    text: 'In a group of 60 students:\n'
+      + '  • 35 study Arabic\n'
+      + '  • 30 study English\n'
+      + '  • 15 study both\n\n'
+      + 'How many students study NEITHER Arabic nor English?',
+    options: ['5', '10', '15', '20'],
+    correctAnswer: '10',
+    difficulty: 'HARD',
   },
 ];
 
-// ─── Main Seed Function ───────────────────────────────────────────────────────
+// ─── Database seeding ────────────────────────────────────────────────────────
 
 async function main(): Promise<void> {
-  const uri = process.env.MONGODB_URI;
-  if (!uri) throw new Error('MONGODB_URI is required');
+  const uri = process.env['MONGODB_URI'];
+  if (!uri) throw new Error('MONGODB_URI is required to seed aptitude questions.');
 
   await mongoose.connect(uri);
-  console.log('Connected to MongoDB');
+  const AptitudeQuestion = mongoose.model(AptitudeQuestionModelName, AptitudeQuestionSchema);
+  const seededTexts = questions.map((q) => q.text);
 
-  // 1 ─ Upsert the Career Discovery domain
-  const domainDoc = await DomainModel.findOneAndUpdate(
-    { name: CAREER_DOMAIN.name },
-    { ...CAREER_DOMAIN, order: 10, active: true },
-    { upsert: true, new: true },
+  // Deactivate questions no longer in this seed list
+  await AptitudeQuestion.updateMany(
+    { text: { $nin: seededTexts } },
+    { $set: { active: false } },
   );
-  const domainId = String(domainDoc._id);
-  console.log(`✔ Domain: ${CAREER_DOMAIN.name} (${domainId})`);
 
-  // 2 ─ Iterate topics → subtopics → questions
-  for (const [topicIndex, topicSeed] of CAREER_TOPICS.entries()) {
-    const topicDoc = await TopicModel.findOneAndUpdate(
-      { domainId, name: topicSeed.name },
-      {
-        domainId,
-        name: topicSeed.name,
-        description: topicSeed.description,
-        order: topicIndex + 1,
-        active: true,
-      },
-      { upsert: true, new: true },
+  // Upsert every question
+  for (const question of questions) {
+    await AptitudeQuestion.replaceOne(
+      { text: question.text },
+      { ...question, active: true },
+      { upsert: true },
     );
-    const topicId = String(topicDoc._id);
-    console.log(`  ✔ Topic: ${topicSeed.name}`);
-
-    for (const [subIndex, subtopicSeed] of topicSeed.subtopics.entries()) {
-      const subtopicDoc = await SubtopicModel.findOneAndUpdate(
-        { topicId, name: subtopicSeed.name },
-        {
-          topicId,
-          name: subtopicSeed.name,
-          description: subtopicSeed.description,
-          order: subIndex + 1,
-          active: true,
-        },
-        { upsert: true, new: true },
-      );
-      const subtopicId = String(subtopicDoc._id);
-      console.log(`    ✔ Subtopic: ${subtopicSeed.name} (${subtopicSeed.questions.length} Qs)`);
-
-      for (const q of subtopicSeed.questions) {
-        const questionDoc = await QuestionModel.findOneAndUpdate(
-          { text: q.text },
-          {
-            domainId,
-            topicId,
-            subtopicId,
-            type: q.type,
-            difficulty: q.difficulty,
-            text: q.text,
-            options: q.options,
-            marks: 1,
-            negativeMarks: 0.25,
-            timeRecommended: 60,
-            tags: q.tags,
-            active: true,
-            createdBy: 'career-seed',
-            updatedBy: 'career-seed',
-          },
-          { upsert: true, new: true },
-        );
-        const questionId = String(questionDoc._id);
-
-        await AnswerKeyModel.updateOne(
-          { questionId },
-          {
-            questionId,
-            correctAnswer: q.correctAnswer,
-            explanation: q.explanation,
-            updatedBy: 'career-seed',
-          },
-          { upsert: true },
-        );
-      }
-    }
   }
 
-  console.log('\n✅ Career questions seeded successfully.');
+  // ── Summary output ─────────────────────────────────────────────────────────
+  const counts = await AptitudeQuestion.aggregate<{ _id: AptitudeCategory; count: number }>([
+    { $match: { active: true } },
+    { $group: { _id: '$category', count: { $sum: 1 } } },
+    { $sort: { _id: 1 } },
+  ]);
+
+  process.stdout.write(`\nSeeded ${questions.length} aptitude questions.\n\nCategory breakdown:\n`);
+  for (const c of counts) {
+    process.stdout.write(`  ${c._id}: ${c.count} active questions\n`);
+  }
+
+  const diffCounts = await AptitudeQuestion.aggregate<{ _id: string; count: number }>([
+    { $match: { active: true } },
+    { $group: { _id: '$difficulty', count: { $sum: 1 } } },
+  ]);
+  process.stdout.write('\nDifficulty breakdown:\n');
+  for (const d of diffCounts) {
+    process.stdout.write(`  ${d._id}: ${d.count}\n`);
+  }
+
+  await mongoose.disconnect();
 }
 
-main()
-  .catch((err) => {
-    console.error('❌ Seed failed:', err);
-    process.exit(1);
-  })
-  .finally(async () => {
-    await mongoose.disconnect();
-  });
+main().catch((error: unknown) => {
+  const message = error instanceof Error ? error.message : String(error);
+  process.stderr.write(`Aptitude seed failed: ${message}\n`);
+  void mongoose.disconnect().finally(() => process.exit(1));
+});
